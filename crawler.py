@@ -7,6 +7,8 @@ import json
 from pyquery import PyQuery as pyq
 from lxml import etree
 from bs4 import BeautifulSoup
+
+
 # import MySQLdb
 
 
@@ -51,36 +53,38 @@ class HuxiuCrawler(Crawler):
             href = div.div.a["href"]
             url = self.root_url + href
             article = self.parse_html(url)
-            if start_time <= article.a_time or article.a_time <= end_time:
+            if start_time <= article.a_time <= end_time:
                 self.count += 1
                 self.save(article)
             else:  # 如果当前文章时间不符合要求，则停止搜索后面所有文章
                 out_of_date = True
-        div_get_more = soup.find(name="div", class_="get-mod-more transition js-get-mod-more-list")
-
 
         # 点击加载更多
-        page = 1
-        req_url = 'http://www.huxiu.com/v2_action/article_list'
-        params = {'huxiu_hash_code': '8108c2df22264a5769c3a50798622c16', 'page': 1, 'catid': 2}
+        last_dateline = soup.find(lambda e: e.name=="div" and e.has_attr("data-cur_page") and e.has_attr("data-catid"))["data-last_dateline"]
+        params = {'huxiu_hash_code': "dc93f40d0f51b128d6c60db186fd5c89", 'page': 1, 'catid': 2,
+                  "last_dateline": last_dateline}
+        req_url = 'https://www.huxiu.com/v2_action/article_list'
         while True:
             if out_of_date:
                 break
-            page += 1
-            params['page'] = page
-            req_data = urllib.urlencode(params)
+            params["page"] += 1
+            params["last_dateline"] = last_dateline
+            req_form = urllib.urlencode(params)
             try:
-                request = urllib2.Request(url=req_url, data=req_data)
+                request = urllib2.Request(url=req_url, data=req_form)
                 response = urllib2.urlopen(request).read()
-                result = json.loads(response)
-                soup = BeautifulSoup(result['data'], "lxml")
+                json_obj = json.loads(response)
+                total_page = json_obj["total_page"]
+                if params["page"] >= total_page:  # 超过最多加载页数
+                    break
+                last_dateline = json_obj["last_dateline"]
+                soup = BeautifulSoup(json_obj['data'], "lxml")
                 divs = soup.find_all(name="div", class_="mod-b mod-art")
                 for div in divs:
                     href = div.div.a["href"]
                     url = self.root_url + href
                     article = self.parse_html(url)
-                    if True:
-                    # if start_time <= article.time <= end_time:
+                    if start_time <= article.time <= end_time:
                         self.count += 1
                         self.save(article)
                     else:  # 如果当前文章时间不符合要求，则停止搜索后面所有文章
@@ -101,7 +105,7 @@ class HuxiuCrawler(Crawler):
 
         soup = BeautifulSoup(html, "lxml")
         article_wrap = soup.find(name="div", class_="article-wrap")
-        #标题
+        # 标题
         a_title = article_wrap.h1.string.encode('utf-8')
         # 作者，时间
         article_author = article_wrap.find(name="div", class_="article-author")
