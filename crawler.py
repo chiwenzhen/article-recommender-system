@@ -41,18 +41,6 @@ class HuxiuCrawler(Crawler):
     def crawl(self, start_time, end_time):
         # 初次加载的内容
         html = urllib2.urlopen("https://www.huxiu.com/startups.html").read()
-        # doc = pyq(html)
-        # print doc
-        # content = doc(".mod-info-flow")
-        # divs = content.find("div.mod-b.mod-art")
-        # for div in divs.items():
-        #     href = div.find(".transition").attr("href")
-        #     url = self.root_url + href
-        #     article = self.parse_html(url)
-        #     if start_time <= article.time or article.time <= end_time:
-        #         self.save(article)
-        #     else:  # 如果当前文章时间不符合要求，则停止搜索后面所有文章
-        #         break
 
         out_of_date = False
         soup = BeautifulSoup(html, "lxml")
@@ -82,21 +70,6 @@ class HuxiuCrawler(Crawler):
             params['page'] = page
             req_data = urllib.urlencode(params)
             try:
-                # request = urllib2.Request(url=req_url, data=req_data)
-                # response = urllib2.urlopen(request).read()
-                # result = json.loads(response)
-                # divs = pyq(result['data']).find("div.mod-b.mod-art")
-                # for div in divs.items():
-                #     href = div.find(".transition").attr("href")
-                #     url = self.root_url + href
-                #     article = self.parse_html(url)
-                #     if True:
-                #     # if start_time <= article.time <= end_time:
-                #         self.save(article)
-                #     else:  # 如果当前文章时间不符合要求，则停止搜索后面所有文章
-                #         out_of_date = True
-                #         break
-
                 request = urllib2.Request(url=req_url, data=req_data)
                 response = urllib2.urlopen(request).read()
                 result = json.loads(response)
@@ -125,17 +98,6 @@ class HuxiuCrawler(Crawler):
     # 分析html, 返回Article对象
     def parse_html(self, a_url):
         html = urllib2.urlopen(a_url).read()
-        # doc = pyq(etree.fromstring(html))  # etree负责完善不完整的html
-        # doc = pyq(html)
-        # content = doc(".article-wrap")
-        # title = content(".t-h1").text()
-        # author = content(".article-author").find(".author-name").text()
-        # time = content(".article-author").find(".article-time").text()
-        # plist = map(lambda x: x.text(), content.find(".article-content-wrap").find("p").items())
-        # text = reduce(lambda x, y: x + "\n" + y, plist, "")
-        # alist = map(lambda x: x.text(), content.find(".tag-box ").find("a").items())
-        # tags = reduce(lambda x, y: x + " " + y, alist, "")
-        # article = Article(title=title, text=text, article_time=time, author=author, url=url, tags=tags)
 
         soup = BeautifulSoup(html, "lxml")
         article_wrap = soup.find(name="div", class_="article-wrap")
