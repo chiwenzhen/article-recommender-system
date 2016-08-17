@@ -1,15 +1,11 @@
 # coding=utf-8
-import sys
 import urllib2
 import urllib
 import time
 import json
-from pyquery import PyQuery as pyq
 from lxml import etree
 from bs4 import BeautifulSoup
-
-
-# import MySQLdb
+import MySQLdb
 
 
 class Article:
@@ -100,7 +96,8 @@ class HuxiuCrawler(Crawler):
         print(str(self.count) + " " + article.a_time + " " + article.a_title + " " + article.a_url)
 
     # 分析html, 返回Article对象
-    def parse_html(self, a_url):
+    @staticmethod
+    def parse_html(a_url):
         html = urllib2.urlopen(a_url).read()
 
         soup = BeautifulSoup(html, "lxml")
