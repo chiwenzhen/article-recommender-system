@@ -2,17 +2,23 @@
 # -*- coding: utf-8 -*-
 import urllib
 import urllib2
-
+import time
+import os
+import re
 
 def main():
-    url = "http://www.douban.com"
-    # 浏览器头
-    # headers = {'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'}
-    req = urllib2.Request(url=url)
-    data = urllib2.urlopen(req).read()
-    print data
+    string = ' '
+    print len(string)
+    string = string.str
+    print len(string)
     return 0
 
-
 if __name__ == '__main__':
-    main()
+    m = re.match(r'<script>var props=.*\\}\\}\\]\\},locationnal', "<script>var props=77777777333423423dsfdsf\}\}\]\},locationnal")
+    if m:
+        print "1: ", m.group()
+
+    m = re.match(r'<script>var props=', "<script>var props=77777777333423423dsfdsf\}\}\]\},locationnal")
+    if m:
+        print "2: ", m.group()
+
