@@ -11,21 +11,19 @@ from crawler import Crawler, Article
 
 
 # 虎嗅爬虫
-class HuxiuCrawler(Crawler):
+class CrawlerHuxiu(Crawler):
     def __init__(self):
-        Crawler.__init__(self, "虎嗅", "http://www.huxiu.com")
+        Crawler.__init__(self)
+        self.name = "虎嗅"
+        self.root_url = "http://www.huxiu.com"
 
     def crawl(self, start_time, end_time):
         try:
             # 初次加载的内容
             html = urllib2.urlopen("https://www.huxiu.com/startups.html").read()
-
-            out_of_date = False
             soup = BeautifulSoup(html, "lxml")
             divs = soup.select("div .mod-b.mod-art")
             for div in divs:
-                if out_of_date:
-                    break
                 href = div.div.a["href"]
                 url = self.root_url + href
                 article = self.parse_html(url)
@@ -38,7 +36,7 @@ class HuxiuCrawler(Crawler):
                 elif article.a_time > end_time:  # 如果文章太新了，继续搜索，但不保存
                     continue
                 else:  # 如果文章太老了，停止搜索
-                    out_of_date = True
+                    return
 
             # 点击加载更多
             last_dateline = \
@@ -48,8 +46,6 @@ class HuxiuCrawler(Crawler):
                       "last_dateline": last_dateline}
             req_url = 'https://www.huxiu.com/v2_action/article_list'
             while True:
-                if out_of_date:
-                    break
                 params["page"] += 1
                 params["last_dateline"] = last_dateline
                 req_form = urllib.urlencode(params)
@@ -58,7 +54,7 @@ class HuxiuCrawler(Crawler):
                 json_obj = json.loads(response)
                 total_page = json_obj["total_page"]
                 if params["page"] >= total_page:  # 超过最多加载页数
-                    break
+                    return
                 last_dateline = json_obj["last_dateline"]
                 soup = BeautifulSoup(json_obj['data'], "lxml")
                 divs = soup.find_all(name="div", class_="mod-b mod-art")
@@ -75,18 +71,18 @@ class HuxiuCrawler(Crawler):
                     elif article.a_time > end_time:  # 如果文章太新了，继续搜索，但不保存
                         continue
                     else:  # 如果文章太老了，停止搜索
-                        out_of_date = True
-                        break
+                        return
+        except urllib2.HTTPError, e:
+            print "HTTPError:", e.code, e.reason
         except urllib2.URLError, e:
-            if hasattr(e, "code"):
-                print e.code
-            if hasattr(e, "reason"):
-                print e.reason
+            print "URLError:", e.reason
+        except:
+            print "未知错误"
 
     # 分析html, 返回Article对象
     @staticmethod
     def parse_html(a_url):
-        time.sleep(5)
+        # time.sleep(5)
         try:
             html = urllib2.urlopen(a_url).read()
 
@@ -118,17 +114,15 @@ class HuxiuCrawler(Crawler):
 
             article = Article(a_title=a_title, a_text=a_text, a_time=a_time, a_author=a_author, a_url=a_url, a_tags=a_tags)
             return article
-        except urllib2.HTTPError, e:  # HTTPError必须排在URLError的前面
-            print "The server couldn't fulfill the request"
-            print "Error code:", e.code
-            print "Return content:", e.read()
-            return None
+        except urllib2.HTTPError, e:
+            print "HTTPError:", e.code, e.reason
         except urllib2.URLError, e:
-            print "Failed to reach the server"
-            print "The reason:", e.reason
-            return None
+            print "URLError:", e.reason
+        except:
+            print "未知错误"
+        return None
 
 if __name__ == "__main__":
-    crawler = HuxiuCrawler()
-    crawler.create_table()
-    crawler.crawl("2016-08-15 00:00:00", "2016-08-16 23:59:59")
+    crawler = CrawlerHuxiu()
+    crawler.delete_all_data()
+    crawler.crawl("2016-08-15 00:00:00", "2016-08-19 23:59:59")

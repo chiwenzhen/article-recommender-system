@@ -7,18 +7,17 @@ import os
 import re
 
 def main():
-    string = ' '
-    print len(string)
-    string = string.str
-    print len(string)
-    return 0
+    try:
+        i = 0
+        i += 10
+        raise Exception('spam', 'eggs')
+        return 0
+    except Exception as inst:
+        print "catch exception", inst
+        return -1
+    finally:
+        print "finally"
+    return -2
 
 if __name__ == '__main__':
-    m = re.match(r'<script>var props=.*\\}\\}\\]\\},locationnal', "<script>var props=77777777333423423dsfdsf\}\}\]\},locationnal")
-    if m:
-        print "1: ", m.group()
-
-    m = re.match(r'<script>var props=', "<script>var props=77777777333423423dsfdsf\}\}\]\},locationnal")
-    if m:
-        print "2: ", m.group()
-
+    print main()

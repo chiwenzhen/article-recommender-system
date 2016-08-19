@@ -7,12 +7,16 @@ import MySQLdb
 
 class Segmenter:
     def __init__(self):
+        # 创建分词文件存放目录
         if not os.path.exists("articles/seg/"):
             os.makedirs("articles/seg/")
+
+        # 分句符号
         delimiters = u"\u00a0＃[。，,！……!《》<>\"':：？\?、\|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂'‘\n\r"
         self.delimiters = set(delimiters)
+
+        # 连接数据库，获取文章总数
         self.db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
-        self.thu_seg = thulac.thulac("-filter -seg_only -model_dir models/")
         try:
             cursor = self.db.cursor()
             sql = "select count(*) from article"
@@ -21,6 +25,9 @@ class Segmenter:
             self.doc_count = results[0][0]
         except MySQLdb.Error, e:
             print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+
+        # 分词工具初始化
+        self.thu_seg = thulac.thulac("-seg_only -model_dir models/")
 
     # 分词
     def seg(self):

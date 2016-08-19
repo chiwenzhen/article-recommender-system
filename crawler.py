@@ -2,19 +2,19 @@
 import MySQLdb
 import time
 import os
+import shutil
 
 
 class Crawler:
-    def __init__(self, name, url):
-        self.name = name
-        self.root_url = url
+    def __init__(self):
+        self.name = "Crawler"
+        self.root_url = "www.ruijie.com.cn"
         self.count = 0
         self.db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
         if not os.path.exists("articles/txt/"):
             os.makedirs("articles/txt/")
         if not os.path.exists("articles/attr/"):
             os.makedirs("articles/attr/")
-
 
     def crawl(self, end_time, start_time=None):
         pass
@@ -47,17 +47,19 @@ class Crawler:
         doc_attr.write(article.a_time + "\n" + article.a_title + "\n" + article.a_url + "\n" + article.a_tags)
         doc_attr.close()
 
-    def create_table(self):
-        # 使用cursor()方法获取操作游标
+    def delete_all_data(self):
+        # 删除表内容
         cursor = self.db.cursor()
-        # 如果数据表已经存在使用 execute() 方法删除表。
         cursor.execute("DROP TABLE IF EXISTS ARTICLE")
-        # 创建数据表SQL语句
         sql = """CREATE TABLE ARTICLE (
                  ID INT AUTO_INCREMENT PRIMARY KEY,
                  URL VARCHAR(1000),
                  TIME DATETIME )"""
         cursor.execute(sql)
+
+        # 删除文章
+        shutil.rmtree("articles/txt/")
+        shutil.rmtree("articles/attr/")
 
     # 时间转换：从字符串形式转浮点数，比如time_str2num("2011-09-28 10:00:00", "%Y-%m-%d %H:%M:%S")返回1317091800.0
     @staticmethod
