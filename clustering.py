@@ -32,6 +32,7 @@ class ArticleClustering:
                     sentence = sentence.strip()  # 删除前后空格，换行等空白字符
                     sentence = sentence.decode("utf-8")  # utf-8转unicode
                     words = sentence.split(u" ")
+                    words = [word.strip() for word in words if len(word.strip()) > 0]
                     text.extend(words)
                 texts.append(text)
         return texts
