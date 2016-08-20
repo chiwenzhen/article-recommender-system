@@ -6,7 +6,7 @@ from crawler_geek import CrawlerGeekPark
 from crawler_huxiu import CrawlerHuxiu
 from crawler import Crawler
 from crawler_leiphone import CrawlerLeiphone
-from word_segment import Segmenter
+from segmenter import Segmenter
 
 
 if __name__ == '__main__':

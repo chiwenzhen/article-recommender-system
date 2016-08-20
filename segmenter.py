@@ -3,6 +3,7 @@ import thulac
 import os
 import os.path
 import MySQLdb
+import re
 
 
 class Segmenter:
@@ -14,6 +15,9 @@ class Segmenter:
         # 分句符号
         delimiters = u"\u00a0＃[。，,！……!《》<>\"':：？\?、\|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂'‘\n\r"
         self.delimiters = set(delimiters)
+
+        # 停用词
+        self.stop_word = StopWord()
 
         # 连接数据库，获取文章总数
         self.db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
@@ -33,6 +37,7 @@ class Segmenter:
     def seg(self):
         # 遍历所有文件，查找.word文件是否存在，不存在则进行分词
         for i in range(1, self.doc_count + 1):
+            print ("\r%d/%d" % (i, self.doc_count))
             doc_txt_name = "articles/txt/%d" % i
             doc_seg_tmp = "articles/seg/%d.tmp" % i
             doc_seg_name = "articles/seg/%d" % i
@@ -43,7 +48,9 @@ class Segmenter:
                 for line in file_txt.readlines():
                     sentences = self.seg_sentence(line)
                     for sentence in sentences:
-                        doc_words.append(" ".join(self.thu_seg.cut(sentence)) + "\n")
+                        words = self.thu_seg.cut(sentence)
+                        words = filter(lambda word: not self.stop_word.is_stop_word(word.decode("utf-8")), words)
+                        doc_words.append(" ".join(words) + "\n")
                 file_tmp.writelines(doc_words)
                 file_txt.close()
                 file_tmp.close()
@@ -67,6 +74,17 @@ class Segmenter:
             else:  # 如果当前字符不是分句符号，则将该字符加到句子末尾
                 sentence.append(c)
         return sentences
+
+class StopWord:
+    def __init__(self):
+        # 停用词表
+        with open("data-for-1.2.10-full/data/dictionary/stopwords.txt", 'r') as file:
+            self.stop_words = set([line.strip().decode("utf-8") for line in file])
+
+    # 判断词语是否要过滤：停用词，单字词，数字，（要求word输入为unicode编码）
+    def is_stop_word(self, word):
+        is_stop_word = word in self.stop_words or re.match(ur"[\d]+", word) or len(word) == 1
+        return is_stop_word
 
 if __name__ == "__main__":
     seg = Segmenter()
