@@ -21,9 +21,6 @@ def main():
     return -2
 
 if __name__ == '__main__':
-    tags = u"[\"早期项目\",\"zaoqixiangmu\",1],[\"信息安全\",\"xinxianquan\",2],[\"网络运维\",\"wangluoyunwei\",2]"
-    ss = re.findall(u"[\u4e00-\u9fa5]+", tags)
-    str_time = "http://upload.ikanchai.com/2016/0822/thumb_250_165_1471856056371.jpg"
-    str_time = str_time[-17:-2]
-
-    print str_time
+    groups = re.search(r'.*/msg/(\d+)/(\d+)/(\d+)/.*', "http://p.sootoo.com/son_media/msg/2016/06/24/732223.jpg")
+    year = groups.group(1)
+    print year

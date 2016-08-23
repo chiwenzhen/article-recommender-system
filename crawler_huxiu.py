@@ -12,8 +12,8 @@ from crawler import Crawler, Article
 
 # 虎嗅爬虫
 class CrawlerHuxiu(Crawler):
-    def __init__(self):
-        Crawler.__init__(self)
+    def __init__(self, proj_name):
+        Crawler.__init__(self, proj_name)
         self.name = "虎嗅"
         self.root_url = "http://www.huxiu.com"
 

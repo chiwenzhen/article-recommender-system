@@ -7,10 +7,11 @@ import re
 
 
 class Segmenter:
-    def __init__(self):
+    def __init__(self, proj_name):
         # 创建分词文件存放目录
-        if not os.path.exists("articles/seg/"):
-            os.makedirs("articles/seg/")
+        seg_dir = proj_name + "/seg"
+        if not os.path.exists(seg_dir):
+            os.makedirs(seg_dir)
 
         # 分句符号
         delimiters = u"\u00a0＃[。，,！……!《》<>\"':：？\?、\|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂'‘\n\r"
@@ -23,7 +24,7 @@ class Segmenter:
         self.db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
         try:
             cursor = self.db.cursor()
-            sql = "select count(*) from article"
+            sql = "select count(*) from %s" % proj_name
             cursor.execute(sql)
             results = cursor.fetchall()
             self.doc_count = results[0][0]
@@ -38,9 +39,9 @@ class Segmenter:
         # 遍历所有文件，查找.word文件是否存在，不存在则进行分词
         for i in range(1, self.doc_count + 1):
             print ("\r%d/%d" % (i, self.doc_count))
-            doc_txt_name = "articles/txt/%d" % i
-            doc_seg_tmp = "articles/seg/%d.tmp" % i
-            doc_seg_name = "articles/seg/%d" % i
+            doc_txt_name = "%s/txt/%d" % (self.proj_name, i)
+            doc_seg_tmp = "%s/seg/%d.tmp" % (self.proj_name, i)
+            doc_seg_name = "%s/seg/%d" % (self.proj_name, i)
             if not os.path.exists(doc_seg_name):  # 如果分词文件不存在，那么进行分词
                 doc_words = []
                 file_txt = open(doc_txt_name, "r")
@@ -87,5 +88,5 @@ class StopWord:
         return is_stop_word
 
 if __name__ == "__main__":
-    seg = Segmenter()
+    seg = Segmenter("article_xxx")
     seg.seg()

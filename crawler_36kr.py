@@ -13,8 +13,8 @@ import re
 
 # 虎嗅爬虫
 class Crawler36Kr(Crawler):
-    def __init__(self):
-        Crawler.__init__(self)
+    def __init__(self, proj_name):
+        Crawler.__init__(self, proj_name)
         self.name = "36氪"
         self.root_url = "http://36kr.com"
 
@@ -124,6 +124,6 @@ class Crawler36Kr(Crawler):
 
 
 if __name__ == "__main__":
-    crawler = Crawler36Kr()
+    crawler = Crawler36Kr(proj_name="article_xx")
     crawler.rebuild_table()
     crawler.crawl("2016-08-15 00:00:00", "2016-08-23 00:00:00")

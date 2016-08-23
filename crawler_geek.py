@@ -105,6 +105,6 @@ class CrawlerGeekPark(Crawler):
         return None
 
 if __name__ == "__main__":
-    crawler = CrawlerGeekPark()
-    crawler.delete_all_data()
-    crawler.crawl("2016-08-15 0rebuild_table-08-16 23:59:59")
+    crawler = CrawlerGeekPark(proj_name="article_xxx")
+    crawler.rebuild_table()
+    crawler.crawl("2016-08-15 00:00:00", "2016-08-16 23:59:59")

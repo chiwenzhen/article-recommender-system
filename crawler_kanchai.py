@@ -12,10 +12,10 @@ from crawler import Crawler, Article
 
 # 虎嗅爬虫
 class CrawlerKanchai(Crawler):
-    def __init__(self):
-        Crawler.__init__(self)
-        self.name = "极客公园"
-        self.root_url = "http://www.geekpark.net"
+    def __init__(self, proj_name):
+        Crawler.__init__(self, proj_name)
+        self.name = "砍柴网"
+        self.root_url = "http://www.ikanchai.com/"
 
     def crawl(self, start_time, end_time):
         try:
@@ -119,6 +119,6 @@ class CrawlerKanchai(Crawler):
 
 
 if __name__ == "__main__":
-    crawler = CrawlerKanchai()
+    crawler = CrawlerKanchai("article_xxx")
     crawler.rebuild_table()
     crawler.crawl("2016-08-15 00:00:00", "2016-08-23 23:59:59")

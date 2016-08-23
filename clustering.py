@@ -5,11 +5,11 @@ from gensim import corpora, models
 from collections import defaultdict
 
 
-class ArticleClustering:
-    def __init__(self, root_dir):
-        self.root_dir = root_dir
-        self.seg_dir = root_dir + "/" + "seg"
-        self.attr_dir = root_dir + "/" + "attr"
+class ArticleLDA:
+    def __init__(self, proj_name):
+        self.proj_name = proj_name
+        self.seg_dir = proj_name + "/" + "seg"
+        self.attr_dir = proj_name + "/" + "attr"
         self.tag_dict = defaultdict(int)
         pass
         pass
@@ -75,4 +75,4 @@ class ArticleClustering:
 
 if __name__ == '__main__':
     # 获取分词和过滤无用词后的词语序列列表
-    ArticleClustering("articles").clustering()
+    ArticleLDA("articles").clustering()

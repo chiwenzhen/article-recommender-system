@@ -6,7 +6,7 @@ import shutil
 from article import Article
 
 
-class Crawler:
+class LabeledCrawler:
     def __init__(self, proj_name):
         self.name = "Crawler"
         self.root_url = "www.ruijie.com.cn"
@@ -20,6 +20,34 @@ class Crawler:
         if not os.path.exists(self.attr_dir):
             os.makedirs(self.attr_dir)
 
+        self.cat_dict = {"VR": 1,
+                         "人工智能": 2,
+                         "智能硬件": 3,
+                         "游戏&直播": 4,
+                         "物联网": 5,
+                         "医疗健康": 6,
+                         "教育": 7,
+                         "互联网金融": 8,
+                         "手机": 9,
+                         "企业服务": 10,
+                         "汽车": 11,
+                         "电商": 12,
+                         "O2O": 13,
+                         "资本": 14,
+                         "旅游": 15,
+                         "评测": 16,
+                         "物流": 17,
+                         "体育": 18,
+                         "农业": 19,
+                         "社交": 20,
+                         "工具": 21,
+                         "娱乐": 22,
+                         "家居": 23,
+                         "文创": 24,
+                         "房产": 25,
+
+                         }
+
     def crawl(self, end_time, start_time=None):
         pass
 
@@ -29,7 +57,8 @@ class Crawler:
         # 相关信息写入数据库(time, url)
         try:
             cursor = self.db.cursor()
-            sql = """insert into %s (url, time) values ('%s', '%s')""" % (self.proj_name, article.a_url, article.a_time)
+            sql = """insert into %s (url, time, category) values ('%s', '%s', %d)""" % (
+                self.name, article.a_url, article.a_time, article.a_category)
             cursor.execute(sql)
             self.db.commit()
 

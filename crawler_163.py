@@ -12,8 +12,8 @@ from crawler import Crawler, Article
 
 # 虎嗅爬虫
 class Crawler163(Crawler):
-    def __init__(self):
-        Crawler.__init__(self)
+    def __init__(self, proj_name):
+        Crawler.__init__(self, proj_name)
         self.name = "网易科技"
         self.root_url = "http://tech.163.com/gd/"
 
@@ -93,6 +93,6 @@ class Crawler163(Crawler):
         return None
 
 if __name__ == "__main__":
-    crawler = Crawler163()
+    crawler = Crawler163(proj_name="article_xxx")
     crawler.rebuild_table()
     crawler.crawl("2016-08-15 00:00:00", "2016-08-19 23:59:59")
