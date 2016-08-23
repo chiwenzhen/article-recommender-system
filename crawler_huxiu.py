@@ -108,9 +108,9 @@ class CrawlerHuxiu(Crawler):
             else:
                 alist = []
 
-            for a in alist:
-                if a.li.string is not None:
-                    a_tags = a_tags + a.li.string.encode('utf-8') + " "
+            if len(alist) > 0:
+                alist = [a.li.string.encode('utf-8') for a in alist]
+                a_tags = " ".join(alist)
 
             article = Article(a_title=a_title, a_text=a_text, a_time=a_time, a_author=a_author, a_url=a_url, a_tags=a_tags)
             return article

@@ -6,15 +6,19 @@ import shutil
 
 
 class Crawler:
-    def __init__(self):
+    def __init__(self, table="article", save_dir="articles"):
         self.name = "Crawler"
         self.root_url = "www.ruijie.com.cn"
+        self.table = table
+        self.dir = save_dir
         self.count = 0
         self.db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
-        if not os.path.exists("articles/txt/"):
-            os.makedirs("articles/txt/")
-        if not os.path.exists("articles/attr/"):
-            os.makedirs("articles/attr/")
+        self.txt_dir = "%s/txt" % self.dir
+        self.attr_dir = "%s/attr" % self.dir
+        if not os.path.exists(self.txt_dir):
+            os.makedirs(self.txt_dir)
+        if not os.path.exists(self.attr_dir):
+            os.makedirs(self.attr_dir)
 
     def crawl(self, end_time, start_time=None):
         pass
@@ -25,41 +29,41 @@ class Crawler:
         # 相关信息写入数据库(time, url)
         try:
             cursor = self.db.cursor()
-            sql = """insert into article (url, time) values ('%s', '%s')""" % (article.a_url, article.a_time)
+            sql = """insert into %s (url, time) values ('%s', '%s')""" % (self.table, article.a_url, article.a_time)
             cursor.execute(sql)
             self.db.commit()
 
             sql = "select last_insert_id()"
             cursor.execute(sql)
             results = cursor.fetchall()
-            id = results[0][0]
+            nexi_id = results[0][0]
+
+            # 相关信息写入文件(time, url, tags, text, title, author)
+            file_name = "%s/%d" % (self.txt_dir, nexi_id)
+            doc_text = open(file_name, 'w')
+            doc_text.write(article.a_title + "\n" + article.a_tags + "\n" + article.a_text)
+            doc_text.close()
+
+            file_name = "%s/%d" % (self.attr_dir, nexi_id)
+            doc_attr = open(file_name, 'w')
+            doc_attr.write(article.a_time + "\n" + article.a_title + "\n" + article.a_url + "\n" + article.a_tags)
+            doc_attr.close()
         except:
             self.db.rollback()
 
-        # 相关信息写入文件(time, url, tags, text, title, author)
-        file_name = "articles/txt/%d" % id
-        doc_text = open(file_name, 'w')
-        doc_text.write(article.a_title + "\n" + article.a_tags + "\n" + article.a_text)
-        doc_text.close()
-
-        file_name = "articles/attr/%d" % id
-        doc_attr = open(file_name, 'w')
-        doc_attr.write(article.a_time + "\n" + article.a_title + "\n" + article.a_url + "\n" + article.a_tags)
-        doc_attr.close()
-
-    def delete_all_data(self):
+    def rebuild_table(self):
         # 删除表内容
         cursor = self.db.cursor()
-        cursor.execute("DROP TABLE IF EXISTS ARTICLE")
-        sql = """CREATE TABLE ARTICLE (
+        cursor.execute("DROP TABLE IF EXISTS %s" % self.table)
+        sql = """CREATE TABLE %s (
                  ID INT AUTO_INCREMENT PRIMARY KEY,
                  URL VARCHAR(1000),
-                 TIME DATETIME )"""
+                 TIME DATETIME )""" % self.table
         cursor.execute(sql)
 
         # 删除文章
-        shutil.rmtree("articles/txt/")
-        shutil.rmtree("articles/attr/")
+        shutil.rmtree(self.txt_dir)
+        shutil.rmtree(self.attr_dir)
 
     # 时间转换：从字符串形式转浮点数，比如time_str2num("2011-09-28 10:00:00", "%Y-%m-%d %H:%M:%S")返回1317091800.0
     @staticmethod

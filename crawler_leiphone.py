@@ -97,4 +97,4 @@ class CrawlerLeiphone(Crawler):
 if __name__ == "__main__":
     crawler = CrawlerLeiphone()
     crawler.delete_all_data()
-    crawler.crawl("2016-08-15 00:00:00", "2016-08-20 23:59:59")
+    crawler.crawl("2016-08-rebuild_table2016-08-20 23:59:59")

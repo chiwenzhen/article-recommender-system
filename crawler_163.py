@@ -94,5 +94,5 @@ class Crawler163(Crawler):
 
 if __name__ == "__main__":
     crawler = Crawler163()
-    crawler.delete_all_data()
+    crawler.rebuild_table()
     crawler.crawl("2016-08-15 00:00:00", "2016-08-19 23:59:59")

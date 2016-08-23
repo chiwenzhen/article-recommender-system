@@ -22,6 +22,7 @@ class Crawler36Kr(Crawler):
         try:
             is_first_page = True
             page = 1
+            last_id = None
             while True:
                 if is_first_page:
                     is_first_page = False
@@ -105,9 +106,10 @@ class Crawler36Kr(Crawler):
             tags = data[
                 "extraction_tags"]  # "extraction_tags": "[[\"早期项目\",\"zaoqixiangmu\",1],[\"信息安全\",\"xinxianquan\",2],[\"网络运维\",\"wangluoyunwei\",2]]"
             if tags is not None:
-                str_tag = re.match(ur"[\u4e00-\u9fa5]+", tags)
-                if str_tag is not None:  # 这里正则表达匹配失败，不知为何？？
-                    a_tags += str_tag
+                tags = re.findall(u"[\u4e00-\u9fa5]+", tags)
+                if len(tags) > 0:
+                    a_tags = u" ".join(tags)
+                    a_tags = a_tags.encode("utf-8")
 
             article = Article(a_title=a_title, a_text=a_text, a_time=a_time, a_author=a_author, a_url=a_url,
                               a_tags=a_tags)
@@ -123,5 +125,5 @@ class Crawler36Kr(Crawler):
 
 if __name__ == "__main__":
     crawler = Crawler36Kr()
-    crawler.delete_all_data()
-    crawler.crawl("2016-08-15 00:00:00", "2016-08-19 23:59:59")
+    crawler.rebuild_table()
+    crawler.crawl("2016-08-15 00:00:00", "2016-08-23 00:00:00")

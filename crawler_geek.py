@@ -90,9 +90,9 @@ class CrawlerGeekPark(Crawler):
                 alist = section_tags.find_all(name="a")
             else:
                 alist = []
-            for a in alist:
-                if a.string is not None:
-                    a_tags = a_tags + a.string.encode('utf-8') + " "
+            if len(alist) > 0:
+                alist = [a.string.encode('utf-8') for a in alist]
+                a_tags = " ".join(alist)
 
             article = Article(a_title=a_title, a_text=a_text, a_time=a_time, a_author=a_author, a_url=a_url, a_tags=a_tags)
             return article
@@ -107,4 +107,4 @@ class CrawlerGeekPark(Crawler):
 if __name__ == "__main__":
     crawler = CrawlerGeekPark()
     crawler.delete_all_data()
-    crawler.crawl("2016-08-15 00:00:00", "2016-08-16 23:59:59")
+    crawler.crawl("2016-08-15 0rebuild_table-08-16 23:59:59")
