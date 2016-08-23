@@ -65,15 +65,15 @@ class LabeledCrawlerLieyun(LabeledCrawler):
             last_time = lis[-1]["post_date"]
 
             # 加载更多
-            page = 1
             while True:
-                page += 1
                 url = "http://www.lieyunwang.com/api/v1/posts?\
                 starttime=%s&cid=%d&keyword=&tag=&searchcontent=&\
                 scroll=true&scrollTo=100&title_remove_dujia=1" % (last_time, cid)
                 html = urllib2.urlopen(url).read()
                 json_obj = json.loads(html)
                 articles = json_obj["content"]
+                if len(articles) == 0:
+                    return
 
                 for article in articles:
                     a_url = article["postUrl"].encode("utf-8")

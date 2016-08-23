@@ -66,6 +66,8 @@ class LabeledCrawlerIheima(LabeledCrawler):
                     html = urllib2.urlopen(req).read()
                     soup = BeautifulSoup(html, "lxml")
                     articles = soup.find_all(name="article", class_="item-wrap cf")
+                    if len(articles) == 0:
+                        return
 
                 for article in articles:
                     a_url = article.div.div.a["href"]

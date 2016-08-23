@@ -39,6 +39,8 @@ class LabeledCrawlerSootoo(LabeledCrawler):
                 html = urllib2.urlopen("%s?page=%d" % (start_url, page)).read()
                 soup = BeautifulSoup(html, "lxml")
                 div_zxgx = soup.find(name="div", class_="ZXGX")
+                if div_zxgx is None:
+                    return
                 lis = div_zxgx.ul.find_all(name="li", class_="ZXGX_list clearfix")
                 for li in lis:
                     if li.img is None:

@@ -40,10 +40,14 @@ class LabeledCrawlerYiou(LabeledCrawler):
             page = 0
             while True:
                 page += 1
+                page = 100000000000
                 html = urllib2.urlopen("%spage/%d.html" % (start_url, page)).read()
                 soup = BeautifulSoup(html, "lxml")
                 div_post = soup.find(name="div", id="post_list")
                 divs = div_post.find_all(name="div", class_="post", recursive=False)
+                if len(divs) == 0:
+                    return
+
                 for div in divs:
                     div_right = div.find(name="div", class_="post_right")
                     a_url = div_right.h1.a["href"]

@@ -42,6 +42,9 @@ class LabeledCrawlerLeiphone(LabeledCrawler):
                 soup = BeautifulSoup(html, "lxml")
                 div_wrap = soup.find(name="div", class_="wrap")
                 lis = div_wrap.find_all(name="li", class_="pbox clr")
+                if len(lis) == 0:
+                    return
+
                 for li in lis:
                     div_word = li.find(name="div", class_="word")
                     a_url = div_word.a["href"]

@@ -9,4 +9,4 @@ class Article:
         self.a_url = a_url
         self.a_time = a_time
         self.a_tags = a_tags
-        self.a_catid = a_category
+        self.a_category = a_category

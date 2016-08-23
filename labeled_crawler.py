@@ -58,7 +58,7 @@ class LabeledCrawler:
         try:
             cursor = self.db.cursor()
             sql = """insert into %s (url, time, category) values ('%s', '%s', %d)""" % (
-                self.name, article.a_url, article.a_time, article.a_category)
+                self.proj_name, article.a_url, article.a_time, article.a_category)
             cursor.execute(sql)
             self.db.commit()
 
