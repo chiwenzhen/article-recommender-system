@@ -5,7 +5,7 @@ from gensim import corpora, models
 from collections import defaultdict
 
 
-class ArticleLDA:
+class LDA:
     def __init__(self, proj_name):
         self.proj_name = proj_name
         self.seg_dir = proj_name + "/" + "seg"
@@ -59,7 +59,6 @@ class ArticleLDA:
     # 统计每个标签出现的次数
     def count_tag(self, attr_dir):
         attr_names = [f for f in os.listdir(attr_dir) if os.path.isfile(os.path.join(attr_dir, f))]
-        attr_name_num = len(attr_names)
         for attr_name in attr_names:
             with open(os.path.join(attr_dir, attr_name), 'r') as seg_file:
                 sentences = seg_file.readlines()
@@ -75,4 +74,4 @@ class ArticleLDA:
 
 if __name__ == '__main__':
     # 获取分词和过滤无用词后的词语序列列表
-    ArticleLDA("articles").clustering()
+    LDA("articles").clustering()

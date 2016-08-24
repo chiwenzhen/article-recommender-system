@@ -8,7 +8,7 @@ from crawler import Crawler
 from crawler_leiphone import CrawlerLeiphone
 from crawler_kanchai import CrawlerKanchai
 from segmenter import Segmenter
-from clustering import ArticleLDA
+from lda import LDA
 from labeled_crawler import LabeledCrawler
 from labeled_crawler_iheima import LabeledCrawlerIheima
 from labeled_crawler_kanchai import LabeledCrawlerKanchai
@@ -18,7 +18,7 @@ from labeled_crawler_sootoo import LabeledCrawlerSootoo
 from labeled_crawler_yiou import LabeledCrawlerYiou
 
 
-def regular_data():
+def fetch_nonlabeled_data():
     proj_name = "article"
     str_old_time = "2015-08-01 00:00:00"
     str_new_time = "2016-08-24 00:00:00"
@@ -33,11 +33,12 @@ def regular_data():
 
     seg = Segmenter(proj_name=proj_name)
     seg.seg()
+    seg.join_seg_file()
 
-    ArticleLDA(proj_name=proj_name).clustering()
+    LDA(proj_name=proj_name).clustering()
 
 
-def train_data():
+def fetch_labeled_data():
     str_old_time = "2015-08-01 00:00:00"
     str_new_time = "2016-08-25 00:00:00"
     proj_name = "article_cat"
@@ -52,9 +53,10 @@ def train_data():
 
     seg = Segmenter(proj_name=proj_name)
     seg.seg()
+    seg.join_seg_file()
 
     # ArticleLDA(proj_name=proj_name).clustering()
 
 
 if __name__ == '__main__':
-    train_data()
+    fetch_labeled_data()

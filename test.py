@@ -21,6 +21,8 @@ def main():
     return -2
 
 if __name__ == '__main__':
-    groups = re.search(r'.*/msg/(\d+)/(\d+)/(\d+)/.*', "http://p.sootoo.com/son_media/msg/2016/06/24/732223.jpg")
-    year = groups.group(1)
-    print year
+    seg_file = open("a.txt", "r")
+    lines = seg_file.readlines()
+    print "total %d lines" % len(lines)
+    for line in lines:
+        print line

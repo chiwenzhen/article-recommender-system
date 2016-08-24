@@ -9,13 +9,16 @@ import re
 class Segmenter:
     def __init__(self, proj_name):
         # 创建分词文件存放目录
-        seg_dir = proj_name + "/seg"
-        if not os.path.exists(seg_dir):
-            os.makedirs(seg_dir)
+        self.proj_name = proj_name
+        self.seg_dir = proj_name + "/seg"
+        if not os.path.exists(self.seg_dir):
+            os.makedirs(self.seg_dir)
+        self.seg_join_dir = proj_name + "/seg_join"
+        if not os.path.exists(self.seg_join_dir):
+            os.makedirs(self.seg_join_dir)
 
         # 分句符号
-        delimiters = u"\u00a0＃[。，,！……!《》<>\"':：？\?、\|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂'‘\n\r"
-        self.delimiters = set(delimiters)
+        self.delimiters = set(u"\u00a0＃[。，,！……!《》<>\"':：？\?、\|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂'‘\n\r")
 
         # 停用词
         self.stop_word = StopWord()
@@ -57,6 +60,21 @@ class Segmenter:
                 file_tmp.close()
                 os.rename(doc_seg_tmp, doc_seg_name)
 
+    # 将分词后的小文件拼接成一个大文件，其中大文件每行代表一个文档
+    def join_seg_file(self):
+        corpus = []
+
+        for i in range(1, self.doc_count + 1):
+            seg_name = "%s/%d" % (self.seg_dir, i)
+            with open(seg_name, "r") as seg_file:
+                lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
+                doc = " ".join(lines)
+                corpus.append(doc)
+
+        corpus = "\n".join(corpus)
+        with open(self.seg_join_dir+"/corpus.txt", "w") as seg_join_file:
+            seg_join_file.write(corpus)
+
     # 分句
     def seg_sentence(self, line):
         sentences = []  # 句子列表
@@ -76,17 +94,19 @@ class Segmenter:
                 sentence.append(c)
         return sentences
 
+
 class StopWord:
     def __init__(self):
         # 停用词表
-        with open("data-for-1.2.10-full/data/dictionary/stopwords.txt", 'r') as file:
-            self.stop_words = set([line.strip().decode("utf-8") for line in file])
+        with open("data-for-1.2.10-full/data/dictionary/stopwords.txt", 'r') as stop_file:
+            self.stop_words = set([line.strip().decode("utf-8") for line in stop_file])
 
     # 判断词语是否要过滤：停用词，单字词，数字，（要求word输入为unicode编码）
     def is_stop_word(self, word):
         is_stop_word = word in self.stop_words or re.match(ur"[\d]+", word) or len(word) == 1
         return is_stop_word
 
+
 if __name__ == "__main__":
-    seg = Segmenter("article_xxx")
-    seg.seg()
+    seg = Segmenter("article_cat")
+    seg.join_seg_file()
