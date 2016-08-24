@@ -94,7 +94,6 @@ class LabeledCrawlerIheima(LabeledCrawler):
 
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time, a_category):
-        # time.sleep(5)
         try:
             html = urllib2.urlopen(a_url).read()
             soup = BeautifulSoup(html, "lxml")

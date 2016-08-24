@@ -16,6 +16,7 @@ from labeled_crawler_leiphone import LabeledCrawlerLeiphone
 from labeled_crawler_lieyun import LabeledCrawlerLieyun
 from labeled_crawler_sootoo import LabeledCrawlerSootoo
 from labeled_crawler_yiou import LabeledCrawlerYiou
+from text_classifier import TextClassifier
 
 
 def fetch_nonlabeled_data():
@@ -56,6 +57,8 @@ def fetch_labeled_data():
     seg.join_seg_file()
 
     # ArticleLDA(proj_name=proj_name).clustering()
+    clf = TextClassifier(project_name="article_cat")
+    clf.test()
 
 
 if __name__ == '__main__':

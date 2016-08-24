@@ -73,7 +73,6 @@ class LabeledCrawlerSootoo(LabeledCrawler):
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time, a_category):
         try:
-            a_url = "http://www.sootoo.com/content/665785.shtml"
             html = urllib2.urlopen(a_url).read()
             soup = BeautifulSoup(html, "lxml")
             divs = soup.find(name="div", class_="center-research-t").div.find_all(name="div", recursive=False)

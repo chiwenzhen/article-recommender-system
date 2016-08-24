@@ -40,7 +40,6 @@ class LabeledCrawlerYiou(LabeledCrawler):
             page = 0
             while True:
                 page += 1
-                page = 100000000000
                 html = urllib2.urlopen("%spage/%d.html" % (start_url, page)).read()
                 soup = BeautifulSoup(html, "lxml")
                 div_post = soup.find(name="div", id="post_list")
