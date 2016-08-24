@@ -81,8 +81,10 @@ class CrawlerGeekPark(Crawler):
             a_text = ""
             plist = section_main_content.find(name="div", class_="article-content").find_all(name="p")
             for p in plist:
-                if p.string is not None:
-                    a_text = a_text + p.string.encode('utf-8') + "\n"
+                strings = p.stripped_strings
+                for string in strings:
+                    a_text = a_text + string.encode('utf-8')
+                a_text += "\n"
             # 标签
             a_tags = ""
             section_tags = section_main_content.section

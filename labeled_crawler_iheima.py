@@ -105,10 +105,16 @@ class LabeledCrawlerIheima(LabeledCrawler):
             a_author = div.find(name="div", class_="author").find(name="span", class_="name").string.encode('utf-8')
             # 正文
             a_text = ""
-            plist = div.find_all(name="p", recursive=False)
+            div_var = div.find(name="div", class_="left523")
+            if div_var is not None:
+                plist = div_var.find_all(name="p", recursive=False)
+            else:
+                plist = div.find_all(name="p", recursive=False)
             for p in plist:
-                if p.string is not None:
-                    a_text = a_text + p.string.encode('utf-8') + "\n"
+                strings = p.stripped_strings
+                for string in strings:
+                    a_text = a_text + string.encode('utf-8')
+                a_text += "\n"
             # 标签
             a_tags = ""
             div_tags = div.find(name="div", class_="fl tags")
@@ -133,6 +139,6 @@ class LabeledCrawlerIheima(LabeledCrawler):
 
 
 if __name__ == "__main__":
-    crawler = LabeledCrawlerIheima(proj_name="article_cat")
+    crawler = LabeledCrawlerIheima(proj_name="article_test")
     crawler.rebuild_table()
     crawler.crawl("2016-08-15 00:00:00", "2016-08-23 23:59:59")

@@ -78,8 +78,10 @@ class Crawler163(Crawler):
             a_text = ""
             plist = div_post_content_main.find(name="div", class_="post_text").find_all("p")
             for p in plist:
-                if p.string is not None:
-                    a_text = a_text + p.string.encode('utf-8') + "\n"
+                strings = p.stripped_strings
+                for string in strings:
+                    a_text = a_text + string.encode('utf-8')
+                a_text += "\n"
             # 标签
             a_tags = ""
             article = Article(a_title=a_title, a_text=a_text, a_time=a_time, a_author=a_author, a_url=a_url, a_tags=a_tags)

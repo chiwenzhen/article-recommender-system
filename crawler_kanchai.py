@@ -92,8 +92,10 @@ class CrawlerKanchai(Crawler):
             a_text = ""
             plist = div_hl_content.find(name="div", class_="hl_body").find_all(name="p")
             for p in plist:
-                if p.string is not None:
-                    a_text = a_text + p.string.encode('utf-8') + "\n"
+                strings = p.stripped_strings
+                for string in strings:
+                    a_text = a_text + string.encode('utf-8')
+                a_text += "\n"
             # 标签
             a_tags = ""
             div_hl_c_tagl = div_hl_content.find(name="div", class_="hl_c_tagl")

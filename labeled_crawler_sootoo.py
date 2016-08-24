@@ -73,6 +73,7 @@ class LabeledCrawlerSootoo(LabeledCrawler):
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time, a_category):
         try:
+            a_url = "http://www.sootoo.com/content/665785.shtml"
             html = urllib2.urlopen(a_url).read()
             soup = BeautifulSoup(html, "lxml")
             divs = soup.find(name="div", class_="center-research-t").div.find_all(name="div", recursive=False)
@@ -85,10 +86,13 @@ class LabeledCrawlerSootoo(LabeledCrawler):
             a_author = div_txt.find(name="div", class_="t11_info").div.a.string.encode("utf-8")
             # 正文
             a_text = ""
-            plist = div_txt.find(name="div", class_="t11_mlblk t11_contentarea").find_all(name="p", recursive=False)
+            plist = div_txt.find(name="div", class_="t11_mlblk t11_contentarea").find_all(name="p")
             for p in plist:
-                if p.string is not None:
-                    a_text = a_text + p.string.encode('utf-8') + "\n"
+                strings = p.stripped_strings
+                for string in strings:
+                    a_text = a_text + string.encode('utf-8')
+                a_text += "\n"
+
             # 标签
             a_tags = ""
             alist = div_foot.div.find_all(name="a", recursive=False)
@@ -108,6 +112,6 @@ class LabeledCrawlerSootoo(LabeledCrawler):
         return None
 
 if __name__ == "__main__":
-    crawler = LabeledCrawlerSootoo(proj_name="article_cat")
+    crawler = LabeledCrawlerSootoo(proj_name="article_test")
     crawler.rebuild_table()
     crawler.crawl("2016-01-01 00:00:00", "2016-08-23 23:59:59")

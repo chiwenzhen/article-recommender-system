@@ -133,6 +133,6 @@ class LabeledCrawlerYiou(LabeledCrawler):
 
 
 if __name__ == "__main__":
-    crawler = LabeledCrawlerYiou(proj_name="article_cat")
+    crawler = LabeledCrawlerYiou(proj_name="article_test")
     crawler.rebuild_table()
     crawler.crawl("2016-01-01 00:00:00", "2016-08-23 23:59:59")

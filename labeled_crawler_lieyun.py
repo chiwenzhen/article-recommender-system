@@ -117,8 +117,10 @@ class LabeledCrawlerLieyun(LabeledCrawler):
             a_text = ""
             plist = div.find(name="div", class_="main-text").find_all(name="p", recursive=False)
             for p in plist:
-                if p.string is not None:
-                    a_text = a_text + p.string.encode('utf-8') + "\n"
+                strings = p.stripped_strings
+                for string in strings:
+                    a_text = a_text + string.encode('utf-8')
+                a_text += "\n"
             # 标签
             a_tags = ""
             div_tags = div.find(name="div", class_="article-tag")
@@ -141,6 +143,6 @@ class LabeledCrawlerLieyun(LabeledCrawler):
         return None
 
 if __name__ == "__main__":
-    crawler = LabeledCrawlerLieyun(proj_name="article_cat")
+    crawler = LabeledCrawlerLieyun(proj_name="article_test")
     crawler.rebuild_table()
     crawler.crawl("2016-08-06 00:00:00", "2016-08-23 23:59:59")

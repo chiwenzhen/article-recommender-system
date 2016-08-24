@@ -44,9 +44,11 @@ class LabeledCrawler:
                          "娱乐": 22,
                          "家居": 23,
                          "文创": 24,
-                         "房产": 25,
-
+                         "房产": 25
                          }
+        self.cat_rdict = {}
+        for key, value in self.cat_dict.items():
+            self.cat_rdict[value] = key
 
     def crawl(self, end_time, start_time=None):
         pass

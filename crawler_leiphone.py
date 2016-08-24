@@ -78,8 +78,10 @@ class CrawlerLeiphone(Crawler):
             a_text = ""
             plist = article_left.find(name="div", class_="pageCont lph-article-comView ").find_all(name="p")
             for p in plist:
-                if p.string is not None:
-                    a_text = a_text + p.string.encode('utf-8') + "\n"
+                strings = p.stripped_strings
+                for string in strings:
+                    a_text = a_text + string.encode('utf-8')
+                a_text += "\n"
             # 标签
             a_tags = ""
 

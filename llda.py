@@ -9,6 +9,8 @@
 from optparse import OptionParser
 import sys, re, numpy
 
+import sklearn.naive_bayes
+
 def load_corpus(filename):
     corpus = []
     labels = []
