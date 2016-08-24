@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72438ef6-a642-4761-8f76-e83fbe72d6a5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labeled_crawler_iheima.py" afterPath="$PROJECT_DIR$/labeled_crawler_iheima.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labeled_crawler_lieyun.py" afterPath="$PROJECT_DIR$/labeled_crawler_lieyun.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labeled_crawler_sootoo.py" afterPath="$PROJECT_DIR$/labeled_crawler_sootoo.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labeled_crawler_yiou.py" afterPath="$PROJECT_DIR$/labeled_crawler_yiou.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
     </list>
     <ignored path="recommender-system.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,8 +39,8 @@
       <file leaf-file-name="labeled_crawler_iheima.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labeled_crawler_iheima.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-15">
-              <caret line="96" column="12" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="12" />
+            <state relative-caret-position="345">
+              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -64,7 +61,7 @@
       <file leaf-file-name="labeled_crawler_kanchai.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labeled_crawler_kanchai.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-716">
+            <state relative-caret-position="274">
               <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
               <folding />
             </state>
@@ -74,7 +71,7 @@
       <file leaf-file-name="labeled_crawler_leiphone.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labeled_crawler_leiphone.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-71">
+            <state relative-caret-position="964">
               <caret line="77" column="46" selection-start-line="77" selection-start-column="46" selection-end-line="77" selection-end-column="46" />
               <folding />
             </state>
@@ -84,8 +81,8 @@
       <file leaf-file-name="labeled_crawler_lieyun.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labeled_crawler_lieyun.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1027">
-              <caret line="103" column="12" selection-start-line="103" selection-start-column="12" selection-end-line="103" selection-end-column="12" />
+            <state relative-caret-position="322">
+              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -94,7 +91,7 @@
       <file leaf-file-name="labeled_crawler_sootoo.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labeled_crawler_sootoo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="739">
+            <state relative-caret-position="964">
               <caret line="75" column="33" selection-start-line="75" selection-start-column="33" selection-end-line="75" selection-end-column="33" />
               <folding />
             </state>
@@ -104,8 +101,8 @@
       <file leaf-file-name="labeled_crawler_yiou.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/labeled_crawler_yiou.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-758">
-              <caret line="42" column="35" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="35" />
+            <state relative-caret-position="225">
+              <caret line="32" column="90" selection-start-line="32" selection-start-column="90" selection-end-line="32" selection-end-column="90" />
               <folding />
             </state>
           </provider>
@@ -175,10 +172,10 @@
         <option value="$PROJECT_DIR$/labeled_crawler_kanchai.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_sootoo.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/labeled_crawler_yiou.py" />
-        <option value="$PROJECT_DIR$/labeled_crawler_lieyun.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_leiphone.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_iheima.py" />
+        <option value="$PROJECT_DIR$/labeled_crawler_lieyun.py" />
+        <option value="$PROJECT_DIR$/labeled_crawler_yiou.py" />
       </list>
     </option>
   </component>
@@ -524,9 +521,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18515626" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18515626" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928476" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3" sideWeight="0.51033384" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27149323" sideWeight="0.48966613" order="1" side_tool="false" content_ui="tabs" />
@@ -988,15 +985,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/labeled_crawler_iheima.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-15">
-          <caret line="96" column="12" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="12" />
+        <state relative-caret-position="345">
+          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/labeled_crawler_kanchai.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-716">
+        <state relative-caret-position="274">
           <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
           <folding />
         </state>
@@ -1004,7 +1001,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/labeled_crawler_leiphone.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-71">
+        <state relative-caret-position="964">
           <caret line="77" column="46" selection-start-line="77" selection-start-column="46" selection-end-line="77" selection-end-column="46" />
           <folding />
         </state>
@@ -1012,15 +1009,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/labeled_crawler_lieyun.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1027">
-          <caret line="103" column="12" selection-start-line="103" selection-start-column="12" selection-end-line="103" selection-end-column="12" />
+        <state relative-caret-position="322">
+          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/labeled_crawler_sootoo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="739">
+        <state relative-caret-position="964">
           <caret line="75" column="33" selection-start-line="75" selection-start-column="33" selection-end-line="75" selection-end-column="33" />
           <folding />
         </state>
@@ -1028,8 +1025,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/labeled_crawler_yiou.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-758">
-          <caret line="42" column="35" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="35" />
+        <state relative-caret-position="225">
+          <caret line="32" column="90" selection-start-line="32" selection-start-column="90" selection-end-line="32" selection-end-column="90" />
           <folding />
         </state>
       </provider>
