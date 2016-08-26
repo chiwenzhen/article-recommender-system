@@ -30,7 +30,7 @@ class CrawlerLeiphone(Crawler):
                 page += 1
                 url = "http://www.leiphone.com/page/%d#lph-pageList" % page
                 req = urllib2.Request(url, headers=self.headers)
-                html = urllib2.urlopen(req).read()
+                html = urllib2.urlopen(req, timeout=30).read()
                 soup = BeautifulSoup(html, "lxml")
 
                 div_wrap = soup.find(name="div", class_="wrap")

@@ -65,7 +65,7 @@ class Crawler163(Crawler):
     def parse_html(a_url, a_time):  # 网易正文的时间不好分析，只能从摘要那边截取传入
         # time.sleep(5)
         try:
-            html = urllib2.urlopen(a_url).read()
+            html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
 
             div_post_content_main = soup.find(name="div", class_="post_content_main")

@@ -68,7 +68,7 @@ class CrawlerGeekPark(Crawler):
     def parse_html(self, a_url, a_time):
         # time.sleep(5)
         try:
-            html = urllib2.urlopen(a_url).read()
+            html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
             header_top_section = soup.find(name="header", class_="top-section")
             section_main_content = soup.find(name="section", class_="main-content")

@@ -31,9 +31,9 @@ class LabeledCrawlerYiou(LabeledCrawler):
         self.labeled_crawl("http://www.iyiou.com/i/canyin/", start_time, end_time, self.cat_dict["O2O"])
         # self.labeled_crawl("http://www.iyiou.com/i/lvyou/", start_time, end_time, self.cat_dict["旅游"])
         self.labeled_crawl("http://www.iyiou.com/i/jiaoyu/", start_time, end_time, self.cat_dict["教育"])
-        self.labeled_crawl("http://www.iyiou.com/i/jiaju/", start_time, end_time, self.cat_dict["O2O"])
-        self.labeled_crawl("http://www.iyiou.com/i/shengxian/", start_time, end_time, self.cat_dict["O2O"])
-        self.labeled_crawl("http://www.iyiou.com/i/B2B/", start_time, end_time, self.cat_dict["企业服务"])
+        # self.labeled_crawl("http://www.iyiou.com/i/jiaju/", start_time, end_time, self.cat_dict["O2O"])
+        # self.labeled_crawl("http://www.iyiou.com/i/shengxian/", start_time, end_time, self.cat_dict["O2O"])
+        # self.labeled_crawl("http://www.iyiou.com/i/B2B/", start_time, end_time, self.cat_dict["企业服务"])
 
     def labeled_crawl(self, start_url, start_time, end_time, a_category):
         try:
@@ -94,7 +94,7 @@ class LabeledCrawlerYiou(LabeledCrawler):
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time, a_category):
         try:
-            html = urllib2.urlopen(a_url).read()
+            html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
             div_post = soup.find(name="div", id="post_content")
 

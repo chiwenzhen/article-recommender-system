@@ -75,7 +75,7 @@ class LabeledCrawlerLeiphone(LabeledCrawler):
     def parse_html(self, a_url, a_time, a_category):
         try:
             req = urllib2.Request(a_url, headers=self.headers)
-            html = urllib2.urlopen(req).read()
+            html = urllib2.urlopen(req, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
             article_left = soup.find(name="div", class_="article-left lph-left")
             # 标题

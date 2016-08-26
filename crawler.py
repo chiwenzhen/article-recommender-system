@@ -46,7 +46,7 @@ class Crawler:
 
             file_name = "%s/%d" % (self.attr_dir, nexi_id)
             doc_attr = open(file_name, 'w')
-            doc_attr.write(article.a_time + "\n" + article.a_title + "\n" + article.a_url + "\n" + article.a_tags)
+            doc_attr.write(article.a_time + "\n" + article.a_title + "\n" + article.a_url + "\n" + article.a_tags + "\n")
             doc_attr.close()
         except:
             self.db.rollback()

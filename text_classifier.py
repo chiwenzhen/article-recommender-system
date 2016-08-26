@@ -21,7 +21,7 @@ class TextClassifier:
             ('tfidf', TfidfTransformer()),
             ('clf', SGDClassifier())])
 
-    def test(self):
+    def train(self):
         # 导入数据
         corpus_name = self.project_name + "/seg_join/corpus.txt"
         with open(corpus_name, "r") as corpus:
@@ -38,10 +38,6 @@ class TextClassifier:
         y = self.labels
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
 
-
-        # debug code
-
-
         # 训练
         self.pipeline.fit(x_train, y_train)
 
@@ -49,7 +45,10 @@ class TextClassifier:
         y_pred = self.pipeline.predict(x_test)
         print(metrics.classification_report(y_test, y_pred))
 
+    def predict(self, x):
+        return self.pipeline.predict(x)
+
 if __name__ == "__main__":
     clf = TextClassifier(project_name="article_cat")
-    clf.test()
+    clf.train()
 

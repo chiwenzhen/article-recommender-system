@@ -83,7 +83,7 @@ class Crawler36Kr(Crawler):
     def parse_html(self, a_url, a_time):
         # time.sleep(5)
         try:
-            html = urllib2.urlopen(a_url).read()
+            html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
             scriptstr = soup.find(name="script", text=re.compile("var props")).string.encode("utf-8")
             scriptstr = scriptstr[10:scriptstr.find(",locationnal")]

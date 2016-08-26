@@ -26,10 +26,10 @@ class LabeledCrawlerSootoo(LabeledCrawler):
         self.labeled_crawl("http://www.sootoo.com/tag/106/", start_time, end_time, self.cat_dict["游戏&直播"])
         self.labeled_crawl("http://health.sootoo.com/", start_time, end_time, self.cat_dict["医疗健康"])
         self.labeled_crawl("http://www.sootoo.com/tag/118/", start_time, end_time, self.cat_dict["物联网"])
-        self.labeled_crawl("http://www.sootoo.com/tag/206/", start_time, end_time, self.cat_dict["智能硬件"])
-        self.labeled_crawl("http://www.sootoo.com/tag/128/", start_time, end_time, self.cat_dict["企业服务"])
-        self.labeled_crawl("http://www.sootoo.com/keyword/85759/", start_time, end_time, self.cat_dict["企业服务"])
-        self.labeled_crawl("http://www.sootoo.com/tag/133/", start_time, end_time, self.cat_dict["企业服务"])
+        self.labeled_crawl("http://www.sootoo.com/tag/206/", start_time, end_time, self.cat_dict["VR"])
+        self.labeled_crawl("http://www.sootoo.com/tag/128/", start_time, end_time, self.cat_dict["企业服务"]) # 云计算
+        self.labeled_crawl("http://www.sootoo.com/keyword/85759/", start_time, end_time, self.cat_dict["人工智能"]) #大数据
+        self.labeled_crawl("http://www.sootoo.com/tag/133/", start_time, end_time, self.cat_dict["企业服务"]) # 企业IT
 
     def labeled_crawl(self, start_url, start_time, end_time, a_category):
         try:
@@ -73,7 +73,7 @@ class LabeledCrawlerSootoo(LabeledCrawler):
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time, a_category):
         try:
-            html = urllib2.urlopen(a_url).read()
+            html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
             divs = soup.find(name="div", class_="center-research-t").div.find_all(name="div", recursive=False)
             div_txt = divs[0]

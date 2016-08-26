@@ -84,7 +84,7 @@ class CrawlerHuxiu(Crawler):
     def parse_html(a_url):
         # time.sleep(5)
         try:
-            html = urllib2.urlopen(a_url).read()
+            html = urllib2.urlopen(a_url, timeout=30).read()
 
             soup = BeautifulSoup(html, "lxml")
             article_wrap = soup.find(name="div", class_="article-wrap")

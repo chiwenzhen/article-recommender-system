@@ -45,20 +45,19 @@ class Segmenter:
             doc_txt_name = "%s/txt/%d" % (self.proj_name, i)
             doc_seg_tmp = "%s/seg/%d.tmp" % (self.proj_name, i)
             doc_seg_name = "%s/seg/%d" % (self.proj_name, i)
-            if not os.path.exists(doc_seg_name):  # 如果分词文件不存在，那么进行分词
-                doc_words = []
-                file_txt = open(doc_txt_name, "r")
-                file_tmp = open(doc_seg_tmp, "w")
-                for line in file_txt.readlines():
-                    sentences = self.seg_sentence(line)
-                    for sentence in sentences:
-                        words = self.thu_seg.cut(sentence)
-                        words = filter(lambda word: not self.stop_word.is_stop_word(word.decode("utf-8")), words)
-                        doc_words.append(" ".join(words) + "\n")
-                file_tmp.writelines(doc_words)
-                file_txt.close()
-                file_tmp.close()
-                os.rename(doc_seg_tmp, doc_seg_name)
+            doc_words = []
+            file_txt = open(doc_txt_name, "r")
+            file_tmp = open(doc_seg_tmp, "w")
+            for line in file_txt.readlines():
+                sentences = self.seg_sentence(line)
+                for sentence in sentences:
+                    words = self.thu_seg.cut(sentence)
+                    words = filter(lambda word: not self.stop_word.is_stop_word(word.decode("utf-8")), words)
+                    doc_words.append(" ".join(words) + "\n")
+            file_tmp.writelines(doc_words)
+            file_txt.close()
+            file_tmp.close()
+            os.rename(doc_seg_tmp, doc_seg_name)
 
     # 将分词后的小文件拼接成一个大文件，其中大文件每行代表一个文档
     def join_seg_file(self):

@@ -102,7 +102,7 @@ class LabeledCrawlerLieyun(LabeledCrawler):
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time, a_category):
         try:
-            html = urllib2.urlopen(a_url).read()
+            html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
             div = soup.find(name="div", class_="bbbox clearfix").div.div.div
             # 标题

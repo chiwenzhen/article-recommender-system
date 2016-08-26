@@ -8,17 +8,20 @@ from article import Article
 
 class LabeledCrawler:
     def __init__(self, proj_name):
-        self.name = "Crawler"
-        self.root_url = "www.ruijie.com.cn"
         self.proj_name = proj_name
+        self.name = "Root Crawler"
+        self.root_url = "RootCrawler.com"
         self.count = 0
+
         self.db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
-        self.txt_dir = "%s/txt" % self.proj_name
-        self.attr_dir = "%s/attr" % self.proj_name
-        if not os.path.exists(self.txt_dir):
-            os.makedirs(self.txt_dir)
-        if not os.path.exists(self.attr_dir):
-            os.makedirs(self.attr_dir)
+
+        self.txt_dir = self.proj_name + "/txt"
+        self.attr_dir = self.proj_name + "/attr"
+        self.seg_dir = self.proj_name + "/seg"
+        self.seg_join_dir = self.proj_name + "/seg_join"
+        self.dirs = [self.txt_dir, self.attr_dir, self.seg_dir, self.seg_join_dir]
+        for d in self.dirs:
+            if not os.path.exists(d): os.makedirs(d)
 
         self.cat_dict = {"VR": 1,
                          "人工智能": 2,
@@ -44,7 +47,8 @@ class LabeledCrawler:
                          "娱乐": 22,
                          "家居": 23,
                          "文创": 24,
-                         "房产": 25
+                         "房产": 25,
+                         "其他": 26,
                          }
         self.cat_rdict = {}
         for key, value in self.cat_dict.items():
@@ -77,7 +81,7 @@ class LabeledCrawler:
 
             file_name = "%s/%d" % (self.attr_dir, nexi_id)
             doc_attr = open(file_name, 'w')
-            doc_attr.write(article.a_time + "\n" + article.a_title + "\n" + article.a_url + "\n" + article.a_tags)
+            doc_attr.write(article.a_time + "\n" + article.a_title + "\n" + article.a_url + "\n" + article.a_tags + "\n")
             doc_attr.close()
         except:
             self.db.rollback()
@@ -93,9 +97,9 @@ class LabeledCrawler:
                  CATEGORY TINYINT)""" % self.proj_name
         cursor.execute(sql)
 
-        # 删除文章
-        shutil.rmtree(self.txt_dir)
-        shutil.rmtree(self.attr_dir)
+        # 删除数据
+        for d in self.dirs:
+            shutil.rmtree(d)
 
     # 时间转换：从字符串形式转浮点数，比如time_str2num("2011-09-28 10:00:00", "%Y-%m-%d %H:%M:%S")返回1317091800.0
     @staticmethod
