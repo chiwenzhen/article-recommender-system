@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 db = ArticleDB()
 
-project_name = "article15081608"
+project_name = "article150801160830"
 txt_dir = project_name + "/txt/"
 attr_dir = project_name + "/attr/"
 category_dict = Category()
