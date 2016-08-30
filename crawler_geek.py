@@ -12,8 +12,8 @@ from crawler import Crawler, Article
 
 # 虎嗅爬虫
 class CrawlerGeekPark(Crawler):
-    def __init__(self):
-        Crawler.__init__(self)
+    def __init__(self, proj_name):
+        Crawler.__init__(self, proj_name)
         self.name = "极客公园"
         self.root_url = "http://www.geekpark.net"
 
@@ -21,7 +21,6 @@ class CrawlerGeekPark(Crawler):
         try:
             # 初次加载的内容
             is_first_page = True
-            out_of_date = False
             page = 1
             while True:
                 if is_first_page:
@@ -37,6 +36,8 @@ class CrawlerGeekPark(Crawler):
                     article_items = div_article_item_content.find_all(name="article", class_="article-item")
                 else:
                     article_items = soup.find_all(name="article", class_="article-item")
+                    if len(article_items) == 0:
+                        return
 
                 for item in article_items:
                     title = item.find(name="a", class_="article-title")
@@ -66,7 +67,7 @@ class CrawlerGeekPark(Crawler):
 
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time):
-        # time.sleep(5)
+        time.sleep(2)
         try:
             html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
@@ -107,6 +108,6 @@ class CrawlerGeekPark(Crawler):
         return None
 
 if __name__ == "__main__":
-    crawler = CrawlerGeekPark(proj_name="article_xxx")
+    crawler = CrawlerGeekPark(proj_name="article_test")
     crawler.rebuild_table()
     crawler.crawl("2016-08-15 00:00:00", "2016-08-16 23:59:59")

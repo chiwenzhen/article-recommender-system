@@ -85,6 +85,7 @@ def main():
 def article():
     article_id = request.args.get('article_id')
     if article_id is not None:
+        # 获取文章ID和类别ID
         article_id = int(article_id.encode("utf-8"))
         sql = "select id, category from %s where id = %d" % (project_name, article_id)
         cursor = db.cursor()
@@ -92,8 +93,9 @@ def article():
         results = cursor.fetchall()
         a_id = results[0][0]
         a_category = results[0][1]
-        a_text = []
+        a_text = None
 
+        # 获取文章时间，URL，标签，正文
         attr_name = attr_dir + str(a_id)
         txt_name = txt_dir + str(a_id)
         with open(attr_name, "r") as attr_file:
@@ -107,10 +109,16 @@ def article():
             txt_file.readline()
             a_text = txt_file.readlines()
 
+        # 文章类别ID对应的中文和英文名称
         chn_category = category_dict.n2c[a_category]
         eng_category = category_dict.n2e[a_category]
         article_info = [a_id, a_time, a_title, a_url, a_text, a_tags, a_category, chn_category, eng_category]
-        return render_template('article_index.html', article_info=article_info)
+
+        # 获取相似文章信息
+        rel_articles = []
+
+
+        return render_template('article_index.html', article_info=article_info, rel_articles=rel_articles)
     else:
         return ""
 

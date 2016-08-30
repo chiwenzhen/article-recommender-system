@@ -125,6 +125,6 @@ class CrawlerHuxiu(Crawler):
         return None
 
 if __name__ == "__main__":
-    crawler = CrawlerHuxiu()
-    crawler.delete_all_data()
-    crawler.crawl("2016-08-15 00:00:00", "2016-08-19 23:59:59")
+    crawler = CrawlerHuxiu(proj_name="article_test")
+    crawler.rebuild_table()
+    crawler.crawl("2016-08-01 00:00:00", "2016-08-31 23:59:59")

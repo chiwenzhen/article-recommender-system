@@ -81,7 +81,6 @@ class Crawler36Kr(Crawler):
 
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time):
-        # time.sleep(5)
         try:
             html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
@@ -126,6 +125,6 @@ class Crawler36Kr(Crawler):
 
 
 if __name__ == "__main__":
-    crawler = Crawler36Kr(proj_name="article_xx")
+    crawler = Crawler36Kr(proj_name="article_test")
     crawler.rebuild_table()
-    crawler.crawl("2016-08-15 00:00:00", "2016-08-23 00:00:00")
+    crawler.crawl("2016-08-15 00:00:00", "2016-08-30 00:00:00")

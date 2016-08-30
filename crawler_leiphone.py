@@ -98,4 +98,4 @@ class CrawlerLeiphone(Crawler):
 if __name__ == "__main__":
     crawler = CrawlerLeiphone("article_xxx")
     crawler.rebuild_table()
-    crawler.crawl("2016-08-15 00:00:00", "2016-08-16 23:59:59")
+    crawler.crawl("2016-08-01 00:00:00", "2016-08-31 23:59:59")

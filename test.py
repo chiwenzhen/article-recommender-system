@@ -55,5 +55,14 @@ def read_file_test():
         for line in file.readlines():
             print line
 
+def split_corpus():
+    corpus_name = "article15081608" + "/seg_join/corpus.txt"
+    corpus_train_name = "article15081608" + "/seg_join/corpus_train.txt"
+    corpus_test_name = "article15081608" + "/seg_join/corpus_test.txt"
+    with open(corpus_name, "r") as corpus_file:
+        pass
+
 if __name__ == "__main__":
-    add_n_to_file()
+    tokens = "魅族 主要 靠 硬件 盈利 ， 软件 商业化 仍 处于 起步 阶段".split()
+    for i, word in enumerate(tokens):
+        print "%d_%s" % (i, word)

@@ -53,6 +53,9 @@ class CrawlerKanchai(Crawler):
                     Name=keyun&_=1471875660026" % page).read()[42:-1]
                 json_obj = json.loads(html)
                 data = json_obj["data"]
+                if len(data) == 0:
+                    return
+
                 for item in data:
                     a_url = item["url"].encode("utf-8")
                     a_time = self.time_num2str(float(item["thumb"][-17:-7].encode("utf-8")))
@@ -121,6 +124,6 @@ class CrawlerKanchai(Crawler):
 
 
 if __name__ == "__main__":
-    crawler = CrawlerKanchai("article_xxx")
+    crawler = CrawlerKanchai("article_test")
     crawler.rebuild_table()
-    crawler.crawl("2016-08-15 00:00:00", "2016-08-23 23:59:59")
+    crawler.crawl("2016-08-01 00:00:00", "2016-08-31 23:59:59")

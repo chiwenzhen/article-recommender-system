@@ -16,8 +16,8 @@ class LDA:
 
     def clustering(self):
         self.count_tag(self.attr_dir)
-        # words_list = self.get_words_list(self.seg_dir)
-        # self.model_lda(words_list)
+        words_list = self.get_words_list(self.seg_dir)
+        self.model_lda(words_list)
 
     @staticmethod
     def get_words_list(seg_dir):
@@ -74,4 +74,4 @@ class LDA:
 
 if __name__ == '__main__':
     # 获取分词和过滤无用词后的词语序列列表
-    LDA("articles").clustering()
+    LDA("article15081608").clustering()
