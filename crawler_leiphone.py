@@ -27,6 +27,7 @@ class CrawlerLeiphone(Crawler):
         try:
             page = 0
             while True:
+                time.sleep(3)
                 page += 1
                 url = "http://www.leiphone.com/page/%d#lph-pageList" % page
                 req = urllib2.Request(url, headers=self.headers)
@@ -64,6 +65,7 @@ class CrawlerLeiphone(Crawler):
 
     # 分析html, 返回Article对象
     def parse_html(self, a_url, a_time):
+        # time.sleep(1)
         try:
             req = urllib2.Request(a_url, headers=self.headers)
             html = urllib2.urlopen(req).read()
@@ -96,6 +98,6 @@ class CrawlerLeiphone(Crawler):
         return None
 
 if __name__ == "__main__":
-    crawler = CrawlerLeiphone("article_xxx")
+    crawler = CrawlerLeiphone("article_test")
     crawler.rebuild_table()
     crawler.crawl("2016-08-01 00:00:00", "2016-08-31 23:59:59")

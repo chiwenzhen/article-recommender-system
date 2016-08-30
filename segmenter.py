@@ -4,18 +4,19 @@ import os
 import os.path
 import MySQLdb
 import re
+import shutil
 
 
 class Segmenter:
     def __init__(self, proj_name):
-        # 创建分词文件存放目录
+        # 创建分词文件存放目录，已存在则删除重建
         self.proj_name = proj_name
         self.seg_dir = proj_name + "/seg"
-        if not os.path.exists(self.seg_dir):
-            os.makedirs(self.seg_dir)
         self.seg_join_dir = proj_name + "/seg_join"
-        if not os.path.exists(self.seg_join_dir):
-            os.makedirs(self.seg_join_dir)
+        shutil.rmtree(self.seg_dir)
+        shutil.rmtree(self.seg_join_dir)
+        os.makedirs(self.seg_dir)
+        os.makedirs(self.seg_join_dir)
 
         # 分句符号
         self.delimiters = set(u"\u00a0＃[。，,！……!《》<>\"':：？\?、\|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂'‘\n\r")
