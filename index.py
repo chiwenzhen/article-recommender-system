@@ -1,19 +1,24 @@
 # coding=utf-8
+import numpy as np
 import random
 from flask import Flask, render_template, request, jsonify
-import MySQLdb
 import time
 from category import Category
 import sys
+from articledb import ArticleDB
+from article import ArticleDumper
+from myutils import TopkHeap
+from sklearn.metrics.pairwise import cosine_similarity
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 app = Flask(__name__)
 
+db = ArticleDB()
+
 project_name = "article15081608"
 txt_dir = project_name + "/txt/"
 attr_dir = project_name + "/attr/"
-db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
 category_dict = Category()
 thumbs = [
     "063226153482.jpg",
@@ -43,6 +48,14 @@ thumbs = [
 ]
 
 
+doc_num = db.execute("select count(*) from %s" % project_name)[0][0]
+all_articles = [None] * doc_num
+for i in xrange(doc_num):
+    obj_name = "%s/obj/%d" % (project_name, i + 1)
+    all_articles[i] = ArticleDumper.load(obj_name)
+
+
+# 文章列表：主页分页
 @app.route('/')
 def main():
     category_id = 0
@@ -53,11 +66,10 @@ def main():
             project_name, category_id)
     else:
         sql = "select id, category from %s order by time desc limit 0,10" % project_name
-    cursor = db.cursor()
-    cursor.execute(sql)
-    results = cursor.fetchall()
+    results = db.execute(sql)
     article_infos = []
     for a_id, a_category in results:
+        a_digest = ""
         attr_name = attr_dir + str(a_id)
         txt_name = txt_dir + str(a_id)
         with open(attr_name, "r") as attr_file:
@@ -81,6 +93,7 @@ def main():
     return render_template('index.html', article_infos=article_infos, catid=category_id, last_dateline=last_dateline)
 
 
+# 文章正文
 @app.route('/article/')
 def article():
     article_id = request.args.get('article_id')
@@ -88,9 +101,7 @@ def article():
         # 获取文章ID和类别ID
         article_id = int(article_id.encode("utf-8"))
         sql = "select id, category from %s where id = %d" % (project_name, article_id)
-        cursor = db.cursor()
-        cursor.execute(sql)
-        results = cursor.fetchall()
+        results = db.execute(sql)
         a_id = results[0][0]
         a_category = results[0][1]
         a_text = None
@@ -114,15 +125,27 @@ def article():
         eng_category = category_dict.n2e[a_category]
         article_info = [a_id, a_time, a_title, a_url, a_text, a_tags, a_category, chn_category, eng_category]
 
-        # 获取相似文章信息
-        rel_articles = []
+        # 相似文章
+        tokheap = TopkHeap(5)
+        now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        sql = "select id from %s where time < '%s' and category=%d limit 0,100" % (project_name, now_time, a_category)
+        target_article = ArticleDumper.load("%s/obj/%d" % (project_name, a_id))
+        results = db.execute(sql)
+        for a_id in results:
+            a_id = a_id[0]
+            src = target_article
+            dst = all_articles[a_id-1]
+            similarity = cosine_similarity(np.asarray(src.a_text), np.asarray(dst.a_text))
+            tokheap.push((dst, similarity), lambda x, y: x[1] > y[1])
+        tok_articles = tokheap.topk()
+        tok_articles = [item[0] for item in tok_articles]
 
-
-        return render_template('article_index.html', article_info=article_info, rel_articles=rel_articles)
+        return render_template('article_index.html', article_info=article_info, tok_articles=tok_articles)
     else:
         return ""
 
 
+# 文章列表，动态获取
 @app.route('/v2_action/article_list', methods=['GET', 'POST'])
 def article_list():
     catid = int(request.form.get('catid', 0).encode("utf-8"))
@@ -137,11 +160,10 @@ def article_list():
     else:
         return ""
 
-    cursor = db.cursor()
-    cursor.execute(sql)
-    results = cursor.fetchall()
+    results = db.execute(sql)
     article_infos = []
     for a_id, a_category in results:
+        a_digest = ""
         attr_name = attr_dir + str(a_id)
         txt_name = txt_dir + str(a_id)
         with open(attr_name, "r") as attr_file:

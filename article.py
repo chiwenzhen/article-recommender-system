@@ -23,7 +23,7 @@ class ArticleDumper:
 
     @staticmethod
     def load(file_name):
-        obj = pickle.load(open(file_name, "rb"), True)
+        obj = pickle.load(open(file_name, "rb"))
         return obj
 
 

@@ -21,6 +21,7 @@ from classifier import TextClassifierTfidf
 import MySQLdb
 from article import Article, ArticleDumper
 from articledb import ArticleDB
+import shutil
 
 
 def fetch_nonlabeled_data():
@@ -61,13 +62,15 @@ def fetch_labeled_data():
     seg.join_seg_file()
 
 
-def train_test():
+def train_label():
     db = ArticleDB()
     dumper = ArticleDumper()
-    test_proj_name = "article15081608"
+    test_proj_name = "article150801160830"
     test_seg_dir = test_proj_name + "/seg/"
     test_attr_dir = test_proj_name + "/attr/"
     test_obj_dir = test_proj_name + "/obj/"
+    if not os.path.exists(test_obj_dir):
+        os.makedirs(test_obj_dir)
     corpus = []
 
     # 分类器训练
@@ -122,4 +125,4 @@ def train_test():
 
 
 if __name__ == '__main__':
-    fetch_nonlabeled_data()
+    train_label()
