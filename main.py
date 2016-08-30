@@ -19,7 +19,8 @@ from labeled_crawler_sootoo import LabeledCrawlerSootoo
 from labeled_crawler_yiou import LabeledCrawlerYiou
 from classifier import TextClassifierTfidf
 import MySQLdb
-from article import Article, ArticleDumper
+from article import Article
+from myutils import Dumper
 from articledb import ArticleDB
 import shutil
 
@@ -64,7 +65,7 @@ def fetch_labeled_data():
 
 def train_label():
     db = ArticleDB()
-    dumper = ArticleDumper()
+    dumper = Dumper()
     test_proj_name = "article150801160830"
     test_seg_dir = test_proj_name + "/seg/"
     test_attr_dir = test_proj_name + "/attr/"
@@ -74,8 +75,10 @@ def train_label():
     corpus = []
 
     # 分类器训练
-    clf = TextClassifierTfidf(project_name="article_cat")
-    clf.train()
+    # clf = TextClassifierTfidf(project_name="article_cat")
+    # clf.train()
+    # dumper.dump(clf, "tfidf_clf.dat")
+    clf = dumper.load("tfidf_clf.dat")
     print "训练语料库-训练完毕"
 
     results = db.execute("select count(id) from %s" % test_proj_name)
@@ -117,7 +120,7 @@ def train_label():
             a_title = lines[1]
             a_url = lines[2]
             a_tags = lines[3]
-            article = Article(a_title=a_title, a_text=doc_vectors[i, :], a_url=a_url, a_time=a_time, a_tags=a_tags,
+            article = Article(a_title=a_title, a_text=doc_vectors[a_id-1, :], a_url=a_url, a_time=a_time, a_tags=a_tags,
                               a_category=a_category)
             dumper.dump(article, obj_name)
     db.close()

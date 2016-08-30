@@ -1,6 +1,7 @@
 # coding=utf-8
 import heapq
 import random
+import pickle
 
 
 class TopkHeap(object):
@@ -18,6 +19,20 @@ class TopkHeap(object):
 
     def topk(self):
         return [x for x in reversed([heapq.heappop(self.data) for x in xrange(len(self.data))])]
+
+
+class Dumper:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def dump(obj, file_name):
+        pickle.dump(obj, open(file_name, "wb"), True)
+
+    @staticmethod
+    def load(file_name):
+        obj = pickle.load(open(file_name, "rb"))
+        return obj
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 # coding=utf-8
-import pickle
 
 
 class Article:
@@ -11,20 +10,3 @@ class Article:
         self.a_time = a_time
         self.a_tags = a_tags
         self.a_category = a_category
-
-
-class ArticleDumper:
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def dump(obj, file_name):
-        pickle.dump(obj, open(file_name, "wb"), True)
-
-    @staticmethod
-    def load(file_name):
-        obj = pickle.load(open(file_name, "rb"))
-        return obj
-
-
-
