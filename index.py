@@ -50,6 +50,7 @@ thumbs = [
 doc_num = db.execute("select count(*) from %s" % project_name)[0][0]
 all_articles = [None] * doc_num
 for i in xrange(doc_num):
+    print "loading %d/%d" % (i, doc_num)
     obj_name = "%s/obj/%d" % (project_name, i + 1)
     all_articles[i] = Dumper.load(obj_name)
 
@@ -128,18 +129,16 @@ def article():
         tokheap = TopkHeap(5)
         now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         sql = "select id from %s where time < '%s' and category=%d limit 0,100" % (project_name, now_time, a_category)
-        target_article = Dumper.load("%s/obj/%d" % (project_name, a_id))
+        src_article = all_articles[article_id-1]
         results = db.execute(sql)
         for a_id in results:
-            a_id = a_id[0]
-            src = target_article
-            dst = all_articles[a_id-1]
-            similarity = cosine_similarity(src.a_text, dst.a_text)
-            tokheap.push((dst, similarity), lambda x, y: x[1] > y[1])
-        tok_articles = tokheap.topk()
-        tok_articles = [item[0] for item in tok_articles]
+            idx = a_id[0] - 1
+            dst_article = all_articles[idx]
+            dst_article.a_score = cosine_similarity(src_article.a_text, dst_article.a_text)[0][0]
+            tokheap.push(dst_article)
+        topk_articles = tokheap.topk()
 
-        return render_template('article_index.html', article_info=article_info, tok_articles=tok_articles)
+        return render_template('article_index.html', article_info=article_info, topk_articles=topk_articles)
     else:
         return ""
 

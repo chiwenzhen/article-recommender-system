@@ -45,7 +45,7 @@ class LDA:
         print "words->vector"
 
         lda = models.ldamodel.LdaModel(corpus=corpus_list, id2word=word_dict, num_topics=30, alpha='auto')
-        print "lda model complete"
+        print "vector->lda"
 
         topics = lda.print_topics(30)
         for topic in topics:

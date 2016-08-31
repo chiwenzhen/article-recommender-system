@@ -9,12 +9,12 @@ class TopkHeap(object):
         self.k = k
         self.data = []
 
-    def push(self, elem, greater):
+    def push(self, elem):
         if len(self.data) < self.k:
             heapq.heappush(self.data, elem)
         else:
             topk_small = self.data[0]
-            if greater(elem, topk_small):
+            if topk_small < elem:
                 heapq.heapreplace(self.data, elem)
 
     def topk(self):

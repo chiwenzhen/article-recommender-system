@@ -1,5 +1,6 @@
 # coding=utf-8
 import re
+from myutils import TopkHeap
 
 def add_n_to_file():
     file_num = 19178
@@ -63,6 +64,6 @@ def split_corpus():
         pass
 
 if __name__ == "__main__":
-    tokens = "魅族 主要 靠 硬件 盈利 ， 软件 商业化 仍 处于 起步 阶段".split()
-    for i, word in enumerate(tokens):
-        print "%d_%s" % (i, word)
+    a = None
+    b = None
+    print a <= b

@@ -62,7 +62,7 @@ class Crawler163(Crawler):
 
     # 分析html, 返回Article对象
     @staticmethod
-    def parse_html(a_url, a_time):  # 网易正文的时间不好分析，只能从摘要那边截取传入
+    def parse_html(a_url, a_time):
         # time.sleep(5)
         try:
             html = urllib2.urlopen(a_url, timeout=30).read()

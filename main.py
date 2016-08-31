@@ -70,7 +70,8 @@ def train_label():
     test_seg_dir = test_proj_name + "/seg/"
     test_attr_dir = test_proj_name + "/attr/"
     test_obj_dir = test_proj_name + "/obj/"
-    if not os.path.exists(test_obj_dir):
+    if os.path.exists(test_obj_dir):
+        shutil.rmtree(test_obj_dir)
         os.makedirs(test_obj_dir)
     corpus = []
 
@@ -121,7 +122,7 @@ def train_label():
             a_url = lines[2]
             a_tags = lines[3]
             article = Article(a_title=a_title, a_text=doc_vectors[a_id-1, :], a_url=a_url, a_time=a_time, a_tags=a_tags,
-                              a_category=a_category)
+                              a_category=a_category, a_id=a_id)
             dumper.dump(article, obj_name)
     db.close()
     print "测试语料库-预测结果写入数据库完毕"
