@@ -16,35 +16,35 @@ class LDA:
 
     def clustering(self):
         self.count_tag(self.attr_dir)
-        words_list = self.get_words_list(self.seg_dir)
+        words_list = self.load_corpus(self.seg_dir)
         self.model_lda(words_list)
 
     @staticmethod
-    def get_words_list(seg_dir):
-        texts = []
+    def load_corpus(seg_dir):
+        corpus = []
         seg_names = [f for f in os.listdir(seg_dir) if os.path.isfile(os.path.join(seg_dir, f))]
         for seg_name in seg_names:
             with open(os.path.join(seg_dir, seg_name), 'r') as seg_file:
-                text = []
+                doc = []
                 for sentence in seg_file:
                     sentence = sentence.strip()  # 删除前后空格，换行等空白字符
                     sentence = sentence.decode("utf-8")  # utf-8转unicode
                     words = sentence.split(u" ")
                     words = [word.strip() for word in words if len(word.strip()) > 0]
-                    text.extend(words)
-                texts.append(text)
-        return texts
+                    doc.extend(words)
+                corpus.append(doc)
+        return corpus
 
     @staticmethod
-    def model_lda(words_list):
+    def model_lda(corpus):
         # 生成文档的词典，每个词与一个整型索引值对应
-        word_dict = corpora.Dictionary(words_list)
+        word_dict = corpora.Dictionary(corpus)
         print "words->id"
         # 词频统计，转化成空间向量格式
-        corpus_list = [word_dict.doc2bow(text) for text in words_list]
+        corpus = [word_dict.doc2bow(doc) for doc in corpus]
         print "words->vector"
 
-        lda = models.ldamodel.LdaModel(corpus=corpus_list, id2word=word_dict, num_topics=30, alpha='auto')
+        lda = models.ldamodel.LdaModel(corpus=corpus, id2word=word_dict, num_topics=30, alpha='auto')
         print "vector->lda"
 
         topics = lda.print_topics(30)
