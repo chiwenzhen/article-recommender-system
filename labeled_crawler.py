@@ -3,7 +3,7 @@ import MySQLdb
 import time
 import os
 import shutil
-from article import Article
+from myutils import Article
 
 
 class LabeledCrawler:

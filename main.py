@@ -9,7 +9,7 @@ from crawler import Crawler
 from crawler_leiphone import CrawlerLeiphone
 from crawler_kanchai import CrawlerKanchai
 from segmenter import Segmenter
-from lda import LDA
+from clustering import LDA
 from labeled_crawler import LabeledCrawler
 from labeled_crawler_iheima import LabeledCrawlerIheima
 from labeled_crawler_kanchai import LabeledCrawlerKanchai
@@ -19,9 +19,9 @@ from labeled_crawler_sootoo import LabeledCrawlerSootoo
 from labeled_crawler_yiou import LabeledCrawlerYiou
 from classifier import TextClassifierTfidf
 import MySQLdb
-from article import Article
+from myutils import Article
 from myutils import Dumper
-from articledb import ArticleDB
+from myutils import ArticleDB
 import shutil
 
 
@@ -30,19 +30,17 @@ def fetch_nonlabeled_data():
     str_old_time = "2015-08-01 00:00:00"
     str_new_time = "2016-08-31 00:00:00"
 
-    # Crawler(proj_name=proj_name).rebuild_table()
-    # Crawler163(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # Crawler36Kr(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # CrawlerGeekPark(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    Crawler(proj_name=proj_name).rebuild_table()
+    Crawler163(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    Crawler36Kr(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    CrawlerGeekPark(proj_name=proj_name).crawl(str_old_time, str_new_time)
     CrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # CrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # CrawlerHuxiu(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    CrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    CrawlerHuxiu(proj_name=proj_name).crawl(str_old_time, str_new_time)
 
     seg = Segmenter(proj_name=proj_name)
     seg.seg()
     seg.join_seg_file()
-
-    # LDA(proj_name=proj_name).clustering()
 
 
 def fetch_labeled_data():

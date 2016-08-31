@@ -1,6 +1,7 @@
 # coding=utf-8
 import re
 from myutils import TopkHeap
+import time
 
 def add_n_to_file():
     file_num = 19178
@@ -63,7 +64,10 @@ def split_corpus():
     with open(corpus_name, "r") as corpus_file:
         pass
 
+def set_test():
+    stopword = set([u"直播", u"VR", u"人工智能"])
+    print u"直播" in stopword
+    print u"VR" in stopword
+
 if __name__ == "__main__":
-    a = None
-    b = None
-    print a <= b
+    set_test()

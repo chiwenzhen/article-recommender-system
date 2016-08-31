@@ -3,9 +3,9 @@ import numpy as np
 import random
 from flask import Flask, render_template, request, jsonify
 import time
-from category import Category
+from myutils import Category
 import sys
-from articledb import ArticleDB
+from myutils import ArticleDB
 from myutils import TopkHeap, Dumper
 from sklearn.metrics.pairwise import cosine_similarity
 reload(sys)

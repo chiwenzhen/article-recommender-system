@@ -16,7 +16,8 @@ import numpy
 from random import shuffle
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
-from articledb import ArticleDB
+from myutils import ArticleDB
+import os
 
 
 class TextClassifierTfidf:
@@ -69,20 +70,23 @@ class TextClassifierDoc2Vec:
     def __init__(self, project_name):
         self.project_name = project_name
         self.clf = SVC()
+        self.model = None
 
     def train(self):
         # 导入数据
         db = ArticleDB()
         # 训练doc2vec
         corpus_name = self.project_name + "/seg_join/corpus.txt"
-        # model = Doc2Vec(min_count=1, window=10, size=400, sample=1e-4, negative=5, workers=8)
-        # sources = {corpus_name: 'TRAIN'}
-        # sentences = LabeledLineSentence(sources)
-        # model.build_vocab(sentences.to_array())
-        # for epoch in range(10):
-        #     model.train(sentences.sentences_perm())
-        # model.save('./news.d2v')
-        model = Doc2Vec.load('./news.d2v')
+        if not os.path.exists('./news.d2v'):
+            self.model = Doc2Vec(min_count=1, window=10, size=400, sample=1e-4, negative=5, workers=8)
+            sources = {corpus_name: 'TRAIN'}
+            sentences = LabeledLineSentence(sources)
+            self.model.build_vocab(sentences.to_array())
+            for epoch in range(10):
+                self.model.train(sentences.sentences_perm())
+                self.model.save('./news.d2v')
+        else:
+            self.model = Doc2Vec.load('./news.d2v')
 
         # 切分训练数据和测试数据
         results = db.execute("select id, category from %s" % self.project_name)
@@ -90,7 +94,7 @@ class TextClassifierDoc2Vec:
         results = db.execute("select count(id) from %s" % self.project_name)
         doc_num = results[0][0]
         db.close()
-        x = [model.docvecs["TRAIN_%d" % i] for i in range(doc_num)]
+        x = [self.model.docvecs["TRAIN_%d" % i] for i in range(doc_num)]
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
 
         # 训练
@@ -104,7 +108,11 @@ class TextClassifierDoc2Vec:
         return self.clf.predict(x)
 
     def transform(self, x):
-        return self.clf.transform(x)
+        if isinstance(x, list):
+            return self.model.infer_vector(x)
+        else:
+            print "ERROR: doc2vec输入必须为词语的list"
+            return None
 
 
 class LabeledLineSentence(object):
@@ -130,7 +138,6 @@ class LabeledLineSentence(object):
         for source, prefix in self.sources.items():
             with utils.smart_open(source) as fin:
                 for item_no, line in enumerate(fin):
-                    # self.sentences.append(TaggedDocument(utils.to_unicode(line).split(), [prefix + '_%s' % item_no]))
                     self.sentences.append(TaggedDocument(utils.to_unicode(line).split(), [unicode(prefix + '_%s' % item_no)]))
         return self.sentences
 

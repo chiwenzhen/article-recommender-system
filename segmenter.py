@@ -3,8 +3,9 @@ import thulac
 import os
 import os.path
 import MySQLdb
-import re
 import shutil
+import jieba
+from myutils import StopWord, StopSent, ArticleDB
 
 
 class Segmenter:
@@ -13,57 +14,53 @@ class Segmenter:
         self.proj_name = proj_name
         self.seg_dir = proj_name + "/seg"
         self.seg_join_dir = proj_name + "/seg_join"
-        shutil.rmtree(self.seg_dir)
-        shutil.rmtree(self.seg_join_dir)
+        shutil.rmtree(self.seg_dir, ignore_errors=True)
+        shutil.rmtree(self.seg_join_dir, ignore_errors=True)
         os.makedirs(self.seg_dir)
         os.makedirs(self.seg_join_dir)
 
         # 分句符号
-        self.delimiters = set(u"\u00a0＃[。，,！……!《》<>\"':：？\?、\|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂'‘\n\r")
+        self.stop_sent = StopSent()
 
         # 停用词
-        self.stop_word = StopWord()
+        self.stop_word = StopWord("./stopwords_general.txt")
 
         # 连接数据库，获取文章总数
-        self.db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
+        db = ArticleDB()
         try:
-            cursor = self.db.cursor()
             sql = "select count(*) from %s" % proj_name
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            self.doc_count = results[0][0]
+            self.doc_count = db.execute(sql)[0][0]
+            db.close()
         except MySQLdb.Error, e:
             print "Mysql Error %d: %s" % (e.args[0], e.args[1])
 
         # 分词工具初始化
-        self.thu_seg = thulac.thulac("-seg_only -model_dir models/")
+        # self.segtool = thulac.thulac("-seg_only -model_dir models/")
+        self.segtool = jieba
 
     # 分词
     def seg(self):
-        # 遍历所有文件，查找.word文件是否存在，不存在则进行分词
+        # 遍历所有文件，进行分词
         for i in range(1, self.doc_count + 1):
             print ("\r%d/%d" % (i, self.doc_count))
-            doc_txt_name = "%s/txt/%d" % (self.proj_name, i)
-            doc_seg_tmp = "%s/seg/%d.tmp" % (self.proj_name, i)
-            doc_seg_name = "%s/seg/%d" % (self.proj_name, i)
-            doc_words = []
-            file_txt = open(doc_txt_name, "r")
-            file_tmp = open(doc_seg_tmp, "w")
-            for line in file_txt.readlines():
-                sentences = self.seg_sentence(line)
-                for sentence in sentences:
-                    words = self.thu_seg.cut(sentence)
-                    words = filter(lambda word: not self.stop_word.is_stop_word(word.decode("utf-8")), words)
-                    doc_words.append(" ".join(words) + "\n")
-            file_tmp.writelines(doc_words)
-            file_txt.close()
-            file_tmp.close()
-            os.rename(doc_seg_tmp, doc_seg_name)
+            txt_name = "%s/txt/%d" % (self.proj_name, i)
+            tmp_name = "%s/seg/%d.tmp" % (self.proj_name, i)
+            seg_name = "%s/seg/%d" % (self.proj_name, i)
+            doc = []
+            with open(txt_name, "r") as txt_file, open(tmp_name, "w") as tmp_file:
+                for line in txt_file.readlines():
+                    sentences = self.seg_sentence(line)
+                    for sentence in sentences:
+                        words = self.segtool.cut(sentence)
+                        words = [word.encode("utf-8") for word in words]  # jieba need, thulac skip this code
+                        words = [word for word in words if not self.stop_word.is_stop_word(word)]
+                        doc.append(" ".join(words) + "\n")
+                tmp_file.writelines(doc)
+            os.rename(tmp_name, seg_name)
 
-    # 将分词后的小文件拼接成一个大文件，其中大文件每行代表一个文档
+    # 将分词后的每个小文件代表一个文档，将这些文件拼接成一个大文件，大文件每行代表一个文档
     def join_seg_file(self):
         corpus = []
-
         for i in range(1, self.doc_count + 1):
             seg_name = "%s/%d" % (self.seg_dir, i)
             with open(seg_name, "r") as seg_file:
@@ -83,7 +80,7 @@ class Segmenter:
         line += "。"  # 最后添加句号
         line = line.decode("utf-8")
         for c in line:
-            if c in self.delimiters:  # 如果当前字符是分句符号
+            if self.stop_sent.is_delim(c):  # 如果当前字符是分句符号
                 if len(sentence) == 0:
                     continue
                 else:
@@ -94,19 +91,7 @@ class Segmenter:
                 sentence.append(c)
         return sentences
 
-
-class StopWord:
-    def __init__(self):
-        # 停用词表
-        with open("data-for-1.2.10-full/data/dictionary/stopwords.txt", 'r') as stop_file:
-            self.stop_words = set([line.strip().decode("utf-8") for line in stop_file])
-
-    # 判断词语是否要过滤：停用词，单字词，数字，（要求word输入为unicode编码）
-    def is_stop_word(self, word):
-        is_stop_word = word in self.stop_words or re.match(ur"[\d]+", word) or len(word) == 1
-        return is_stop_word
-
-
 if __name__ == "__main__":
-    seg = Segmenter("article_cat")
-    seg.join_seg_file()
+    segmenter = Segmenter("article150801160830")
+    segmenter.seg()
+    segmenter.join_seg_file()
