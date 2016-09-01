@@ -83,7 +83,7 @@ class TextClassifierDoc2Vec:
             sentences = LabeledLineSentence(sources)
             self.model.build_vocab(sentences.to_array())
             for epoch in range(10):
-                self.model.train(sentences.sentences_perm())
+                self.model.fit(sentences.sentences_perm())
                 self.model.save('./news.d2v')
         else:
             self.model = Doc2Vec.load('./news.d2v')

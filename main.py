@@ -68,9 +68,8 @@ def train_label():
     test_seg_dir = test_proj_name + "/seg/"
     test_attr_dir = test_proj_name + "/attr/"
     test_obj_dir = test_proj_name + "/obj/"
-    if os.path.exists(test_obj_dir):
-        shutil.rmtree(test_obj_dir)
-        os.makedirs(test_obj_dir)
+    shutil.rmtree(test_obj_dir, ignore_errors=True)
+    os.makedirs(test_obj_dir)
     corpus = []
 
     # 分类器训练
@@ -105,7 +104,7 @@ def train_label():
     print "测试语料库-预测结果写入数据库完毕"
 
     # 保存测试语料库到对象二进制文件中
-    doc_vectors = clf.transform(corpus)
+    tfidf_vectors = clf.transform(corpus)
 
     sql = "select id, category from %s order by id" % test_proj_name
     results = db.execute(sql)
@@ -119,9 +118,9 @@ def train_label():
             a_title = lines[1]
             a_url = lines[2]
             a_tags = lines[3]
-            article = Article(a_title=a_title, a_text=doc_vectors[a_id-1, :], a_url=a_url, a_time=a_time, a_tags=a_tags,
+            article = Article(a_title=a_title, a_text=tfidf_vectors[a_id-1, :], a_url=a_url, a_time=a_time, a_tags=a_tags,
                               a_category=a_category, a_id=a_id)
-            dumper.dump(article, obj_name)
+            dumper.save(article, obj_name)
     db.close()
     print "测试语料库-预测结果写入数据库完毕"
 

@@ -1,10 +1,11 @@
 # coding=utf-8
 import heapq
-import random
 import pickle
 import MySQLdb
 import re
 
+
+# 文章结构
 class Article:
     def __init__(self, a_title, a_text, a_url, a_time, a_tags, a_category=None, a_id=None, a_score=None, a_author=None):
         self.a_title = a_title
@@ -23,7 +24,7 @@ class Article:
     def __gt__(self, other):
         return self.a_score > other.a_score
 
-
+# 用于获取Top K数据的堆
 class TopkHeap(object):
     def __init__(self, k):
         self.k = k
@@ -41,20 +42,7 @@ class TopkHeap(object):
         return [x for x in reversed([heapq.heappop(self.data) for x in xrange(len(self.data))])]
 
 
-class Dumper:
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def dump(obj, file_name):
-        pickle.dump(obj, open(file_name, "wb"), True)
-
-    @staticmethod
-    def load(file_name):
-        obj = pickle.load(open(file_name, "rb"))
-        return obj
-
-
+# 数据库连接
 class ArticleDB:
     def __init__(self):
         self.db = MySQLdb.connect(host="localhost", user="root", passwd="123456", db="test", charset='utf8')
@@ -75,6 +63,41 @@ class ArticleDB:
         self.db.close()
 
 
+# 对象保存和载入
+class Dumper:
+    @staticmethod
+    def save(obj, file_name):
+        pickle.dump(obj, open(file_name, "wb"), True)
+
+    @staticmethod
+    def load(file_name):
+        obj = pickle.load(open(file_name, "rb"))
+        return obj
+
+
+# 文章对象保存和载入
+class ArticleDumper:
+    def __init__(self, proj_name):
+        self.proj_name = proj_name
+        db = ArticleDB()
+        self.doc_num = db.execute("select count(*) from %s" % self.proj_name)[0][0]
+        db.close()
+
+    def load(self, a_id):
+        if a_id == -1:
+            all_articles = []
+            for i in xrange(self.doc_num):
+                obj_name = self.proj_name + "/obj/" + str(i+1)
+                article = Dumper.load(obj_name)
+                all_articles.append(article)
+            return all_articles
+        else:
+            obj_name = self.proj_name + "/obj/" + str(a_id)
+            article = Dumper.load(obj_name)
+            return article
+
+
+# 文章类别
 class Category:
     categories = [
         [1, "VR", "vr"],
@@ -112,7 +135,7 @@ class Category:
         self.e2n = dict([(row[2], row[0]) for row in self.categories])
         self.e2c = dict([(row[2], row[1]) for row in self.categories])
 
-
+# 停用词
 class StopWord:
     def __init__(self, file_name):
         # 停用词表
@@ -127,6 +150,7 @@ class StopWord:
         return flag
 
 
+# 分句符号
 class StopSent:
     def __init__(self):
         self.delimiters = set(u"\u00a0＃[。，,！……!《》<>\"':：？\?、\|“”‘’；]{}（）{}【】()｛｝（）：？！。，;、~——+％%`:“”＂'‘\n\r")

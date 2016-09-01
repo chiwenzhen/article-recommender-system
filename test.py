@@ -2,6 +2,8 @@
 import re
 from myutils import TopkHeap
 import time
+import numpy as np
+from collections import defaultdict
 
 def add_n_to_file():
     file_num = 19178
@@ -69,5 +71,21 @@ def set_test():
     print u"直播" in stopword
     print u"VR" in stopword
 
+
+def tree():
+    return defaultdict(tree)
+
+
 if __name__ == "__main__":
-    set_test()
+    from treelib import Node, Tree
+    tree = Tree()
+    tree.create_node("Harry", -1)  # root node
+    tree.create_node("Jane", 2, parent=-1)
+    tree.create_node("Bill", 3, parent=-1)
+    tree.create_node("Diane", 4, parent=2)
+    tree.create_node("Mary", 5, parent=4)
+    tree.create_node("Mark", 6, parent=2)
+    tree.show()
+
+
+
