@@ -4,6 +4,14 @@ from myutils import TopkHeap
 import time
 import numpy as np
 from collections import defaultdict
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from string import letters
+from treelib import Node, Tree
+import os
+from myutils import ArticleDB
+import shutil
 
 def add_n_to_file():
     file_num = 19178
@@ -73,19 +81,103 @@ def set_test():
 
 
 def tree():
-    return defaultdict(tree)
+    # 创建类别标签
+    cat_tree = Tree()
+    cat_tree.create_node((-1, "root"), -1)
+    for i in range(10):
+        cat_tree.create_node((i, str(i)), i, parent=-1)
+    offset = 10
+    for i in range(10):
+        for j in range(5):
+            cur = offset + j
+            cat_tree.create_node((cur, str(cur)), cur, parent=i)
+        offset += 5
 
+    header1_list = [node.tag for node in cat_tree.children(-1)]
+    header2_list = []
+    for cat1 in header1_list:
+        children = cat_tree.children(cat1[0])
+        header2_list.append([node.tag for node in children])
+
+def heat_map():
+    y_test=[1,2,1,3,3,5,5,6]
+    y_pred=[1,1,1,3,3,4,5,6]
+    num = 6
+    m = np.zeros([num, num])
+    for x, y in zip(y_pred, y_test):
+        m[x - 1, y - 1] += 1
+    for y in xrange(num):
+        total = sum(m[:, y])
+        if total > 0:
+            m[:, y] /= total
+
+    index = pd.Index(['人工', '金融', '汽车', '教育','手机', '硬件'], dtype=str)
+    df = pd.DataFrame(m, index=index, columns=['人工', '金融', '汽车', '教育','手机', '硬件'])
+
+    sns.set(style="white")
+    # Set up the matplotlib figure
+    f, ax = plt.subplots(figsize=(11, 9))
+
+    # Generate a custom diverging colormap
+    cmap = sns.diverging_palette(220, 10, as_cmap=True)
+
+    # Draw the heatmap with the mask and correct aspect ratio
+    sns.heatmap(m, cmap=cmap, vmax=1.0,
+                square=True, xticklabels=5, yticklabels=5,
+                linewidths=.5, cbar_kws={"shrink": .5}, ax=ax)
+    f.savefig("output.png")
+
+
+# 词性过滤
+class PosFilter:
+    def __init__(self):
+        self.pos = set("van")
+
+    # 是否是分句符号 c为uicode编码，非utf-8、ascii等
+    def is_good_pos(self, c):
+        return c in self.pos
+
+
+def generate_train_test():
+    proj_name = "article_cat"
+    db = ArticleDB()
+
+    results = db.execute("select distinct category from article_cat")
+    categories = [row[0] for row in results]
+    sorted(categories)
+
+    train_ids = []
+    test_ids = []
+
+    for cat in categories:
+        results = db.execute("select id, category from article_cat where category=%d limit 0,150" % cat)
+        for item, row in enumerate(results):
+            if item < 100:
+                train_ids.append((row[0], row[1]))
+            else:
+                test_ids.append((row[0], row[1]))
+    db.close()
+
+    max_len = 0
+    with open("%s/seg_join/corpus.txt" % proj_name, "r") as corpus_file, \
+            open("%s/seg_join/text_train.csv" % proj_name, "w") as train_file, \
+            open("%s/seg_join/text_test.csv" % proj_name, "w") as test_file:
+        corpus = corpus_file.readlines()
+        train_sentences = ['%d,%d,"%s"\n' % (cat, id, corpus[id-1].strip()) for id, cat in train_ids]
+        test_sentences = ['%d,%d,"%s"\n' % (cat, id, corpus[id-1].strip()) for id, cat in test_ids]
+        train_file.writelines(train_sentences)
+        test_file.writelines(test_sentences)
+
+        for sen in train_sentences:
+            cur_len = len(sen.split())
+            if  cur_len > max_len:
+                max_len = cur_len
+        for sen in test_sentences:
+            cur_len = len(sen.split())
+            if  cur_len > max_len:
+                max_len = cur_len
+        print "max_words_in_sentence: %d" % max_len
 
 if __name__ == "__main__":
-    from treelib import Node, Tree
-    tree = Tree()
-    tree.create_node("Harry", -1)  # root node
-    tree.create_node("Jane", 2, parent=-1)
-    tree.create_node("Bill", 3, parent=-1)
-    tree.create_node("Diane", 4, parent=2)
-    tree.create_node("Mary", 5, parent=4)
-    tree.create_node("Mark", 6, parent=2)
-    tree.show()
-
-
-
+    # generate_train_test()
+    print ("%s %s" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), "Prepare training and testing data ..."))

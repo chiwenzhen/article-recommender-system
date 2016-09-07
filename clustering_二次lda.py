@@ -12,9 +12,6 @@ from scipy.spatial.distance import pdist, squareform
 from scipy.cluster.hierarchy import ward, linkage, dendrogram
 from myutils import ArticleDB
 from treelib import Node, Tree
-from sklearn.cluster import KMeans
-import shutil
-import numpy as np
 
 
 class LDA:
@@ -28,13 +25,10 @@ class LDA:
         self.doc_num = None  # doc num in corpus
         self.corpus_bow = None
         self.id2word = None
-        self.topic_num = 50
+        self.topic_num = 10
+        self.sub_topic_num = 5
         self.tree = Tree()
         self.tree.create_node("Root", -1)
-
-        self.obj_dir = self.proj_name + "/clt_topic/"
-        shutil.rmtree(self.obj_dir, ignore_errors=True)
-        os.mkdir(self.obj_dir)
 
     # 从seg文件夹中载入语料库
     def load_corpus(self, seg_dir):
@@ -101,6 +95,12 @@ class LDA:
         else:
             lda = Dumper.load(lda_model_name)
 
+        # 给每个主题起名字
+        topics = lda.show_topics(num_topics=self.topic_num, num_words=2, log=False, formatted=False)
+        topic_names = [topic[1][0][0] + "+" + topic[1][1][0] for topic in topics]
+        for i, topic_name in enumerate(topic_names):
+            self.tree.create_node((i, topic_name), i, parent=-1)
+
         # 打印识别出的主题
         topics = lda.print_topics(num_topics=self.topic_num, num_words=10)
         for topic in topics:
@@ -111,61 +111,82 @@ class LDA:
         self.lda = lda
 
     def tranform(self):
-        # 分析每篇文章的主题分布，并保存磁盘作为特征
-        corpus_vecs = []
-        for i, doc_bow in enumerate(self.corpus_bow):
-            print "infer topic vec: %d/%d" % (i+1, self.doc_num)
-            topic_id_weights = self.lda.get_document_topics(doc_bow, minimum_probability=-1.0)
-            topic_weights = [item[1] for item in topic_id_weights]
-            corpus_vecs.append(topic_weights)
-            obj_name = self.obj_dir + str(i + 1)
-            Dumper.save(topic_weights, obj_name)
-
-        cluster_num1 = 10
-        cluster_num2 = 5
-        category_offset = 0
-        # 第一次聚类
-        print "first clustering..."
-        corpus_vecs = np.asarray(corpus_vecs)
-        clt = KMeans(n_clusters=cluster_num1)
-        clt.fit(corpus_vecs)
-
-        # 第一次聚类结果写入mysql
-        print "writing clustering result to mysql..."
+        # 分析每篇文章的主题
         db = ArticleDB()
-        for i in xrange(self.doc_num):
-            db.execute("update %s set category1=%d where id=%d" % (self.proj_name, clt.labels_[i], i + 1))
-        category_offset += cluster_num1
-
-        # 按照第一次聚类结果，对文章分组
-        clusters = [[] for i in xrange(cluster_num1)]
-        for i in xrange(self.doc_num):
-            clusters[clt.labels_[i]].append(i + 1)
-
-        # 第二次聚类(分组进行)
-        for i in xrange(cluster_num1):
-            print "second clustering: %d/%d ..." %(i+1, cluster_num1)
-            # 第二次聚类
-            sub_vecs = [corpus_vecs[j - 1] for j in clusters[i]]
-            clt = KMeans(n_clusters=cluster_num2)
-            clt.fit(sub_vecs)
-
-            # 第二次聚类结果写入mysql
-            print "writing clustering result to mysql..."
-            for j in xrange(len(clusters[i])):
-                db.execute("update %s set category2=%d where id=%d" % (self.proj_name, category_offset + clt.labels_[j], clusters[i][j]))
-
-            # 类别ID起始编码
-            category_offset += cluster_num2
-
+        topic_doc_ids = [[] for i in xrange(self.topic_num)]
+        topic_docs = [[] for i in xrange(self.topic_num)]
+        for i, doc_bow in enumerate(self.corpus_bow):
+            doc_topics = self.lda[doc_bow]
+            if len(doc_topics) == 0:
+                print "no topics for doc %d " % i+1
+                continue
+            topic_item = max(doc_topics, key=lambda topic_item: topic_item[1])
+            topic_id = topic_item[0]
+            topic_doc_ids[topic_id].append(i + 1)
+            topic_docs[topic_id].append(self.corpus[i])
+            db.execute("update %s set lda_category1=%d where id = %d" % (self.proj_name, topic_id, i + 1))
         db.commit()
         db.close()
-        print "ok, successfully complete!"
+
+        # 对分组内文章再次进行主题分析
+        topic_offset = self.topic_num
+        for topic_fid in xrange(self.topic_num):
+            sub_ids = topic_doc_ids[topic_fid]
+            sub_corpus = topic_docs[topic_fid]
+
+            # 生成字典
+            print "creating dictionary"
+            sub_id2word = corpora.Dictionary(sub_corpus)
+
+            # 删除低频词
+            # ignore words that appear in less than 20 documents or more than 10% documents
+            # id2word.filter_extremes(no_below=20, no_above=0.1)
+
+            # 词频统计，转化成空间向量格式
+            print "tranforming doc to vector"
+            sub_corpus_bow = [sub_id2word.doc2bow(doc_bow) for doc_bow in sub_corpus]
+
+            # 训练LDA模型
+            print "training lda model"
+            sub_lda_model_name = "lda_models/lda_%d.dat" % topic_fid
+            if not os.path.exists(sub_lda_model_name):
+                sub_lda = LdaModel(corpus=sub_corpus_bow, id2word=sub_id2word, num_topics=self.sub_topic_num, alpha='auto')
+                Dumper.save(sub_lda, sub_lda_model_name)
+            else:
+                sub_lda = Dumper.load(sub_lda_model_name)
+
+            # 给每个主题起名字
+            sub_topics = sub_lda.show_topics(num_topics=self.sub_topic_num, num_words=2, log=False, formatted=False)
+            sub_topic_names = [sub_topic[1][0][0] + "+" + sub_topic[1][1][0] for sub_topic in sub_topics]
+            for i, sub_topic_name in enumerate(sub_topic_names):
+                self.tree.create_node((topic_offset+i, sub_topic_name), topic_offset+i, parent=topic_fid)
+
+            # 打印识别出的主题
+            sub_topics = sub_lda.print_topics(num_topics=self.sub_topic_num, num_words=10)
+            for sub_topic in sub_topics:
+                print "sub topic %d: %s" % (sub_topic[0], sub_topic[1].encode("utf-8"))
+            with open("sub_topics_%d.txt" % topic_fid, "w") as topic_file:
+                for sub_topic in sub_topics:
+                    print >> topic_file, "topic %d: %s" % (sub_topic[0], sub_topic[1].encode("utf-8"))
+
+            # 分析每篇文章的主题
+            db = ArticleDB()
+            for i, doc_bow in enumerate(sub_corpus_bow):
+                doc_topics = sub_lda[doc_bow]
+                if len(doc_topics) == 0:
+                    print "no sub topics for doc %d " % sub_ids[i]
+                    continue
+                topic_item = max(doc_topics, key=lambda topic_item: topic_item[1])
+                topic_id = topic_item[0]
+                db.execute("update %s set lda_category2=%d where id = %d" % (self.proj_name, topic_offset + topic_id, sub_ids[i]))
+            db.commit()
+            db.close()
+            topic_offset += self.sub_topic_num
 
     def predict(self, x):
-            # update the LDA model with additional documents
-            self.lda.update(x)
-            return None
+        # update the LDA model with additional documents
+        self.lda.update(x)
+        return None
 
     # 统计每个标签出现的次数
     def count_tag(self, attr_dir):

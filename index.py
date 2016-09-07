@@ -1,13 +1,16 @@
 # coding=utf-8
 import numpy as np
 import random
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, render_template, url_for, send_from_directory
+from flask import send_file
 import time
-from myutils import Category
+from myutils import Category, CompareUnit
 import sys
 from myutils import ArticleDB
 from myutils import TopkHeap, Dumper
 from sklearn.metrics.pairwise import cosine_similarity
+from treelib import Tree
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -46,16 +49,28 @@ thumbs = [
     "230826808516.png"
 ]
 
-
+# 加载tfidf对象文件
 doc_num = db.execute("select count(*) from %s" % project_name)[0][0]
-all_articles = [None] * doc_num
+tfidf_vectors = [None] * doc_num
 for i in xrange(doc_num):
     print "loading %d/%d" % (i, doc_num)
-    obj_name = "%s/obj/%d" % (project_name, i + 1)
-    all_articles[i] = Dumper.load(obj_name)
+    obj_name = "%s/clf_tfidf/%d" % (project_name, i + 1)
+    tfidf_vectors[i] = Dumper.load(obj_name)
+
+# 创建类别标签
+cat_tree = Tree()
+cat_tree.create_node((-1, "root"), -1)
+for i in range(10):
+    cat_tree.create_node((i, str(i)), i, parent=-1)
+offset = 10
+for i in range(10):
+    for j in range(5):
+        cur = offset + j
+        cat_tree.create_node((cur, str(cur)), cur, parent=i)
+    offset += 5
 
 
-# 文章列表：主页分页
+# 分类版：文章列表首页
 @app.route('/')
 def main():
     category_id = 0
@@ -87,10 +102,178 @@ def main():
 
         chn_category = category_dict.n2c[a_category]
         eng_category = category_dict.n2e[a_category]
-        thumb_name = thumbs[random.randint(0, len(thumbs)-1)]
-        article_infos.append([a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
-        last_dateline = article_infos[-1][1]
+        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+        article_infos.append(
+            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
+    last_dateline = article_infos[-1][1]
     return render_template('index.html', article_infos=article_infos, catid=category_id, last_dateline=last_dateline)
+
+
+# 分类版：文章列表次页（动态获取）
+@app.route('/article_list', methods=['GET', 'POST'])
+def article_list():
+    catid = int(request.form.get('catid', 0).encode("utf-8"))
+    last_dateline = request.form.get('last_dateline', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
+    if catid > 0:
+        sql = "select id, category from %s where category = %d and time < '%s' order by time desc limit 0,10" % (
+            project_name, catid, last_dateline)
+    elif catid == 0:
+        sql = "select id, category from %s where time < '%s' order by time desc limit 0,10" % (
+            project_name, last_dateline)
+    else:
+        return ""
+
+    results = db.execute(sql)
+    article_infos = []
+    for a_id, a_category in results:
+        a_digest = ""
+        attr_name = attr_dir + str(a_id)
+        txt_name = txt_dir + str(a_id)
+        with open(attr_name, "r") as attr_file, open(txt_name, "r") as txt_file:
+            lines = attr_file.readlines()
+            a_time = lines[0]
+            a_title = lines[1]
+            a_url = lines[2]
+            a_tags = lines[3]
+            txt_file.readline()
+            txt_file.readline()
+            for line in txt_file:
+                if len(line) > 20:
+                    a_digest = line.decode("utf-8")[:30].encode("utf-8") + "......"
+                    break
+
+        chn_category = category_dict.n2c[a_category]
+        eng_category = category_dict.n2e[a_category]
+        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+        article_infos.append(
+            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
+    data = render_template('article_list.html', article_infos=article_infos)
+
+    if len(article_infos) > 0:
+        result = 1
+        last_dateline = article_infos[-1][1]
+    else:
+        result = 0
+        last_dateline = "1970-01-01 08:00:00"
+    jdata = {
+        'result': result,
+        'msg': '已经没有更多信息了',
+        'data': data,
+        'total_page': 975,
+        'last_dateline': last_dateline
+    }
+    return jsonify(jdata)
+
+
+# 聚类版：文章列表首页
+@app.route('/v2/')
+def main_v2():
+    category_id = 0
+    cat1 = request.args.get('cat1')
+    cat2 = request.args.get('cat2')
+    if cat2 is not None:
+        cat2 = int(cat2.encode("utf-8"))
+        sql = "select id, category1, category2 from %s where category2=%d order by time desc limit 0,10" % \
+              (project_name, cat2)
+    elif cat1 is not None:
+        cat1 = int(cat1.encode("utf-8"))
+        sql = "select id, category1, category1 from %s where category1=%d order by time desc limit 0,10" % \
+              (project_name, cat1)
+    else:
+        sql = "select id, category1, category2 from %s order by time desc limit 0,10" % project_name
+    results = db.execute(sql)
+
+    article_infos = []
+    for a_id, a_cate1, a_cate2 in results:
+        a_digest = ""
+        attr_name = attr_dir + str(a_id)
+        txt_name = txt_dir + str(a_id)
+        with open(attr_name, "r") as attr_file, open(txt_name, "r") as txt_file:
+            lines = attr_file.readlines()
+            a_time = lines[0]
+            a_title = lines[1]
+            a_url = lines[2]
+            a_tags = lines[3]
+            txt_file.readline()
+            txt_file.readline()
+            for line in txt_file:
+                if len(line) > 20:
+                    a_digest = line.decode("utf-8")[:30].encode("utf-8") + "......"
+                    break
+
+        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+        article_infos.append(
+            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_cate1, str(a_cate1), a_cate2, str(a_cate2), thumb_name])
+    last_dateline = article_infos[-1][1]
+
+    # 添加二级文章类别横条
+    header1_list = [node.tag for node in cat_tree.children(-1)]
+    header2_list = []
+    for header_item in header1_list:
+        children = cat_tree.children(header_item[0])
+        header2_list.append([node.tag for node in children])
+
+    return render_template('index_v2.html', article_infos=article_infos, catid=category_id, last_dateline=last_dateline,
+                           header1_list=header1_list, header2_list=header2_list,
+                           cat1=-1 if cat1 is None else cat1,
+                           cat2=-1 if cat2 is None else cat2)
+
+
+# 聚类版：文章列表次页（动态获取）
+@app.route('/v2/article_list', methods=['GET', 'POST'])
+def article_list_v2():
+    cat1 = int(request.form.get('cat1', u"-1").encode("utf-8"))
+    cat2 = int(request.form.get('cat2', u"-1").encode("utf-8"))
+    last_dateline = request.form.get('last_dateline', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
+    if cat2 >= 0:
+        sql = "select id, category1, category2 from %s where category2=%d and time < '%s' order by time desc limit 0,10" % (
+            project_name, cat2, last_dateline)
+    elif cat1 >= 0:
+        sql = "select id, category1, category2 from %s where category1=%d and time < '%s' order by time desc limit 0,10" % (
+            project_name, cat1, last_dateline)
+    else:
+        sql = "select id, category1, category2 from %s where time < '%s' order by time desc limit 0,10" % (
+            project_name, last_dateline)
+
+    results = db.execute(sql)
+    article_infos = []
+    for a_id, a_cate1, a_cate2 in results:
+        a_digest = ""
+        attr_name = attr_dir + str(a_id)
+        txt_name = txt_dir + str(a_id)
+        with open(attr_name, "r") as attr_file, open(txt_name, "r") as txt_file:
+            lines = attr_file.readlines()
+            a_time = lines[0]
+            a_title = lines[1]
+            a_url = lines[2]
+            a_tags = lines[3]
+            txt_file.readline()
+            txt_file.readline()
+            for line in txt_file:
+                if len(line) > 20:
+                    a_digest = line.decode("utf-8")[:30].encode("utf-8") + "......"
+                    break
+        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+        article_infos.append(
+            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_cate1, str(a_cate1), a_cate2, str(a_cate2), thumb_name])
+    data = render_template('article_list_v2.html', article_infos=article_infos)
+
+    if len(article_infos) > 0:
+        result = 1
+        last_dateline = article_infos[-1][1]
+    else:
+        result = 0
+        last_dateline = "1970-01-01 08:00:00"
+    jdata = {
+        'result': result,
+        'msg': '已经没有更多信息了',
+        'data': data,
+        'total_page': 975,
+        'last_dateline': last_dateline
+    }
+    return jsonify(jdata)
 
 
 # 文章正文
@@ -128,76 +311,42 @@ def article():
         # 相似文章
         tokheap = TopkHeap(5)
         now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        sql = "select id from %s where time < '%s' and category=%d limit 0,100" % (project_name, now_time, a_category)
-        src_article = all_articles[article_id-1]
+        sql = "select id from %s where time < '%s' and category=%d and id!=%d limit 0,100" % (
+            project_name, now_time, a_category, article_id)
+        src_vector = tfidf_vectors[article_id - 1]
         results = db.execute(sql)
-        for a_id in results:
-            idx = a_id[0] - 1
-            dst_article = all_articles[idx]
-            dst_article.a_score = cosine_similarity(src_article.a_text, dst_article.a_text)[0][0]
-            tokheap.push(dst_article)
-        topk_articles = tokheap.topk()
+        for row in results:
+            a_id = row[0]
+            dst_vector = tfidf_vectors[a_id - 1]
+            similarity = cosine_similarity(src_vector, dst_vector)[0][0]
+            tokheap.push(CompareUnit(similarity, a_id))
+        topk_article_ids = [x.value for x in tokheap.topk()]
+
+        topk_articles = []
+        for a_id in topk_article_ids:
+            attr_name = attr_dir + str(a_id)
+            with open(attr_name, "r") as attr_file:
+                lines = attr_file.readlines()
+                a_time = lines[0]
+                a_title = lines[1]
+                a_url = lines[2]
+                a_tags = lines[3]
+            thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+            topk_articles.append([a_id, a_time, a_title, a_url, a_tags, thumb_name])
 
         return render_template('article_index.html', article_info=article_info, topk_articles=topk_articles)
     else:
         return ""
 
 
-# 文章列表，动态获取
-@app.route('/v2_action/article_list', methods=['GET', 'POST'])
-def article_list():
-    catid = int(request.form.get('catid', 0).encode("utf-8"))
-    last_dateline = request.form.get('last_dateline', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+@app.route('/png')
+def png():
+    return send_from_directory('static', 'myresources/tdidf_clf_precision.png', mimetype='image/jpg')
 
-    if catid > 0:
-        sql = "select id, category from %s where category = %d and time < '%s' order by time desc limit 0,10" % (
-            project_name, catid, last_dateline)
-    elif catid == 0:
-        sql = "select id, category from %s where time < '%s' order by time desc limit 0,10" % (
-            project_name, last_dateline)
-    else:
-        return ""
 
-    results = db.execute(sql)
-    article_infos = []
-    for a_id, a_category in results:
-        a_digest = ""
-        attr_name = attr_dir + str(a_id)
-        txt_name = txt_dir + str(a_id)
-        with open(attr_name, "r") as attr_file:
-            lines = attr_file.readlines()
-            a_time = lines[0]
-            a_title = lines[1]
-            a_url = lines[2]
-            a_tags = lines[3]
-        with open(txt_name, "r") as txt_file:
-            txt_file.readline()
-            txt_file.readline()
-            for line in txt_file:
-                if len(line) > 20:
-                    a_digest = line.decode("utf-8")[:30].encode("utf-8") + "......"
-
-        chn_category = category_dict.n2c[a_category]
-        eng_category = category_dict.n2e[a_category]
-        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
-        article_infos.append(
-            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
-    data = render_template('article_list.html', article_infos=article_infos)
-
-    if len(article_infos) > 0:
-        result = 1
-        last_dateline = article_infos[-1][1]
-    else:
-        result = 0
-        last_dateline = "1970-01-01 08:00:00"
-    jdata = {
-        'result': result,
-        'msg': '已经没有更多信息了',
-        'data': data,
-        'total_page': 975,
-        'last_dateline': last_dateline
-    }
-    return jsonify(jdata)
+@app.route('/txt')
+def txt():
+    return send_from_directory('static', 'myresources/tdidf_clf_precision.txt')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)

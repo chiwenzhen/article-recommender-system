@@ -7,7 +7,7 @@ import re
 
 # 文章结构
 class Article:
-    def __init__(self, a_title, a_text, a_url, a_time, a_tags, a_category=None, a_id=None, a_score=None, a_author=None):
+    def __init__(self, a_title, a_text, a_url, a_time, a_tags, a_category=None, a_id=None, a_author=None):
         self.a_title = a_title
         self.a_text = a_text
         self.a_url = a_url
@@ -15,7 +15,6 @@ class Article:
         self.a_tags = a_tags
         self.a_category = a_category
         self.a_id = a_id
-        self.a_score = a_score
         self.a_author = a_author
 
     def __lt__(self, other):
@@ -23,6 +22,20 @@ class Article:
 
     def __gt__(self, other):
         return self.a_score > other.a_score
+
+
+# 用于封装一个比较单元
+class CompareUnit:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
+    def __lt__(self, other):
+        return self.key < other.key
+
+    def __gt__(self, other):
+        return self.key > other.key
+
 
 # 用于获取Top K数据的堆
 class TopkHeap(object):
@@ -87,7 +100,7 @@ class ArticleDumper:
         if a_id == -1:
             all_articles = []
             for i in xrange(self.doc_num):
-                obj_name = self.proj_name + "/obj/" + str(i+1)
+                obj_name = self.proj_name + "/obj/" + str(i + 1)
                 article = Dumper.load(obj_name)
                 all_articles.append(article)
             return all_articles
@@ -135,6 +148,7 @@ class Category:
         self.e2n = dict([(row[2], row[0]) for row in self.categories])
         self.e2c = dict([(row[2], row[1]) for row in self.categories])
 
+
 # 停用词
 class StopWord:
     def __init__(self, file_name):
@@ -158,6 +172,16 @@ class StopSent:
     # 是否是分句符号 c为uicode编码，非utf-8、ascii等
     def is_delim(self, c):
         return c in self.delimiters
+
+
+# 词性过滤
+class PosFilter:
+    def __init__(self):
+        self.pos = set("van")
+
+    # 是否是分句符号 c为uicode编码，非utf-8、ascii等
+    def is_good_pos(self, c):
+        return c in self.pos
 
 if __name__ == "__main__":
     stopsent = StopSent()
