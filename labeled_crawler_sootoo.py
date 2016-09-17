@@ -27,9 +27,9 @@ class LabeledCrawlerSootoo(LabeledCrawler):
         self.labeled_crawl("http://health.sootoo.com/", start_time, end_time, self.cat_dict["医疗健康"])
         self.labeled_crawl("http://www.sootoo.com/tag/118/", start_time, end_time, self.cat_dict["物联网"])
         self.labeled_crawl("http://www.sootoo.com/tag/206/", start_time, end_time, self.cat_dict["VR"])
-        self.labeled_crawl("http://www.sootoo.com/tag/128/", start_time, end_time, self.cat_dict["企业服务"]) # 云计算
-        self.labeled_crawl("http://www.sootoo.com/keyword/85759/", start_time, end_time, self.cat_dict["人工智能"]) #大数据
-        self.labeled_crawl("http://www.sootoo.com/tag/133/", start_time, end_time, self.cat_dict["企业服务"]) # 企业IT
+        self.labeled_crawl("http://www.sootoo.com/tag/128/", start_time, end_time, self.cat_dict["企业服务"])  # 云计算
+        self.labeled_crawl("http://www.sootoo.com/keyword/85759/", start_time, end_time, self.cat_dict["人工智能"])  #大数据
+        self.labeled_crawl("http://www.sootoo.com/tag/133/", start_time, end_time, self.cat_dict["企业服务"])  # 企业IT
 
     def labeled_crawl(self, start_url, start_time, end_time, a_category):
         try:

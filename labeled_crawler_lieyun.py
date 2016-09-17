@@ -19,17 +19,17 @@ class LabeledCrawlerLieyun(LabeledCrawler):
         self.root_url = "http://www.lieyunwang.com"
 
     def crawl(self, start_time, end_time):
-        self.labeled_crawl("http://www.lieyunwang.com/d/computing", 3466, start_time, end_time, self.cat_dict["智能硬件"])
-        self.labeled_crawl("http://www.lieyunwang.com/d/vrar", 26936, start_time, end_time, self.cat_dict["VR"])
-        self.labeled_crawl("http://www.lieyunwang.com/d/jiaoyu", 27669, start_time, end_time, self.cat_dict["教育"])
-        self.labeled_crawl("http://www.lieyunwang.com/d/jinrong", 27670, start_time, end_time, self.cat_dict["互联网金融"])
-        self.labeled_crawl("http://www.lieyunwang.com/d/qiche", 27671, start_time, end_time, self.cat_dict["汽车"])
-        # self.labeled_crawl("http://www.lieyunwang.com/d/fangchan", 27673, start_time, end_time, self.cat_dict["房产"])
-        self.labeled_crawl("http://www.lieyunwang.com/d/yiliao", 27674, start_time, end_time, self.cat_dict["医疗健康"])
-        # self.labeled_crawl("http://www.lieyunwang.com/d/lvyou", 27675, start_time, end_time, self.cat_dict["旅游"])
-        self.labeled_crawl("http://www.lieyunwang.com/d/shenghuo", 27676, start_time, end_time, self.cat_dict["O2O"])
-        self.labeled_crawl("http://www.lieyunwang.com/d/qiyefuwu", 27677, start_time, end_time, self.cat_dict["企业服务"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/computing", 3466, start_time, end_time, self.cat_dict["智能硬件"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/vrar", 26936, start_time, end_time, self.cat_dict["VR"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/jiaoyu", 27669, start_time, end_time, self.cat_dict["教育"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/jinrong", 27670, start_time, end_time, self.cat_dict["互联网金融"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/qiche", 27671, start_time, end_time, self.cat_dict["汽车"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/yiliao", 27674, start_time, end_time, self.cat_dict["医疗健康"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/shenghuo", 27676, start_time, end_time, self.cat_dict["O2O"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/qiyefuwu", 27677, start_time, end_time, self.cat_dict["企业服务"])
         self.labeled_crawl("http://www.lieyunwang.com/d/zhineng", 27678, start_time, end_time, self.cat_dict["人工智能"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/lvyou", 27675, start_time, end_time, self.cat_dict["旅游"])
+        # self.labeled_crawl("http://www.lieyunwang.com/d/fangchan", 27673, start_time, end_time, self.cat_dict["房产"])
         # self.labeled_crawl("http://www.lieyunwang.com/d/yule", 27680, start_time, end_time, self.cat_dict["娱乐"])
         # self.labeled_crawl("http://www.lieyunwang.com/d/tiyu", 27682, start_time, end_time, self.cat_dict["体育"])
         # self.labeled_crawl("http://www.lieyunwang.com/d/shejiao", 27683, start_time, end_time, self.cat_dict["社交"])
@@ -40,7 +40,6 @@ class LabeledCrawlerLieyun(LabeledCrawler):
     def labeled_crawl(self, start_url, cid, start_time, end_time, a_category):
         try:
             # 初次加载
-            last_time = None
             html = urllib2.urlopen(start_url).read()
             soup = BeautifulSoup(html, "lxml")
             ul = soup.find(name="div", class_="article-box").ul
@@ -104,7 +103,7 @@ class LabeledCrawlerLieyun(LabeledCrawler):
         try:
             html = urllib2.urlopen(a_url, timeout=30).read()
             soup = BeautifulSoup(html, "lxml")
-            div = soup.find(name="div", class_="bbbox clearfix").div.div.div
+            div = soup.find(name="div", class_="article pore")
             # 标题
             a_title = ""
             strings = div.h1.stripped_strings
@@ -142,6 +141,6 @@ class LabeledCrawlerLieyun(LabeledCrawler):
         return None
 
 if __name__ == "__main__":
-    crawler = LabeledCrawlerLieyun(proj_name="article_test")
-    crawler.rebuild_table()
-    crawler.crawl("2016-08-06 00:00:00", "2016-08-23 23:59:59")
+    crawler = LabeledCrawlerLieyun(proj_name="article_cat")
+    # crawler.rebuild_table()
+    crawler.crawl("2016-08-31 00:00:00", "2016-09-23 23:59:59")

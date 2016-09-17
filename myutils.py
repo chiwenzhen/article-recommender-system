@@ -3,6 +3,7 @@ import heapq
 import pickle
 import MySQLdb
 import re
+from collections import defaultdict
 
 
 # 文章结构
@@ -126,7 +127,7 @@ class Category:
         [11, "汽车", "car"],
         [12, "电商", "ecommerce"],
         [13, "O2O", "o2o"],
-        [14, "资本", "capital"],
+        [14, "创投", "capital"],
         [15, "旅游", "travel"],
         [16, "评测", "evaluation"],
         [17, "物流", "logistics"],
@@ -182,6 +183,46 @@ class PosFilter:
     # 是否是分句符号 c为uicode编码，非utf-8、ascii等
     def is_good_pos(self, c):
         return c in self.pos
+
+
+class Character:
+    char = None
+    freq = None
+
+    def __init__(self, char, freq):
+        self.char = char
+        self.freq = freq
+
+
+# 常用字
+class FreqCharUtil:
+    freq_chars = []
+    freq_char_num = 0
+
+    def __init__(self):
+        magiccount = 40967291
+        with open("./outzp.txt", "r") as zp_file:
+            for line in zp_file.readlines():
+                c, f = line.split(",")
+                self.freq_chars.append(Character(c.decode("utf-8"), float(f) * 1000 / magiccount))
+        self.freq_char_num = len(self.freq_chars)
+
+    # 获取由常用字组成的向量
+    def get_vec(self, text):
+        vec = [0.0] * self.freq_char_num
+        char_count = 0
+        char_dict = defaultdict(lambda: 0) # 默认计数0
+        text = text.decode("utf-8")
+        for char in text:
+            if u'\u4e00' <= char <= u'\u9fff':
+                char_count += 1
+                char_dict[char]  += 1
+        # 返回向量
+        for i in xrange(self.freq_char_num):
+            if self.freq_chars[i].char in char_dict:
+                vec[i] = char_dict[self.freq_chars[i].char] * 1000.0 / char_count;
+                vec[i] = vec[i] / self.freq_chars[i].freq / 2
+        return vec
 
 if __name__ == "__main__":
     stopsent = StopSent()

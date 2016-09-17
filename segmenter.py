@@ -50,9 +50,9 @@ class Segmenter:
             print "Mysql Error %d: %s" % (e.args[0], e.args[1])
 
     # 分词
-    def seg(self):
+    def seg(self, skip_exist=False):
         # self.segtool = thulac.thulac("-seg_only -model_dir models/")
-        segtool = pseg
+        segtool = jieba
         # 遍历所有文件，进行分词
         for i in range(1, self.doc_count + 1):
             print ("\r%d/%d" % (i, self.doc_count))
@@ -60,6 +60,8 @@ class Segmenter:
             tmp_name = "%s/seg/%d.tmp" % (self.proj_name, i)
             seg_name = "%s/seg/%d" % (self.proj_name, i)
             doc = []
+            if skip_exist and os.path.exists(seg_name):
+                continue
             with open(txt_name, "r") as txt_file, open(tmp_name, "w") as tmp_file:
                 for line in txt_file.readlines():
                     sentences = self.seg_sentence(line)
@@ -164,5 +166,14 @@ class Segmenter:
 if __name__ == "__main__":
     segmenter = Segmenter("article_cat")
     # segmenter.seg_title_tags()
-    segmenter.pos_seg()
-    segmenter.join_pos_seg_file()
+    # segmenter.pos_seg()
+    # segmenter.join_pos_seg_file()
+    segmenter.seg(skip_exist=False)
+    segmenter.join_seg_file()
+
+    segmenter = Segmenter("article150801160830")
+    # segmenter.seg_title_tags()
+    # segmenter.pos_seg()
+    # segmenter.join_pos_seg_file()
+    segmenter.seg(skip_exist=False)
+    segmenter.join_seg_file()

@@ -16,7 +16,7 @@ import numpy
 from random import shuffle
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
-from myutils import ArticleDB, Dumper, StopWord, Category
+from myutils import ArticleDB, Dumper, StopWord, Category, FreqCharUtil
 from sklearn.cluster import KMeans
 import os
 import pandas as pd
@@ -28,6 +28,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
+from collections import defaultdict, namedtuple
 
 
 class TextClassifierTfidf:
@@ -145,6 +146,7 @@ class TextClassifierDoc2Vec:
         doc_num = results[0][0]
         db.close()
         x = [self.model.docvecs["TRAIN_%d" % i] for i in range(doc_num)]
+        Dumper.save(x, "doc_vec_all.dat")
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
 
         # 训练
@@ -221,8 +223,179 @@ class LabeledLineSentence(object):
         return self.sentences
 
 
+class TextClassifierCharacter:
+    def __init__(self, project_name):
+        self.project_name = project_name
+        self.clf = SVC(kernel="linear")
+
+    def train(self):
+        # 获取文章总数
+        db = ArticleDB()
+        id_cats = db.execute("select id, category from %s" % self.project_name)
+        ids = [row[0] for row in id_cats]
+        cats = [row[1] for row in id_cats]
+        db.close()
+        freq_util = FreqCharUtil()
+
+        # 导入数据
+        print "reading corpus.txt ..."
+        corpus = []
+        mms = [0.0] * freq_util.freq_char_num
+        for id, cat in zip(ids, cats):
+            txt_name = self.project_name + "/txt/" + str(id)
+            with open(txt_name, "r") as txt_file:
+                text = txt_file.read()
+                vec = freq_util.get_vec(text)
+                for i in xrange(freq_util.freq_char_num):
+                    mms[i] = max(mms[i], vec[i])
+                corpus.append(vec)
+
+        for vec in corpus:
+            for i in xrange(freq_util.freq_char_num):
+                vec[i] /= mms[i]
+
+        # 切分训练和测试数据
+        x = np.asarray(corpus)
+        y = np.asarray(cats)
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+
+        # 训练
+        print "training classifier using doc2vec features..."
+        self.clf.fit(x_train, y_train)
+
+        # 测试
+        print "testing classifier..."
+        y_pred = self.clf.predict(x_test)
+        print(metrics.classification_report(y_test, y_pred))
+
+
+    def predict(self, x):
+        return self.clf.predict(x)
+
+    def transform(self, x):
+        if isinstance(x, list):
+            return self.model.infer_vector(x)
+        else:
+            print "ERROR: doc2vec输入必须为词语的list"
+            return None
+
+
+class TextClassifierSub:
+    def __init__(self, project_name):
+        self.project_name = project_name
+        self.subcat_profile = "subcat"
+        self.texts = None
+        self.labels = None
+        self.vect = CountVectorizer()
+        self.tfidf = TfidfTransformer()
+        self.clf = LogisticRegression()
+        self.pipeline = Pipeline([
+            ('vect', self.vect),
+            ('tfidf', self.tfidf),
+            ('clf', self.clf)])
+        self.pipeline_transform = Pipeline([
+            ('vect', self.vect),
+            ('tfidf', self.tfidf)])
+
+    def train(self):
+        # 读取子类分类规格文件
+        category = Category()
+        print "reading sub-category profile..."
+        SubCat = namedtuple("SubCat", ['id', 'name', 'tags'])
+        ccat = 50
+        cat2subcat = defaultdict(lambda: [])
+        tag2id = defaultdict(lambda: {})
+
+        subcats = []
+        with open(self.subcat_profile, "r") as subfile:
+            for line in subfile:
+                line = line.strip()
+                if line.startswith("CATEGORY"):
+                    _, fcat = line.split(":")
+                    fcat = category.c2n[fcat]
+                elif len(line) > 0:
+                    ccat += 1
+                    name, tags = line.split(":")
+                    tags = set(tags.split(" "))
+                    for tag in tags:
+                        tag2id[fcat][tag] = ccat
+                    subcat = SubCat(ccat, name, tags)
+                    cat2subcat[fcat].append(subcat)
+
+        # 标注训练数据
+        print "dividing category into sub-categories..."
+        db = ArticleDB()
+        for fcat, subcats in cat2subcat.items():
+            ids = db.execute("select id from %s where category=%s" % (self.project_name, fcat))
+            ids = [id[0] for id in ids]
+            print "\tcategory %d has %d files, divide into %d subcategories" % (fcat, len(ids), len(subcats))
+            for id in ids:
+                attr_name = "%s/attr/%d" % (self.project_name, id)
+                with open(attr_name, "r") as attr_file:
+                    tags = attr_file.readlines()[3].strip()
+                    if len(tags) > 0:
+                        tags = tags.split(" ")
+                        subtag2id = tag2id[fcat]
+                        for tag in tags:
+                            if tag in subtag2id:
+                                subcat = subtag2id[tag]
+                                db.execute("update %s set subcategory=%d where id=%d" % (self.project_name, subcat, id))
+                                break
+        db.commit()
+
+        # 训练分类器（对每个类别，利用其子类分类）
+        fcats = cat2subcat.keys()
+        for fcat in fcats:
+            id_subcats = db.execute("select id, subcategory from %s where category=%s and subcategory is not null" % (self.project_name, fcat))
+            ids = [row[0] for row in id_subcats]
+            y = [row[1] for row in id_subcats]
+            x = []
+            print "category %d: reading corpus..." % fcat
+            for id in ids:
+                txt_name = "%s/seg/%d" % (self.project_name, id)
+                with open(txt_name, "r") as seg_file:
+                    lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
+                    text = " ".join(lines)
+                    x.append(text)
+
+            # 切分训练数据和测试数据
+            print "category %d: splitting train and test..." % fcat
+            x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+
+            # 训练
+            print "category %d: training..." % fcat
+            self.pipeline.fit(x_train, y_train)
+
+            # 测试
+            print "category %d: testing..." % fcat
+            y_pred = self.pipeline.predict(x_test)
+            print(metrics.classification_report(y_test, y_pred))
+
+            # # 预测
+            # test_proj_name = "article150801160830"
+            # ids = db.execute("select id from %s where category=%s" % (test_proj_name, fcat))
+            # ids = [row[0] for row in ids]
+            # print "category %d: predicting new corpus..." % fcat
+            # for id in ids:
+            #     txt_name = "%s/seg/%d" % (test_proj_name, id)
+            #     with open(txt_name, "r") as seg_file:
+            #         lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
+            #         text = " ".join(lines)
+            #         x.append(text)
+            # y = self.pipeline.predict(x)
+            #
+            # print "category %d: writing predict result to sql..." % fcat
+            # for i, id in enumerate(ids):
+            #     db.execute("update %s set subcategory=%s where id=%d" % (test_proj_name, y[i], id))
+
+        db.commit()
+        db.close()
+
+        # 全部结束
+        print "OK, all done!"
+
 if __name__ == "__main__":
-    clf = TextClassifierTfidf(project_name="article_cat")
+    clf = TextClassifierSub(project_name="article_cat")
     clf.train()
 
     # stopword = StopWord("./stopwords_it.txt")

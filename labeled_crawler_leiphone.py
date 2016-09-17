@@ -15,8 +15,8 @@ from labeled_crawler import LabeledCrawler
 class LabeledCrawlerLeiphone(LabeledCrawler):
     def __init__(self, proj_name):
         LabeledCrawler.__init__(self, proj_name)
-        self.name = "猎云网"
-        self.root_url = "http://www.lieyunwang.com"
+        self.name = "雷锋网"
+        self.root_url = "http://www.leiphone.com"
         self.headers = {
             'Host': 'www.leiphone.com',
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; rv:16.0) Gecko/20100101 Firefox/16.0',
@@ -106,6 +106,6 @@ class LabeledCrawlerLeiphone(LabeledCrawler):
         return None
 
 if __name__ == "__main__":
-    crawler = LabeledCrawlerLeiphone(proj_name="article_test")
-    crawler.rebuild_table()
-    crawler.crawl("2016-08-16 00:00:00", "2016-08-23 23:59:59")
+    crawler = LabeledCrawlerLeiphone(proj_name="article_cat")
+    # crawler.rebuild_table()
+    crawler.crawl("2016-08-31 00:00:00", "2016-09-23 23:59:59")

@@ -12,6 +12,9 @@ from treelib import Node, Tree
 import os
 from myutils import ArticleDB
 import shutil
+import json
+
+# here is ubuntu
 
 def add_n_to_file():
     file_num = 19178
@@ -138,7 +141,7 @@ class PosFilter:
         return c in self.pos
 
 
-def generate_train_test():
+def generate_train_test_small():
     proj_name = "article_cat"
     db = ArticleDB()
 
@@ -178,6 +181,118 @@ def generate_train_test():
                 max_len = cur_len
         print "max_words_in_sentence: %d" % max_len
 
+
+def generate_train_test():
+    proj_name = "article_cat"
+    db = ArticleDB()
+    results = db.execute("select count(*) from article_cat")
+    doc_num = results[0][0]
+    results = db.execute("select id, category from article_cat order by id")
+    db.close()
+
+    train_num = int(doc_num * 0.8)
+    test_num = int(doc_num * 0.2)
+
+    max_len = 0
+    with open("%s/seg_join/corpus.txt" % proj_name, "r") as corpus_file, \
+            open("C:/Users/text_train.csv", "w") as train_file, \
+            open("C:/Users/text_test.csv", "w") as test_file:
+        corpus = corpus_file.readlines()
+        new_corpus = []
+        for line, row in zip(corpus, results):
+            new_corpus.append('%d,%d,"%s"\n' % (row[1], row[0], line.strip()))
+        from random import shuffle
+        shuffle(new_corpus)
+
+        train = new_corpus[0:train_num]
+        test = new_corpus[train_num:train_num+test_num]
+
+        train_file.writelines(train)
+        test_file.writelines(test)
+
+        for sen in train:
+            cur_len = len(sen.split())
+            if  cur_len > max_len:
+                max_len = cur_len
+        for sen in test:
+            cur_len = len(sen.split())
+            if  cur_len > max_len:
+                max_len = cur_len
+        print "max_words_in_sentence: %d" % max_len
+
+
+def tag_count():
+    proj_name = "article_cat"
+    db = ArticleDB()
+    cats = db.execute("select distinct category from %s order by category" % proj_name)
+    cats = [row[0] for row in cats]
+    for cat in cats:
+        with open("tags/tag_%d.txt" % cat, "w") as tag_file:
+            ids = db.execute("select id from %s where category=%d order by id" % (proj_name, cat))
+            ids = [row[0] for row in ids]
+            tag_dict = defaultdict(lambda: 0)
+            has_tag = 0
+            for id in ids:
+                attr_name = "%s/attr/%d" %(proj_name, id)
+                with open(attr_name, "r") as attr_file:
+                    lines = attr_file.readlines()
+                    tags = lines[3].strip()
+                    if len(tags) > 0:
+                        has_tag += 1
+                        tags = tags.split(" ")
+                        for tag in tags:
+                            tag_dict[tag] += 1
+
+            id_num = len(ids)
+            tag_list = tag_dict.items()
+            tag_list.sort(key=lambda x: x[1], reverse=True)
+            tag_list = ["%s\t%d\n" % (tag, num) for tag, num in tag_list]
+            tag_file.writelines(tag_list)
+            print("category %d: %d/%d has tags" % (cat, has_tag, id_num))
+    db.close()
+
+def set_subcategory():
+    proj_name = "article_cat"
+    db = ArticleDB()
+    cats = db.execute("select distinct category from %s order by category" % proj_name)
+    cats = [row[0] for row in cats]
+    for cat in cats:
+        with open("tags/tag_%d.txt" % cat, "w") as tag_file:
+            ids = db.execute("select id from %s where category=%d order by id" % (proj_name, cat))
+            ids = [row[0] for row in ids]
+            tag_dict = defaultdict(lambda: 0)
+            has_tag = 0
+            for id in ids:
+                attr_name = "%s/attr/%d" % (proj_name, id)
+                with open(attr_name, "r") as attr_file:
+                    lines = attr_file.readlines()
+                    tags = lines[3].strip()
+                    if len(tags) > 0:
+                        has_tag += 1
+                        tags = tags.split(" ")
+                        for tag in tags:
+                            tag_dict[tag] += 1
+
+            id_num = len(ids)
+            tag_list = tag_dict.items()
+            tag_list.sort(key=lambda x: x[1], reverse=True)
+            tag_list = ["%s\t%d\n" % (tag, num) for tag, num in tag_list]
+            tag_file.writelines(tag_list)
+            print("category %d: %d/%d has tags" % (cat, has_tag, id_num))
+    db.close()
+
+
+def time_normalize(str_time, time_format='%Y-%m-%d %H:%M:%S'):
+    ftime = time.mktime(time.strptime(str_time, time_format))
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ftime))
+
+
+def time_normalize(str_time, time_format='%Y-%m-%d %H:%M:%S'):
+    ftime = time.mktime(time.strptime(str_time, time_format))
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ftime))
+
 if __name__ == "__main__":
-    # generate_train_test()
-    print ("%s %s" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), "Prepare training and testing data ..."))
+    s = '{"errno":0,"data":{"total":0}}'
+    json_obj = json.loads(s)
+    l = json_obj["data"]["ari"]
+    print l
