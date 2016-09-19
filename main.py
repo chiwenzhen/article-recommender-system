@@ -20,6 +20,8 @@ from labeled_crawler_yiou import LabeledCrawlerYiou
 from labeled_crawler_7tin import LabeledCrawler7tin
 from labeled_crawler_ailab import LabeledCrawlerAilab
 from labeled_crawler_baidu import LabeledCrawlerBaidu
+from labeled_crawler_sinavr import LabeledCrawlerSinaVR
+from labeled_crawler_varkr import LabeledCrawlerVarkr
 from classifier import TextClassifierTfidf
 import MySQLdb
 from myutils import Article
@@ -51,19 +53,21 @@ def fetch_labeled_data():
     str_new_time = "2016-11-31 00:00:00"
     proj_name = "article_cat"
 
-    LabeledCrawler(proj_name=proj_name).rebuild_table()
-    LabeledCrawlerIheima(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerLieyun(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerSootoo(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerYiou(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawler7tin(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
-    LabeledCrawlerAilab(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
-    LabeledCrawlerBaidu(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    # LabeledCrawler(proj_name=proj_name).rebuild_table()
+    # LabeledCrawlerIheima(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # LabeledCrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # LabeledCrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # LabeledCrawlerLieyun(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # LabeledCrawlerSootoo(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # LabeledCrawlerYiou(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # LabeledCrawler7tin(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    # LabeledCrawlerAilab(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    # LabeledCrawlerBaidu(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawlerSinaVR(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawlerVarkr(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
 
     seg = Segmenter(proj_name=proj_name)
-    seg.seg()
+    seg.seg(skip_exist=True)
     seg.join_seg_file()
 
 
