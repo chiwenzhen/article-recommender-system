@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72438ef6-a642-4761-8f76-e83fbe72d6a5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/labeled_crawler_sinavr.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/labeled_crawler_varkr.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classifier.py" afterPath="$PROJECT_DIR$/classifier.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.py" afterPath="$PROJECT_DIR$/index.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/myutils.py" afterPath="$PROJECT_DIR$/myutils.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/segmenter.py" afterPath="$PROJECT_DIR$/segmenter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.py" afterPath="$PROJECT_DIR$/test.py" />
     </list>
     <ignored path="recommender-system.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -19,20 +22,21 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/article-recommender-system$myutils.coverage" NAME="myutils Coverage Results" MODIFIED="1474283886855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$labeled_crawler_7tin.coverage" NAME="labeled_crawler_7tin Coverage Results" MODIFIED="1474185224202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$labeled_crawler_varkr.coverage" NAME="labeled_crawler_varkr Coverage Results" MODIFIED="1474252486751" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$labeled_crawler_lieyun.coverage" NAME="labeled_crawler_lieyun Coverage Results" MODIFIED="1473835672355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/article-recommender-system$main.coverage" NAME="main Coverage Results" MODIFIED="1474253371756" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/article-recommender-system$main.coverage" NAME="main Coverage Results" MODIFIED="1474274741429" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$recommender_memory_based.coverage" NAME="recommender_memory_based Coverage Results" MODIFIED="1473731437830" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$labeled_crawler_ailab.coverage" NAME="labeled_crawler_ailab Coverage Results" MODIFIED="1474167550068" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$labeled_crawler_sinavr.coverage" NAME="labeled_crawler_sinavr Coverage Results" MODIFIED="1474250534931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$recommender.coverage" NAME="recommender Coverage Results" MODIFIED="1473681537184" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$labeled_crawler_baidu.coverage" NAME="labeled_crawler_baidu Coverage Results" MODIFIED="1473945147802" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$segmenter.coverage" NAME="segmenter Coverage Results" MODIFIED="1474213714287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/article-recommender-system$test.coverage" NAME="test Coverage Results" MODIFIED="1474162343700" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$labeled_crawler_vrguancha.coverage" NAME="labeled_crawler_vrguancha Coverage Results" MODIFIED="1474213598949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/article-recommender-system$index.coverage" NAME="index Coverage Results" MODIFIED="1473745276177" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/article-recommender-system$classifier.coverage" NAME="classifier Coverage Results" MODIFIED="1474213844815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/article-recommender-system$test.coverage" NAME="test Coverage Results" MODIFIED="1474281793426" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/article-recommender-system$index.coverage" NAME="index Coverage Results" MODIFIED="1474289352170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/article-recommender-system$classifier.coverage" NAME="classifier Coverage Results" MODIFIED="1474289772817" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/article-recommender-system$labeled_crawler_leiphone.coverage" NAME="labeled_crawler_leiphone Coverage Results" MODIFIED="1473824113518" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -44,16 +48,6 @@
     <option name="SORT_POSITIONED" value="false" />
     <option name="SHOW_TABLE_DETAILS" value="true" />
     <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <PATH>
-      <PATH_ELEMENT>
-        <option name="myItemId" />
-        <option name="myItemType" value="com.intellij.database.view.DatabaseStructure$Root" />
-      </PATH_ELEMENT>
-      <PATH_ELEMENT>
-        <option name="myItemId" value="MySQL - test@localhost" />
-        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
-      </PATH_ELEMENT>
-    </PATH>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -61,23 +55,42 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="labeled_crawler_7tin.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/labeled_crawler_7tin.py">
+      <file leaf-file-name="labeled_crawler_sinavr.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/labeled_crawler_sinavr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-210">
-              <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-              <folding />
+            <state relative-caret-position="390">
+              <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+              <folding>
+                <element signature="e#15#29#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="labeled_crawler_sinavr.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/labeled_crawler_sinavr.py">
+      <file leaf-file-name="index.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="24" column="125" selection-start-line="24" selection-start-column="121" selection-end-line="24" selection-end-column="125" />
+            <state relative-caret-position="255">
+              <caret line="54" column="28" selection-start-line="54" selection-start-column="28" selection-end-line="54" selection-end-column="28" />
               <folding>
-                <element signature="e#15#29#0" expanded="true" />
+                <element signature="e#15#33#0" expanded="true" />
+                <element signature="e#670#1249#0" expanded="false" />
+                <element signature="e#8639#10750#0" expanded="false" />
+                <marker date="1474289331069" expanded="true" signature="1287:1308" placeholder="select count... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="2283:2377" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="2554:2631" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="2701:2758" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="4362:4476" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="4575:4668" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="4758:4833" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="6560:6648" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="6772:6860" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="6926:6995" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="8905:9009" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="9097:9201" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="9279:9366" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="10968:11007" placeholder="select id, c... missing_value" />
+                <marker date="1474289331069" expanded="true" signature="12007:12081" placeholder="select id fr... missing_value" />
               </folding>
             </state>
           </provider>
@@ -86,7 +99,7 @@
       <file leaf-file-name="labeled_crawler_varkr.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labeled_crawler_varkr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
+            <state relative-caret-position="345">
               <caret line="32" column="73" selection-start-line="32" selection-start-column="73" selection-end-line="32" selection-end-column="73" />
               <folding />
             </state>
@@ -96,56 +109,44 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
-              <caret line="65" column="88" selection-start-line="65" selection-start-column="88" selection-end-line="65" selection-end-column="88" />
+            <state relative-caret-position="1815">
+              <caret line="121" column="41" selection-start-line="121" selection-start-column="41" selection-end-line="121" selection-end-column="41" />
               <folding>
                 <element signature="e#15#26#0" expanded="true" />
-                <marker date="1474253241672" expanded="true" signature="3675:3697" placeholder="select count... missing_value" />
-                <marker date="1474253241672" expanded="true" signature="4371:4406" placeholder="update missi... " />
+                <marker date="1474274738890" expanded="true" signature="3651:3673" placeholder="select count... missing_value" />
+                <marker date="1474274738890" expanded="true" signature="4347:4382" placeholder="update missi... " />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="labeled_crawler_ailab.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/labeled_crawler_ailab.py">
+      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="labeled_crawler_vrguancha.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/labeled_crawler_vrguancha.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1035">
-              <caret line="78" column="27" selection-start-line="78" selection-start-column="27" selection-end-line="78" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="labeled_crawler.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/labeled_crawler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1395">
-              <caret line="97" column="37" selection-start-line="97" selection-start-column="37" selection-end-line="97" selection-end-column="37" />
+            <state relative-caret-position="4440">
+              <caret line="296" column="11" selection-start-line="296" selection-start-column="11" selection-end-line="296" selection-end-column="11" />
               <folding>
-                <marker date="1474212164189" expanded="true" signature="2121:2181" placeholder="insert into missing_value... " />
-                <marker date="1474212164189" expanded="true" signature="3177:3198" placeholder="DROP TABLE I... " />
-                <marker date="1474212164189" expanded="true" signature="3237:3448" placeholder="CREATE TABLE... missing_value" />
+                <element signature="e#15#24#0" expanded="true" />
+                <marker date="1474281791158" expanded="true" signature="4401:4442" placeholder="select disti... article_cat" />
+                <marker date="1474281791158" expanded="true" signature="4609:4675" placeholder="select id, c... article_cat" />
+                <marker date="1474281791158" expanded="true" signature="5921:5953" placeholder="select count... article_cat" />
+                <marker date="1474281791158" expanded="true" signature="6010:6046" placeholder="select id, c... article_cat" />
+                <marker date="1474281791158" expanded="true" signature="6010:6058" placeholder="select id, c... article_cat" />
+                <marker date="1474281791158" expanded="true" signature="7203:7233" placeholder="select disti... article_cat" />
+                <marker date="1474281791158" expanded="true" signature="7203:7253" placeholder="select disti... article_cat" />
+                <marker date="1474281791158" expanded="true" signature="7416:7463" placeholder="select id fr... article_cat" />
+                <marker date="1474281791158" expanded="true" signature="8476:8526" placeholder="select disti... missing_value" />
+                <marker date="1474281791158" expanded="true" signature="8689:8736" placeholder="select id fr... missing_value" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="console.sql" pinned="false" current-in-tab="true">
+      <file leaf-file-name="console.sql" pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/b6af8732-8cce-4491-8450-4030df228f35/console.sql">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="5" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -154,40 +155,66 @@
       <file leaf-file-name="segmenter.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/segmenter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2445">
-              <caret line="170" column="34" selection-start-line="170" selection-start-column="34" selection-end-line="170" selection-end-column="34" />
+            <state relative-caret-position="2100">
+              <caret line="147" column="8" selection-start-line="147" selection-start-column="8" selection-end-line="147" selection-end-column="8" />
               <folding>
-                <marker date="1474213617086" expanded="true" signature="1260:1281" placeholder="select count... missing_value" />
+                <marker date="1474259449124" expanded="true" signature="1272:1293" placeholder="select count... missing_value" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="classifier.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="classifier.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1506">
-              <caret line="208" column="17" selection-start-line="208" selection-start-column="17" selection-end-line="208" selection-end-column="17" />
+            <state relative-caret-position="109">
+              <caret line="353" column="57" selection-start-line="353" selection-start-column="57" selection-end-line="353" selection-end-column="57" />
               <folding>
                 <element signature="e#15#29#0" expanded="true" />
-                <marker date="1474192073088" expanded="true" signature="2224:2249" placeholder="select id, c... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="5189:5214" placeholder="select id, c... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="5309:5331" placeholder="select count... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="8378:8403" placeholder="select count... " />
-                <marker date="1474192073088" expanded="true" signature="8378:8405" placeholder="select count... " />
-                <marker date="1474192073088" expanded="true" signature="11516:11546" placeholder="update missi... " />
-                <marker date="1474192073088" expanded="true" signature="11668:11683" placeholder="select id, c... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="11668:11701" placeholder="select id fr... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="12418:12444" placeholder="update missi... " />
-                <marker date="1474192073088" expanded="true" signature="12418:12456" placeholder="update missi... " />
-                <marker date="1474192073088" expanded="true" signature="12683:12729" placeholder="select id, s... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="12683:12750" placeholder="select id, s... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="12683:12759" placeholder="select id, s... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="13892:13925" placeholder="select id fr... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="14605:14643" placeholder="update missi... " />
-                <marker date="1474192073088" expanded="true" signature="14611:14631" placeholder="select id fr... missing_value" />
-                <marker date="1474192073088" expanded="true" signature="14611:14639" placeholder="select id fr... missing_value" />
+                <element signature="e#4635#7365#0" expanded="false" />
+                <element signature="e#7407#8497#0" expanded="false" />
+                <element signature="e#8535#10248#0" expanded="false" />
+                <marker date="1474282104126" expanded="true" signature="2615:2640" placeholder="select id, c... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="5555:5580" placeholder="select id, c... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="5675:5697" placeholder="select count... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="8744:8769" placeholder="select count... " />
+                <marker date="1474282104126" expanded="true" signature="8744:8771" placeholder="select count... " />
+                <marker date="1474282104126" expanded="true" signature="10880:10910" placeholder="update missi... " />
+                <marker date="1474282104126" expanded="true" signature="11032:11047" placeholder="select id, c... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="11032:11065" placeholder="select id fr... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="11782:11808" placeholder="update missi... " />
+                <marker date="1474282104126" expanded="true" signature="11782:11820" placeholder="update missi... " />
+                <marker date="1474282104126" expanded="true" signature="12047:12093" placeholder="select id, s... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="12047:12114" placeholder="select id, s... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="12047:12123" placeholder="select id, s... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="13250:13283" placeholder="select id fr... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="13926:13964" placeholder="update missi... " />
+                <marker date="1474282104126" expanded="true" signature="13932:13952" placeholder="select id fr... missing_value" />
+                <marker date="1474282104126" expanded="true" signature="13932:13960" placeholder="select id fr... missing_value" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="myutils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/myutils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="766">
+              <caret line="124" column="29" selection-start-line="124" selection-start-column="22" selection-end-line="124" selection-end-column="29" />
+              <folding>
+                <element signature="e#15#27#0" expanded="true" />
+                <marker date="1474282104144" expanded="true" signature="2274:2295" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="clustering.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/clustering.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1170">
+              <caret line="92" column="23" selection-start-line="92" selection-start-column="23" selection-end-line="92" selection-end-column="23" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -235,29 +262,29 @@
         <option value="$PROJECT_DIR$/crawler.py" />
         <option value="$PROJECT_DIR$/templates/index_v2.html" />
         <option value="$PROJECT_DIR$/clustering.py" />
-        <option value="$PROJECT_DIR$/index.py" />
         <option value="C:/Users/text_classification.py" />
         <option value="$PROJECT_DIR$/recommender.py" />
         <option value="$PROJECT_DIR$/recommender_memory_based.py" />
-        <option value="$PROJECT_DIR$/myutils.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_sootoo.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_leiphone.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_baidu.py" />
-        <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_ailab.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_kanchai.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_lieyun.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_yiou.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_iheima.py" />
-        <option value="$PROJECT_DIR$/classifier.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_7tin.py" />
         <option value="$PROJECT_DIR$/labeled_crawler.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_vrguancha.py" />
-        <option value="$PROJECT_DIR$/segmenter.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_sinavr.py" />
         <option value="$PROJECT_DIR$/labeled_crawler_varkr.py" />
+        <option value="$PROJECT_DIR$/segmenter.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/test.py" />
+        <option value="$PROJECT_DIR$/myutils.py" />
+        <option value="$PROJECT_DIR$/classifier.py" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/b6af8732-8cce-4491-8450-4030df228f35/console.sql" />
+        <option value="$PROJECT_DIR$/index.py" />
       </list>
     </option>
   </component>
@@ -270,8 +297,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1616" />
-    <option name="height" value="876" />
+    <option name="width" value="1296" />
+    <option name="height" value="776" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -337,9 +364,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches">
-        <subPane />
-      </pane>
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -353,6 +377,9 @@
             </PATH_ELEMENT>
           </PATH>
         </subPane>
+      </pane>
+      <pane id="Scratches">
+        <subPane />
       </pane>
     </panes>
   </component>
@@ -373,7 +400,7 @@
       <recent name="D:\git\article-recommender-system" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.classifier">
     <configuration default="false" name="classifier" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -392,60 +419,6 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="segmenter" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="article-recommender-system" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/segmenter.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="labeled_crawler_sinavr" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="article-recommender-system" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/labeled_crawler_sinavr.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="labeled_crawler_varkr" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="article-recommender-system" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/labeled_crawler_varkr.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -460,6 +433,60 @@
       <module name="article-recommender-system" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="article-recommender-system" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="index" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="article-recommender-system" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/index.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="myutils" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="article-recommender-system" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/myutils.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -674,18 +701,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.classifier" />
-      <item index="1" class="java.lang.String" itemvalue="Python.segmenter" />
-      <item index="2" class="java.lang.String" itemvalue="Python.labeled_crawler_sinavr" />
-      <item index="3" class="java.lang.String" itemvalue="Python.labeled_crawler_varkr" />
-      <item index="4" class="java.lang.String" itemvalue="Python.main" />
+      <item index="1" class="java.lang.String" itemvalue="Python.main" />
+      <item index="2" class="java.lang.String" itemvalue="Python.test" />
+      <item index="3" class="java.lang.String" itemvalue="Python.index" />
+      <item index="4" class="java.lang.String" itemvalue="Python.myutils" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.labeled_crawler_varkr" />
-        <item index="2" class="java.lang.String" itemvalue="Python.labeled_crawler_sinavr" />
-        <item index="3" class="java.lang.String" itemvalue="Python.classifier" />
-        <item index="4" class="java.lang.String" itemvalue="Python.segmenter" />
+        <item index="0" class="java.lang.String" itemvalue="Python.classifier" />
+        <item index="1" class="java.lang.String" itemvalue="Python.index" />
+        <item index="2" class="java.lang.String" itemvalue="Python.myutils" />
+        <item index="3" class="java.lang.String" itemvalue="Python.test" />
+        <item index="4" class="java.lang.String" itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -717,7 +744,14 @@
       <option name="project" value="LOCAL" />
       <updated>1474247281650</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="增加VR新闻爬虫">
+      <created>1474253518662</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1474253518662</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -730,28 +764,28 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928476" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3805668" sideWeight="0.50253487" order="13" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34952766" sideWeight="0.4809886" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35101405" sideWeight="0.4809886" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32793522" sideWeight="0.49746513" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928476" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928476" sideWeight="0.49746513" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32928476" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18631178" sideWeight="0.49196786" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928476" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2337043" sideWeight="0.49196786" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884097" sideWeight="0.48542458" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3805668" sideWeight="0.49746513" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3280507" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3787062" sideWeight="0.49746513" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16159695" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44264507" sideWeight="0.49" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.44149765" sideWeight="0.49" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18631178" sideWeight="0.50803214" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32793522" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -769,7 +803,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="lda类的一些变量和函数重命名，增加可读性" />
     <MESSAGE value="增加爬虫" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加爬虫" />
+    <MESSAGE value="增加VR新闻爬虫" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加VR新闻爬虫" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -821,12 +856,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/index.py</url>
-          <line>158</line>
+          <line>173</line>
           <option name="timeStamp" value="214" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>121</line>
+          <line>120</line>
           <option name="timeStamp" value="216" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
@@ -846,22 +881,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/myutils.py</url>
-          <line>100</line>
+          <line>101</line>
           <option name="timeStamp" value="267" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/index.py</url>
-          <line>172</line>
+          <line>187</line>
           <option name="timeStamp" value="280" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/classifier.py</url>
-          <line>108</line>
+          <line>118</line>
           <option name="timeStamp" value="287" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/classifier.py</url>
-          <line>154</line>
+          <line>164</line>
           <option name="timeStamp" value="291" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
@@ -883,11 +918,6 @@
           <url>file://$PROJECT_DIR$/labeled_crawler_lieyun.py</url>
           <line>104</line>
           <option name="timeStamp" value="302" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/classifier.py</url>
-          <line>339</line>
-          <option name="timeStamp" value="314" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/labeled_crawler_7tin.py</url>
@@ -914,6 +944,11 @@
           <line>32</line>
           <option name="timeStamp" value="327" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/classifier.py</url>
+          <line>365</line>
+          <option name="timeStamp" value="330" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -925,7 +960,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="329" />
+      <option name="time" value="331" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -934,8 +969,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Anaconda2/Lib/site-packages/numpy/core/numeric.py" />
-    <entry file="file://C:/Anaconda2/Lib/site-packages/gensim/models/ldamodel.py" />
     <entry file="file://C:/Anaconda2/Lib/site-packages/treelib/node.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1013,13 +1046,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/clustering.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="177" column="42" selection-start-line="177" selection-start-column="42" selection-end-line="177" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2016.1/system/python_stubs/884504192/exceptions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1567">
@@ -1052,25 +1078,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="348">
           <caret line="908" column="0" selection-start-line="908" selection-start-column="0" selection-end-line="908" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="295" column="16" selection-start-line="295" selection-start-column="16" selection-end-line="295" selection-end-column="16" />
-          <folding>
-            <marker date="1474162330167" expanded="true" signature="4367:4408" placeholder="select disti... article_cat" />
-            <marker date="1474162330167" expanded="true" signature="4575:4641" placeholder="select id, c... article_cat" />
-            <marker date="1474162330167" expanded="true" signature="5887:5919" placeholder="select count... article_cat" />
-            <marker date="1474162330167" expanded="true" signature="5976:6012" placeholder="select id, c... article_cat" />
-            <marker date="1474162330167" expanded="true" signature="5976:6024" placeholder="select id, c... article_cat" />
-            <marker date="1474162330167" expanded="true" signature="7169:7199" placeholder="select disti... article_cat" />
-            <marker date="1474162330167" expanded="true" signature="7169:7219" placeholder="select disti... article_cat" />
-            <marker date="1474162330167" expanded="true" signature="7382:7429" placeholder="select id fr... article_cat" />
-            <marker date="1474162330167" expanded="true" signature="8442:8492" placeholder="select disti... missing_value" />
-            <marker date="1474162330167" expanded="true" signature="8655:8702" placeholder="select id fr... missing_value" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1121,7 +1128,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3080">
           <caret line="22" column="83" selection-start-line="22" selection-start-column="83" selection-end-line="22" selection-end-column="83" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1129,7 +1135,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="33" column="101" selection-start-line="33" selection-start-column="101" selection-end-line="33" selection-end-column="101" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1137,7 +1142,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="26" column="100" selection-start-line="26" selection-start-column="100" selection-end-line="26" selection-end-column="100" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1169,41 +1173,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="40" column="23" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/myutils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-          <folding>
-            <marker date="1473831846022" expanded="true" signature="2239:2260" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1845">
-          <caret line="210" column="63" selection-start-line="210" selection-start-column="63" selection-end-line="210" selection-end-column="63" />
-          <folding>
-            <element signature="e#622#1201#0" expanded="false" />
-            <element signature="e#3539#5501#0" expanded="false" />
-            <marker date="1472793367042" expanded="true" signature="1239:1260" placeholder="select count... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="2081:2158" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="2228:2285" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="3739:3832" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="3922:3997" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="5724:5812" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="5936:6024" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="6090:6159" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="8069:8173" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="8261:8365" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="8443:8530" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="10132:10171" placeholder="select id, c... missing_value" />
-            <marker date="1472793367042" expanded="true" signature="11171:11245" placeholder="select id fr... missing_value" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1211,7 +1180,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1219,11 +1187,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1395">
           <caret line="97" column="37" selection-start-line="97" selection-start-column="37" selection-end-line="97" selection-end-column="37" />
-          <folding>
-            <marker date="1474212164189" expanded="true" signature="2121:2181" placeholder="insert into missing_value... " />
-            <marker date="1474212164189" expanded="true" signature="3177:3198" placeholder="DROP TABLE I... " />
-            <marker date="1474212164189" expanded="true" signature="3237:3448" placeholder="CREATE TABLE... missing_value" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1235,77 +1198,108 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/segmenter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2445">
-          <caret line="170" column="34" selection-start-line="170" selection-start-column="34" selection-end-line="170" selection-end-column="34" />
-          <folding>
-            <marker date="1474213617086" expanded="true" signature="1260:1281" placeholder="select count... missing_value" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1506">
-          <caret line="208" column="17" selection-start-line="208" selection-start-column="17" selection-end-line="208" selection-end-column="17" />
-          <folding>
-            <element signature="e#15#29#0" expanded="true" />
-            <marker date="1474192073088" expanded="true" signature="2224:2249" placeholder="select id, c... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="5189:5214" placeholder="select id, c... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="5309:5331" placeholder="select count... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="8378:8403" placeholder="select count... " />
-            <marker date="1474192073088" expanded="true" signature="8378:8405" placeholder="select count... " />
-            <marker date="1474192073088" expanded="true" signature="11516:11546" placeholder="update missi... " />
-            <marker date="1474192073088" expanded="true" signature="11668:11683" placeholder="select id, c... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="11668:11701" placeholder="select id fr... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="12418:12444" placeholder="update missi... " />
-            <marker date="1474192073088" expanded="true" signature="12418:12456" placeholder="update missi... " />
-            <marker date="1474192073088" expanded="true" signature="12683:12729" placeholder="select id, s... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="12683:12750" placeholder="select id, s... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="12683:12759" placeholder="select id, s... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="13892:13925" placeholder="select id fr... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="14605:14643" placeholder="update missi... " />
-            <marker date="1474192073088" expanded="true" signature="14611:14631" placeholder="select id fr... missing_value" />
-            <marker date="1474192073088" expanded="true" signature="14611:14639" placeholder="select id fr... missing_value" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/labeled_crawler_7tin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-210">
+        <state relative-caret-position="60">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/labeled_crawler_sinavr.py">
+    <entry file="file://$PROJECT_DIR$/segmenter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="24" column="125" selection-start-line="24" selection-start-column="121" selection-end-line="24" selection-end-column="125" />
+        <state relative-caret-position="2100">
+          <caret line="147" column="8" selection-start-line="147" selection-start-column="8" selection-end-line="147" selection-end-column="8" />
           <folding>
-            <element signature="e#15#29#0" expanded="true" />
+            <marker date="1474259449124" expanded="true" signature="1272:1293" placeholder="select count... missing_value" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/labeled_crawler_varkr.py">
+    <entry file="file://C:/Anaconda2/Lib/site-packages/sklearn/feature_extraction/text.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="32" column="73" selection-start-line="32" selection-start-column="73" selection-end-line="32" selection-end-column="73" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clustering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1170">
+          <caret line="92" column="23" selection-start-line="92" selection-start-column="23" selection-end-line="92" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="65" column="88" selection-start-line="65" selection-start-column="88" selection-end-line="65" selection-end-column="88" />
+        <state relative-caret-position="1815">
+          <caret line="121" column="41" selection-start-line="121" selection-start-column="41" selection-end-line="121" selection-end-column="41" />
           <folding>
             <element signature="e#15#26#0" expanded="true" />
-            <marker date="1474253241672" expanded="true" signature="3675:3697" placeholder="select count... missing_value" />
-            <marker date="1474253241672" expanded="true" signature="4371:4406" placeholder="update missi... " />
+            <marker date="1474274738890" expanded="true" signature="3651:3673" placeholder="select count... missing_value" />
+            <marker date="1474274738890" expanded="true" signature="4347:4382" placeholder="update missi... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/labeled_crawler_varkr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="32" column="73" selection-start-line="32" selection-start-column="73" selection-end-line="32" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/labeled_crawler_sinavr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding>
+            <element signature="e#15#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/5a940aba/b6af8732-8cce-4491-8450-4030df228f35/test.article150801160830">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4440">
+          <caret line="296" column="11" selection-start-line="296" selection-start-column="11" selection-end-line="296" selection-end-column="11" />
+          <folding>
+            <element signature="e#15#24#0" expanded="true" />
+            <marker date="1474281791158" expanded="true" signature="4401:4442" placeholder="select disti... article_cat" />
+            <marker date="1474281791158" expanded="true" signature="4609:4675" placeholder="select id, c... article_cat" />
+            <marker date="1474281791158" expanded="true" signature="5921:5953" placeholder="select count... article_cat" />
+            <marker date="1474281791158" expanded="true" signature="6010:6046" placeholder="select id, c... article_cat" />
+            <marker date="1474281791158" expanded="true" signature="6010:6058" placeholder="select id, c... article_cat" />
+            <marker date="1474281791158" expanded="true" signature="7203:7233" placeholder="select disti... article_cat" />
+            <marker date="1474281791158" expanded="true" signature="7203:7253" placeholder="select disti... article_cat" />
+            <marker date="1474281791158" expanded="true" signature="7416:7463" placeholder="select id fr... article_cat" />
+            <marker date="1474281791158" expanded="true" signature="8476:8526" placeholder="select disti... missing_value" />
+            <marker date="1474281791158" expanded="true" signature="8689:8736" placeholder="select id fr... missing_value" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/myutils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="766">
+          <caret line="124" column="29" selection-start-line="124" selection-start-column="22" selection-end-line="124" selection-end-column="29" />
+          <folding>
+            <element signature="e#15#27#0" expanded="true" />
+            <marker date="1474282104144" expanded="true" signature="2274:2295" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1313,8 +1307,65 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/b6af8732-8cce-4491-8450-4030df228f35/console.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="5" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="54" column="28" selection-start-line="54" selection-start-column="28" selection-end-line="54" selection-end-column="28" />
+          <folding>
+            <element signature="e#15#33#0" expanded="true" />
+            <element signature="e#670#1249#0" expanded="false" />
+            <element signature="e#8639#10750#0" expanded="false" />
+            <marker date="1474289331069" expanded="true" signature="1287:1308" placeholder="select count... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="2283:2377" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="2554:2631" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="2701:2758" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="4362:4476" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="4575:4668" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="4758:4833" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="6560:6648" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="6772:6860" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="6926:6995" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="8905:9009" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="9097:9201" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="9279:9366" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="10968:11007" placeholder="select id, c... missing_value" />
+            <marker date="1474289331069" expanded="true" signature="12007:12081" placeholder="select id fr... missing_value" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="353" column="57" selection-start-line="353" selection-start-column="57" selection-end-line="353" selection-end-column="57" />
+          <folding>
+            <element signature="e#15#29#0" expanded="true" />
+            <element signature="e#4635#7365#0" expanded="false" />
+            <element signature="e#7407#8497#0" expanded="false" />
+            <element signature="e#8535#10248#0" expanded="false" />
+            <marker date="1474282104126" expanded="true" signature="2615:2640" placeholder="select id, c... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="5555:5580" placeholder="select id, c... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="5675:5697" placeholder="select count... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="8744:8769" placeholder="select count... " />
+            <marker date="1474282104126" expanded="true" signature="8744:8771" placeholder="select count... " />
+            <marker date="1474282104126" expanded="true" signature="10880:10910" placeholder="update missi... " />
+            <marker date="1474282104126" expanded="true" signature="11032:11047" placeholder="select id, c... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="11032:11065" placeholder="select id fr... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="11782:11808" placeholder="update missi... " />
+            <marker date="1474282104126" expanded="true" signature="11782:11820" placeholder="update missi... " />
+            <marker date="1474282104126" expanded="true" signature="12047:12093" placeholder="select id, s... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="12047:12114" placeholder="select id, s... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="12047:12123" placeholder="select id, s... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="13250:13283" placeholder="select id fr... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="13926:13964" placeholder="update missi... " />
+            <marker date="1474282104126" expanded="true" signature="13932:13952" placeholder="select id fr... missing_value" />
+            <marker date="1474282104126" expanded="true" signature="13932:13960" placeholder="select id fr... missing_value" />
+          </folding>
         </state>
       </provider>
     </entry>

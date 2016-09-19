@@ -45,7 +45,7 @@ def fetch_nonlabeled_data():
 
     seg = Segmenter(proj_name=proj_name)
     seg.seg()
-    seg.join_seg_file()
+    seg.join_segfile()
 
 
 def fetch_labeled_data():
@@ -68,12 +68,11 @@ def fetch_labeled_data():
 
     seg = Segmenter(proj_name=proj_name)
     seg.seg(skip_exist=True)
-    seg.join_seg_file()
+    seg.join_segfile()
 
 
 def train_label():
     db = ArticleDB()
-    dumper = Dumper()
     test_proj_name = "article150801160830"
     test_seg_dir = test_proj_name + "/seg/"
     test_obj_dir = test_proj_name + "/clf_tfidf/"
@@ -85,8 +84,8 @@ def train_label():
     print "1. trainning tfidf clf..."
     # clf = TextClassifierTfidf(project_name="article_cat")
     # clf.train()
-    # dumper.dump(clf, "tfidf_clf.dat")
-    clf = dumper.load("tfidf_clf.dat")
+    # Dumper.save(clf, "tfidf_clf.dat")
+    clf = Dumper.load("tfidf_clf.dat")
 
     # 获取测试语料库文档数量
     results = db.execute("select count(id) from %s" % test_proj_name)
@@ -122,9 +121,9 @@ def train_label():
     for i in xrange(test_count):
         print "%d/%d" % (i+1, test_count)
         obj_name = test_obj_dir + str(i+1)
-        dumper.save(tfidf_vectors[i, :], obj_name)
+        Dumper.save(tfidf_vectors[i, :], obj_name)
 
     print "ok, successfully complete!"
 
 if __name__ == '__main__':
-    fetch_labeled_data()
+    train_label()

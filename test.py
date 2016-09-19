@@ -13,7 +13,7 @@ import os
 from myutils import ArticleDB
 import shutil
 import json
-
+from collections import namedtuple
 # here is ubuntu
 
 def add_n_to_file():
@@ -292,6 +292,7 @@ def time_normalize(str_time, time_format='%Y-%m-%d %H:%M:%S'):
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ftime))
 
 if __name__ == "__main__":
-    a = "hello"
-    l = a.split()
-    print l
+    SubCat = namedtuple("dfdf", ['id', 'name', 'tags'])
+    c = SubCat("a", "b", "c")
+    print c
+

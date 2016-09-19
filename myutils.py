@@ -4,6 +4,7 @@ import pickle
 import MySQLdb
 import re
 from collections import defaultdict
+from collections import namedtuple
 
 
 # 文章结构
@@ -223,6 +224,31 @@ class FreqCharUtil:
                 vec[i] = char_dict[self.freq_chars[i].char] * 1000.0 / char_count;
                 vec[i] = vec[i] / self.freq_chars[i].freq / 2
         return vec
+
+
+def read_cat2subcat(subcat_profile):
+    category = Category()
+    print "reading sub-category profile..."
+    SubCat = namedtuple("SubCat", ['id', 'name', 'tags'])
+    ccat = 50
+    cat2subcat = defaultdict(lambda: [])
+    tag2id = defaultdict(lambda: {})
+
+    with open(subcat_profile, "r") as subfile:
+        for line in subfile:
+            line = line.strip()
+            if line.startswith("CATEGORY"):
+                _, fcat = line.split(":")
+                fcat = category.c2n[fcat]
+            elif len(line) > 0 and line[0] != '#':
+                ccat += 1
+                name, tags = line.split(":")
+                tags = set(tags.split(" "))
+                for tag in tags:
+                    tag2id[fcat][tag] = ccat
+                subcat = SubCat(ccat, name, tags)
+                cat2subcat[fcat].append(subcat)
+    return cat2subcat, tag2id
 
 if __name__ == "__main__":
     stopsent = StopSent()

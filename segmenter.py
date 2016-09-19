@@ -16,18 +16,18 @@ class Segmenter:
         self.seg_dir = proj_name + "/seg"
         self.seg_join_dir = proj_name + "/seg_join"
         self.tt_dir = proj_name + "/tt"  # title和tags的分词
-        self.pos_seg_dir = proj_name + "/pos_seg"
+        self.seg_pos_dir = proj_name + "/seg_pos" # 词性过滤的分词结果
         if rm_exist:
             shutil.rmtree(self.seg_dir, ignore_errors=True)
             shutil.rmtree(self.seg_join_dir, ignore_errors=True)
             shutil.rmtree(self.tt_dir, ignore_errors=True)
-            shutil.rmtree(self.pos_seg_dir, ignore_errors=True)
+            shutil.rmtree(self.seg_pos_dir, ignore_errors=True)
 
         try:
             os.makedirs(self.seg_dir)
             os.makedirs(self.seg_join_dir)
             os.makedirs(self.tt_dir)
-            os.makedirs(self.pos_seg_dir)
+            os.makedirs(self.seg_pos_dir)
         except:
             pass
 
@@ -74,14 +74,14 @@ class Segmenter:
             os.rename(tmp_name, seg_name)
 
     # 分词(带词性过滤)
-    def pos_seg(self):
+    def seg_tagged(self):
         segtool = pseg
         # 遍历所有文件，进行分词
         for i in range(1, self.doc_count + 1):
             print ("\r%d/%d" % (i, self.doc_count))
             txt_name = "%s/txt/%d" % (self.proj_name, i)
-            tmp_name = "%s/pos_seg/%d.tmp" % (self.proj_name, i)
-            seg_name = "%s/pos_seg/%d" % (self.proj_name, i)
+            tmp_name = "%s/seg_pos/%d.tmp" % (self.proj_name, i)
+            seg_name = "%s/seg_pos/%d" % (self.proj_name, i)
             doc = []
             with open(txt_name, "r") as txt_file, open(tmp_name, "w") as tmp_file:
                 for line in txt_file.readlines():
@@ -98,7 +98,8 @@ class Segmenter:
             os.rename(tmp_name, seg_name)
 
     # 对标题和标签分词
-    def seg_title_tags(self):
+    def seg_tt(self):
+        segtool = jieba
         # 遍历所有文件，进行分词
         for i in range(1, self.doc_count + 1):
             print ("\r%d/%d" % (i, self.doc_count))
@@ -109,7 +110,7 @@ class Segmenter:
             with open(txt_name, "r") as txt_file, open(tmp_name, "w") as tmp_file:
                 lines = [txt_file.readline(), txt_file.readline()]
                 for sentence in lines:
-                    words = self.segtool.cut(sentence)
+                    words = segtool.cut(sentence)
                     words = [word.encode("utf-8") for word in words]  # jieba need, thulac skip this code
                     words = [word for word in words if not self.stop_word.is_stop_word(word)]
                     doc.append(" ".join(words) + "\n")
@@ -117,7 +118,7 @@ class Segmenter:
             os.rename(tmp_name, seg_name)
 
     # 将分词后的每个小文件代表一个文档，将这些文件拼接成一个大文件，大文件每行代表一个文档
-    def join_seg_file(self):
+    def join_segfile(self):
         corpus = []
         for i in range(1, self.doc_count + 1):
             seg_name = "%s/%d" % (self.seg_dir, i)
@@ -131,17 +132,17 @@ class Segmenter:
             seg_join_file.write(corpus)
 
     # 将分词后的每个小文件代表一个文档，将这些文件拼接成一个大文件，大文件每行代表一个文档
-    def join_pos_seg_file(self):
+    def join_segfile_tagged(self):
         corpus = []
         for i in range(1, self.doc_count + 1):
-            seg_name = "%s/pos_seg/%d" % (self.proj_name, i)
+            seg_name = "%s/seg_pos/%d" % (self.proj_name, i)
             with open(seg_name, "r") as seg_file:
                 lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
                 doc = " ".join(lines)
                 corpus.append(doc)
 
         corpus = "\n".join(corpus)
-        with open(self.seg_join_dir + "/corpus1.txt", "w") as seg_join_file:
+        with open(self.seg_join_dir + "/corpus_pos.txt", "w") as seg_join_file:
             seg_join_file.write(corpus)
 
     # 分句
@@ -165,9 +166,9 @@ class Segmenter:
 
 if __name__ == "__main__":
     segmenter = Segmenter("article_cat")
-    # segmenter.seg_title_tags()
-    # segmenter.pos_seg()
-    # segmenter.join_pos_seg_file()
-    segmenter.seg(skip_exist=True)
-    segmenter.join_seg_file()
+    # segmenter.seg_tt()
+    segmenter.seg_tagged()
+    segmenter.join_segfile_tagged()
+    # segmenter.seg(skip_exist=True)
+    # segmenter.join_seg_file()
 

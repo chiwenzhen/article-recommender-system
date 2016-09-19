@@ -4,7 +4,7 @@ import random
 from flask import Flask, render_template, request, jsonify, render_template, url_for, send_from_directory
 from flask import send_file
 import time
-from myutils import Category, CompareUnit
+from myutils import Category, CompareUnit, read_cat2subcat
 import sys
 from myutils import ArticleDB
 from myutils import TopkHeap, Dumper
@@ -18,7 +18,8 @@ app = Flask(__name__)
 
 db = ArticleDB()
 
-project_name = "article150801160830"
+# project_name = "article150801160830"
+project_name = "article_cat"
 txt_dir = project_name + "/txt/"
 attr_dir = project_name + "/attr/"
 category_dict = Category()
@@ -51,11 +52,12 @@ thumbs = [
 
 # 加载tfidf对象文件
 doc_num = db.execute("select count(*) from %s" % project_name)[0][0]
-tfidf_vectors = [None] * doc_num
-for i in xrange(doc_num):
-    print "loading %d/%d" % (i, doc_num)
-    obj_name = "%s/clf_tfidf/%d" % (project_name, i + 1)
-    tfidf_vectors[i] = Dumper.load(obj_name)
+# tfidf_vectors = [0.0] * doc_num
+# for i in xrange(doc_num):
+#     print "\rloading %d/%d" % (i, doc_num),
+#     obj_name = "%s/clf_tfidf/%d" % (project_name, i + 1)
+#     tfidf_vectors[i] = Dumper.load(obj_name)
+# print ""
 
 # 创建类别标签
 cat_tree = Tree()
@@ -69,13 +71,22 @@ for i in range(10):
         cat_tree.create_node((cur, str(cur)), cur, parent=i)
     offset += 5
 
+cat2subcat, tag2id = read_cat2subcat("subcat")
+
 
 # 分类版：文章列表首页
 @app.route('/')
 def main():
     category_id = 0
+    subcate_id = 0
     eng_category = request.args.get('category')
-    if (eng_category is not None) and (category_dict.e2n[eng_category.encode("utf-8")] is not None):
+    subcategory = request.args.get('subcategory')
+    if eng_category is not None and subcategory is not None:
+        category_id = category_dict.e2n[eng_category.encode("utf-8")]
+        subcate_id = int(subcategory.encode("utf-8"))
+        sql = "select id, category from %s where category=%d and subcategory=%d order by time desc limit 0,10" % (
+            project_name, category_id, subcate_id)
+    elif eng_category is not None:
         category_id = category_dict.e2n[eng_category.encode("utf-8")]
         sql = "select id, category from %s where category = %d order by time desc limit 0,10" % (
             project_name, category_id)
@@ -106,16 +117,20 @@ def main():
         article_infos.append(
             [a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
     last_dateline = article_infos[-1][1]
-    return render_template('index.html', article_infos=article_infos, catid=category_id, last_dateline=last_dateline)
+    return render_template('index.html', article_infos=article_infos, catid=category_id, subcatid=subcate_id, last_dateline=last_dateline, category=Category(), cat2subcat=cat2subcat)
 
 
 # 分类版：文章列表次页（动态获取）
 @app.route('/article_list', methods=['GET', 'POST'])
 def article_list():
     catid = int(request.form.get('catid', 0).encode("utf-8"))
+    subcatid = int(request.form.get('subcatid', 0).encode("utf-8"))
     last_dateline = request.form.get('last_dateline', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 
-    if catid > 0:
+    if catid > 0 and subcatid > 0:
+        sql = "select id, category from %s where category = %d and subcategory = %d and time < '%s' order by time desc limit 0,10" % (
+            project_name, catid, subcatid, last_dateline)
+    elif catid > 0:
         sql = "select id, category from %s where category = %d and time < '%s' order by time desc limit 0,10" % (
             project_name, catid, last_dateline)
     elif catid == 0:

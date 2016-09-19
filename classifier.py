@@ -1,7 +1,7 @@
 # coding=utf-8
 import MySQLdb
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer, TfidfTransformer
+from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.cross_validation import train_test_split
@@ -16,7 +16,7 @@ import numpy
 from random import shuffle
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
-from myutils import ArticleDB, Dumper, StopWord, Category, FreqCharUtil
+from myutils import ArticleDB, Dumper, StopWord, Category, FreqCharUtil, read_cat2subcat
 from sklearn.cluster import KMeans
 import os
 import pandas as pd
@@ -30,6 +30,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from collections import defaultdict, namedtuple
 from sklearn.feature_selection import SelectKBest, chi2
+import dill
 
 
 class TextClassifierTfidf:
@@ -37,26 +38,36 @@ class TextClassifierTfidf:
         self.project_name = project_name
         self.texts = None
         self.labels = None
-        self.vect = CountVectorizer()
-        self.tfidf = TfidfTransformer()
+        self.tfidf = TfidfVectorizer()
         self.ch2 = SelectKBest(chi2, k=1000)
-        self.clf = LogisticRegression()
+        self.clf = SGDClassifier()
 
         self.pipeline = Pipeline([
-            ('vect', self.vect),
             ('tfidf', self.tfidf),
             ('chi2', self.ch2),
             ('clf', self.clf)])
         self.pipeline_transform = Pipeline([
-            ('vect', self.vect),
             ('tfidf', self.tfidf),
             ('chi2', self.ch2)])
+
+        # 使用lda主题分布作为分类依据，效果很差，准确率仅50%左右
+        # self.tf = CountVectorizer()
+        # self.lda = LatentDirichletAllocation(n_topics=10)
+        # self.clf = LogisticRegression()
+        #
+        # self.pipeline = Pipeline([
+        #     ('tf', self.tf),
+        #     ('lda', self.lda),
+        #     ('clf', self.clf)])
+        # self.pipeline_transform = Pipeline([
+        #     ('tf', self.tf),
+        #     ('lda', self.lda)])
 
     def train(self):
         db = ArticleDB()
         # 导入数据
         print "reading corpus.txt ..."
-        corpus_name = self.project_name + "/seg_join/corpus1.txt"
+        corpus_name = self.project_name + "/seg_join/corpus.txt"
         with open(corpus_name, "r") as corpus:
             self.texts = corpus.readlines()
         sql = "select id, category from %s" % self.project_name
@@ -100,7 +111,6 @@ class TextClassifierTfidf:
                 m[:, y] /= total
         category = Category()
         label_list = [category.n2c[i + 1] for i in xrange(1, 17)]
-        print label_list
         index = pd.Index(label_list, dtype=str)
         df = pd.DataFrame(m, index=index, columns=label_list)
         sns.set(style="white")
@@ -289,43 +299,17 @@ class TextClassifierSub:
     def __init__(self, project_name):
         self.project_name = project_name
         self.subcat_profile = "subcat"
-        self.texts = None
-        self.labels = None
-        self.vect = CountVectorizer()
-        self.tfidf = TfidfTransformer()
-        self.clf = LogisticRegression()
+        self.tfidf = TfidfVectorizer()
+        self.clf = SGDClassifier()
         self.pipeline = Pipeline([
-            ('vect', self.vect),
             ('tfidf', self.tfidf),
             ('clf', self.clf)])
         self.pipeline_transform = Pipeline([
-            ('vect', self.vect),
             ('tfidf', self.tfidf)])
 
     def train(self):
         # 读取子类分类规格文件
-        category = Category()
-        print "reading sub-category profile..."
-        SubCat = namedtuple("SubCat", ['id', 'name', 'tags'])
-        ccat = 50
-        cat2subcat = defaultdict(lambda: [])
-        tag2id = defaultdict(lambda: {})
-
-        subcats = []
-        with open(self.subcat_profile, "r") as subfile:
-            for line in subfile:
-                line = line.strip()
-                if line.startswith("CATEGORY"):
-                    _, fcat = line.split(":")
-                    fcat = category.c2n[fcat]
-                elif len(line) > 0 and line[0] != '#':
-                    ccat += 1
-                    name, tags = line.split(":")
-                    tags = set(tags.split(" "))
-                    for tag in tags:
-                        tag2id[fcat][tag] = ccat
-                    subcat = SubCat(ccat, name, tags)
-                    cat2subcat[fcat].append(subcat)
+        cat2subcat, tag2id = read_cat2subcat(self.subcat_profile)
 
         # 标注训练数据
         print "dividing category into sub-categories..."
@@ -378,22 +362,22 @@ class TextClassifierSub:
             y_pred = self.pipeline.predict(x_test)
             print(metrics.classification_report(y_test, y_pred))
 
-            # # 预测
-            # test_proj_name = "article150801160830"
-            # ids = db.execute("select id from %s where category=%s" % (test_proj_name, fcat))
-            # ids = [row[0] for row in ids]
-            # print "category %d: predicting new corpus..." % fcat
-            # for id in ids:
-            #     txt_name = "%s/seg/%d" % (test_proj_name, id)
-            #     with open(txt_name, "r") as seg_file:
-            #         lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
-            #         text = " ".join(lines)
-            #         x.append(text)
-            # y = self.pipeline.predict(x)
-            #
-            # print "category %d: writing predict result to sql..." % fcat
-            # for i, id in enumerate(ids):
-            #     db.execute("update %s set subcategory=%s where id=%d" % (test_proj_name, y[i], id))
+            # 预测
+            test_proj_name = "article150801160830"
+            ids = db.execute("select id from %s where category=%s" % (test_proj_name, fcat))
+            ids = [row[0] for row in ids]
+            print "category %d: predicting new corpus..." % fcat
+            for id in ids:
+                txt_name = "%s/seg/%d" % (test_proj_name, id)
+                with open(txt_name, "r") as seg_file:
+                    lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
+                    text = " ".join(lines)
+                    x.append(text)
+            y = self.pipeline.predict(x)
+
+            print "category %d: writing predict result to sql..." % fcat
+            for i, id in enumerate(ids):
+                db.execute("update %s set subcategory=%s where id=%d" % (test_proj_name, y[i], id))
 
         db.commit()
         db.close()
@@ -402,8 +386,12 @@ class TextClassifierSub:
         print "OK, all done!"
 
 if __name__ == "__main__":
+
     clf = TextClassifierSub(project_name="article_cat")
     clf.train()
+
+    # clf = TextClassifierSub(project_name="article_cat")
+    # clf.train()
 
     # stopword = StopWord("./stopwords_it.txt")
     # proj_name = "article150801160830"
