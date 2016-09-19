@@ -24,7 +24,7 @@ class LabeledCrawlerKanchai(LabeledCrawler):
         self.labeled_crawl("http://news.ikanchai.com/jiadian/", start_time, end_time, self.cat_dict["智能硬件"])
         self.labeled_crawl("http://news.ikanchai.com/shouyou/", start_time, end_time, self.cat_dict["游戏&直播"])
         self.labeled_crawl("http://www.ikanchai.com/vr/", start_time, end_time, self.cat_dict["VR"])
-        self.labeled_crawl("http://www.ikanchai.com/start/", start_time, end_time, self.cat_dict["资本"])
+        self.labeled_crawl("http://www.ikanchai.com/start/", start_time, end_time, self.cat_dict["创投"])
         self.labeled_crawl_pingce("http://www.ikanchai.com/evaluation/", start_time, end_time, self.cat_dict["评测"])
 
     def labeled_crawl(self, start_url, start_time, end_time, a_category):

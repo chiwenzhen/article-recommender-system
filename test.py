@@ -292,7 +292,6 @@ def time_normalize(str_time, time_format='%Y-%m-%d %H:%M:%S'):
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ftime))
 
 if __name__ == "__main__":
-    s = '{"errno":0,"data":{"total":0}}'
-    json_obj = json.loads(s)
-    l = json_obj["data"]["ari"]
+    a = "hello"
+    l = a.split()
     print l

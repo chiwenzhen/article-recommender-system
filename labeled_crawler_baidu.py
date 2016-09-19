@@ -11,7 +11,7 @@ from crawler import Crawler, Article
 from labeled_crawler import LabeledCrawler
 
 
-# 虎嗅爬虫
+# 二级分类 for all categories
 class LabeledCrawlerBaidu(LabeledCrawler):
     def __init__(self, proj_name):
         LabeledCrawler.__init__(self, proj_name)

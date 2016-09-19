@@ -29,6 +29,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from collections import defaultdict, namedtuple
+from sklearn.feature_selection import SelectKBest, chi2
 
 
 class TextClassifierTfidf:
@@ -38,14 +39,18 @@ class TextClassifierTfidf:
         self.labels = None
         self.vect = CountVectorizer()
         self.tfidf = TfidfTransformer()
+        self.ch2 = SelectKBest(chi2, k=1000)
         self.clf = LogisticRegression()
+
         self.pipeline = Pipeline([
             ('vect', self.vect),
             ('tfidf', self.tfidf),
+            ('chi2', self.ch2),
             ('clf', self.clf)])
         self.pipeline_transform = Pipeline([
             ('vect', self.vect),
-            ('tfidf', self.tfidf)])
+            ('tfidf', self.tfidf),
+            ('chi2', self.ch2)])
 
     def train(self):
         db = ArticleDB()
@@ -313,7 +318,7 @@ class TextClassifierSub:
                 if line.startswith("CATEGORY"):
                     _, fcat = line.split(":")
                     fcat = category.c2n[fcat]
-                elif len(line) > 0:
+                elif len(line) > 0 and line[0] != '#':
                     ccat += 1
                     name, tags = line.split(":")
                     tags = set(tags.split(" "))
@@ -325,6 +330,8 @@ class TextClassifierSub:
         # 标注训练数据
         print "dividing category into sub-categories..."
         db = ArticleDB()
+        db.execute("update %s set subcategory=null" % self.project_name)
+        db.commit()
         for fcat, subcats in cat2subcat.items():
             ids = db.execute("select id from %s where category=%s" % (self.project_name, fcat))
             ids = [id[0] for id in ids]

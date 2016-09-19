@@ -94,12 +94,15 @@ class LabeledCrawler:
                  ID INT AUTO_INCREMENT PRIMARY KEY,
                  URL VARCHAR(1000),
                  TIME DATETIME,
-                 CATEGORY TINYINT)""" % self.proj_name
+                 CATEGORY TINYINT,
+                 SUBCATEGORY SMALLINT)""" % self.proj_name
         cursor.execute(sql)
 
         # 删除数据
         for d in self.dirs:
             shutil.rmtree(d)
+        for d in self.dirs:
+            if not os.path.exists(d): os.makedirs(d)
 
     # 时间转换：从字符串形式转浮点数，比如time_str2num("2011-09-28 10:00:00", "%Y-%m-%d %H:%M:%S")返回1317091800.0
     @staticmethod

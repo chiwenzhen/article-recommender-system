@@ -24,16 +24,16 @@ class LabeledCrawlerYiou(LabeledCrawler):
         self.labeled_crawl("http://ret.iyiou.com/", start_time, end_time, self.cat_dict["电商"])
         self.labeled_crawl("http://fin.iyiou.com/", start_time, end_time, self.cat_dict["互联网金融"])
         self.labeled_crawl("http://med.iyiou.com/", start_time, end_time, self.cat_dict["医疗健康"])
+        self.labeled_crawl("http://www.iyiou.com/i/jiaoyu/", start_time, end_time, self.cat_dict["教育"])
+        self.labeled_crawl("http://www.iyiou.com/i/jiaju/", start_time, end_time, self.cat_dict["O2O"])
+        self.labeled_crawl("http://www.iyiou.com/i/shengxian/", start_time, end_time, self.cat_dict["O2O"])
+        self.labeled_crawl("http://www.iyiou.com/i/B2B/", start_time, end_time, self.cat_dict["企业服务"])
+        self.labeled_crawl("http://tech.iyiou.com/", start_time, end_time, self.cat_dict["智能硬件"])
+        self.labeled_crawl("http://www.iyiou.com/i/canyin/", start_time, end_time, self.cat_dict["O2O"])
         # self.labeled_crawl("http://est.iyiou.com/", start_time, end_time, self.cat_dict["房产"])
         # self.labeled_crawl("http://phy.iyiou.com/", start_time, end_time, self.cat_dict["体育"])
         # self.labeled_crawl("http://win.iyiou.com/", start_time, end_time, self.cat_dict["文创"])
-        self.labeled_crawl("http://tech.iyiou.com/", start_time, end_time, self.cat_dict["智能硬件"])
-        self.labeled_crawl("http://www.iyiou.com/i/canyin/", start_time, end_time, self.cat_dict["O2O"])
         # self.labeled_crawl("http://www.iyiou.com/i/lvyou/", start_time, end_time, self.cat_dict["旅游"])
-        self.labeled_crawl("http://www.iyiou.com/i/jiaoyu/", start_time, end_time, self.cat_dict["教育"])
-        # self.labeled_crawl("http://www.iyiou.com/i/jiaju/", start_time, end_time, self.cat_dict["O2O"])
-        # self.labeled_crawl("http://www.iyiou.com/i/shengxian/", start_time, end_time, self.cat_dict["O2O"])
-        # self.labeled_crawl("http://www.iyiou.com/i/B2B/", start_time, end_time, self.cat_dict["企业服务"])
 
     def labeled_crawl(self, start_url, start_time, end_time, a_category):
         try:

@@ -168,12 +168,6 @@ if __name__ == "__main__":
     # segmenter.seg_title_tags()
     # segmenter.pos_seg()
     # segmenter.join_pos_seg_file()
-    segmenter.seg(skip_exist=False)
+    segmenter.seg(skip_exist=True)
     segmenter.join_seg_file()
 
-    segmenter = Segmenter("article150801160830")
-    # segmenter.seg_title_tags()
-    # segmenter.pos_seg()
-    # segmenter.join_pos_seg_file()
-    segmenter.seg(skip_exist=False)
-    segmenter.join_seg_file()
