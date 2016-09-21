@@ -59,7 +59,11 @@ class Crawler:
                  ID INT AUTO_INCREMENT PRIMARY KEY,
                  URL VARCHAR(1000),
                  TIME DATETIME,
-                 CATEGORY TINYINT)""" % self.proj_name
+                 CATEGORY TINYINT,
+                 SUBCATEGORY SMALLINT,
+                 SUBCLUSTER SMALLINT,
+                 category1 tinyint,
+                 category2 tinyint)""" % self.proj_name
         cursor.execute(sql)
 
         # 删除文章

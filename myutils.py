@@ -226,7 +226,7 @@ class FreqCharUtil:
         return vec
 
 
-def read_cat2subcat(subcat_profile):
+def read_subcat(subcat_profile):
     category = Category()
     print "reading sub-category profile..."
     SubCat = namedtuple("SubCat", ['id', 'name', 'tags'])
@@ -250,9 +250,30 @@ def read_cat2subcat(subcat_profile):
                 cat2subcat[fcat].append(subcat)
     return cat2subcat, tag2id
 
+
+def read_subclt(subclt_profile):
+    category = Category()
+    print "reading sub-cluster profile..."
+    SubCat = namedtuple("SubCat", ['id', 'name', 'tags'])
+    start = 50
+    cat2subclt = defaultdict(lambda: [])
+    subclt_offset = defaultdict(lambda: 0)
+    with open(subclt_profile, "r") as subfile:
+        lines = [line.strip() for line in subfile.readlines()]
+        snippet = []
+        for line in lines:
+            if len(line) > 0:
+                snippet.append(line)
+            else:
+                if len(snippet) > 0:
+                    fcat = category.c2n[snippet[0].split(" ")[1]]
+                    subclt_offset[fcat] = start
+                    for i, word in enumerate(snippet[1:]):
+                        cat2subclt[fcat].append(SubCat(start+i, str(word), ""))
+                    start += len(snippet[1:])
+                    snippet = []
+    return subclt_offset, cat2subclt
+
 if __name__ == "__main__":
-    stopsent = StopSent()
-    print stopsent.is_delim(u"\u00a0".encode("utf-8"))
-    print stopsent.is_delim("＃")
-    print stopsent.is_delim("！")
-    print stopsent.is_delim("<")
+    subclt_offset, cat2subclt = read_subclt("subclt")
+    pass

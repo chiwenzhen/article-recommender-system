@@ -4,7 +4,7 @@ import random
 from flask import Flask, render_template, request, jsonify, render_template, url_for, send_from_directory
 from flask import send_file
 import time
-from myutils import Category, CompareUnit, read_cat2subcat
+from myutils import Category, CompareUnit, read_subcat, read_subclt
 import sys
 from myutils import ArticleDB
 from myutils import TopkHeap, Dumper
@@ -18,8 +18,8 @@ app = Flask(__name__)
 
 db = ArticleDB()
 
-# project_name = "article150801160830"
-project_name = "article_cat"
+project_name = "article150801160830"
+# project_name = "article_cat"
 txt_dir = project_name + "/txt/"
 attr_dir = project_name + "/attr/"
 category_dict = Category()
@@ -52,7 +52,7 @@ thumbs = [
 
 # 加载tfidf对象文件
 doc_num = db.execute("select count(*) from %s" % project_name)[0][0]
-# tfidf_vectors = [0.0] * doc_num
+tfidf_vectors = [0.0] * doc_num
 # for i in xrange(doc_num):
 #     print "\rloading %d/%d" % (i, doc_num),
 #     obj_name = "%s/clf_tfidf/%d" % (project_name, i + 1)
@@ -71,7 +71,8 @@ for i in range(10):
         cat_tree.create_node((cur, str(cur)), cur, parent=i)
     offset += 5
 
-cat2subcat, tag2id = read_cat2subcat("subcat")
+cat2subcat, tag2id = read_subcat("subcat")
+subclt_offset, cat2subclt = read_subclt("subclt")
 
 
 # 分类版：文章列表首页
@@ -289,6 +290,114 @@ def article_list_v2():
         'last_dateline': last_dateline
     }
     return jsonify(jdata)
+
+
+# 分类+聚类版：文章列表首页
+@app.route('/v3/')
+def main_v3():
+    category_id = 0
+    subclt_id = 0
+    eng_category = request.args.get('category')
+    subcluster = request.args.get('subcluster')
+    if eng_category is not None and subcluster is not None:
+        category_id = category_dict.e2n[eng_category.encode("utf-8")]
+        subclt_id = int(subcluster.encode("utf-8"))
+        sql = "select id, category from %s where category=%d and subcluster=%d order by time desc limit 0,10" % (
+            project_name, category_id, subclt_id)
+    elif eng_category is not None:
+        category_id = category_dict.e2n[eng_category.encode("utf-8")]
+        sql = "select id, category from %s where category = %d order by time desc limit 0,10" % (
+            project_name, category_id)
+    else:
+        sql = "select id, category from %s order by time desc limit 0,10" % project_name
+    results = db.execute(sql)
+    article_infos = []
+    for a_id, a_category in results:
+        a_digest = ""
+        attr_name = attr_dir + str(a_id)
+        txt_name = txt_dir + str(a_id)
+        with open(attr_name, "r") as attr_file:
+            lines = attr_file.readlines()
+            a_time = lines[0]
+            a_title = lines[1]
+            a_url = lines[2]
+            a_tags = lines[3]
+        with open(txt_name, "r") as txt_file:
+            txt_file.readline()
+            txt_file.readline()
+            for line in txt_file:
+                if len(line) > 20:
+                    a_digest = line.decode("utf-8")[:30].encode("utf-8") + "......"
+
+        chn_category = category_dict.n2c[a_category]
+        eng_category = category_dict.n2e[a_category]
+        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+        article_infos.append(
+            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
+    last_dateline = article_infos[-1][1]
+    return render_template('index_v3.html', article_infos=article_infos, catid=category_id, subcltid=subclt_id, last_dateline=last_dateline, category=Category(), cat2subclt=cat2subclt)
+
+
+# 分类+聚类版：文章列表次页（动态获取）
+@app.route('/v3/article_list', methods=['GET', 'POST'])
+def article_list_v3():
+    catid = int(request.form.get('catid', u'0').encode("utf-8"))
+    subcltid = int(request.form.get('subcltid', u'0').encode("utf-8"))
+    last_dateline = request.form.get('last_dateline', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
+    if catid > 0 and subcltid > 0:
+        sql = "select id, category from %s where category = %d and subcluster = %d and time < '%s' order by time desc limit 0,10" % (
+            project_name, catid, subcltid, last_dateline)
+    elif catid > 0:
+        sql = "select id, category from %s where category = %d and time < '%s' order by time desc limit 0,10" % (
+            project_name, catid, last_dateline)
+    elif catid == 0:
+        sql = "select id, category from %s where time < '%s' order by time desc limit 0,10" % (
+            project_name, last_dateline)
+    else:
+        return ""
+
+    results = db.execute(sql)
+    article_infos = []
+    for a_id, a_category in results:
+        a_digest = ""
+        attr_name = attr_dir + str(a_id)
+        txt_name = txt_dir + str(a_id)
+        with open(attr_name, "r") as attr_file, open(txt_name, "r") as txt_file:
+            lines = attr_file.readlines()
+            a_time = lines[0]
+            a_title = lines[1]
+            a_url = lines[2]
+            a_tags = lines[3]
+            txt_file.readline()
+            txt_file.readline()
+            for line in txt_file:
+                if len(line) > 20:
+                    a_digest = line.decode("utf-8")[:30].encode("utf-8") + "......"
+                    break
+
+        chn_category = category_dict.n2c[a_category]
+        eng_category = category_dict.n2e[a_category]
+        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+        article_infos.append(
+            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
+    data = render_template('article_list_v3.html', article_infos=article_infos)
+
+    if len(article_infos) > 0:
+        result = 1
+        last_dateline = article_infos[-1][1]
+    else:
+        result = 0
+        last_dateline = "1970-01-01 08:00:00"
+    jdata = {
+        'result': result,
+        'msg': '已经没有更多信息了',
+        'data': data,
+        'total_page': 975,
+        'last_dateline': last_dateline
+    }
+    return jsonify(jdata)
+
 
 
 # 文章正文

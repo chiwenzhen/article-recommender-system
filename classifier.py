@@ -16,7 +16,7 @@ import numpy
 from random import shuffle
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
-from myutils import ArticleDB, Dumper, StopWord, Category, FreqCharUtil, read_cat2subcat
+from myutils import ArticleDB, Dumper, StopWord, Category, FreqCharUtil, read_subcat
 from sklearn.cluster import KMeans
 import os
 import pandas as pd
@@ -309,7 +309,7 @@ class TextClassifierSub:
 
     def train(self):
         # 读取子类分类规格文件
-        cat2subcat, tag2id = read_cat2subcat(self.subcat_profile)
+        cat2subcat, tag2id = read_subcat(self.subcat_profile)
 
         # 标注训练数据
         print "dividing category into sub-categories..."
@@ -343,8 +343,8 @@ class TextClassifierSub:
             x = []
             print "category %d: reading corpus..." % fcat
             for id in ids:
-                txt_name = "%s/seg/%d" % (self.project_name, id)
-                with open(txt_name, "r") as seg_file:
+                seg_name = "%s/seg/%d" % (self.project_name, id)
+                with open(seg_name, "r") as seg_file:
                     lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
                     text = " ".join(lines)
                     x.append(text)
@@ -364,20 +364,20 @@ class TextClassifierSub:
 
             # 预测
             test_proj_name = "article150801160830"
-            ids = db.execute("select id from %s where category=%s" % (test_proj_name, fcat))
+            ids = db.execute("select id from %s where category=%d" % (test_proj_name, fcat))
             ids = [row[0] for row in ids]
             print "category %d: predicting new corpus..." % fcat
             for id in ids:
-                txt_name = "%s/seg/%d" % (test_proj_name, id)
-                with open(txt_name, "r") as seg_file:
+                seg_name = "%s/seg/%d" % (test_proj_name, id)
+                with open(seg_name, "r") as seg_file:
                     lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
                     text = " ".join(lines)
                     x.append(text)
             y = self.pipeline.predict(x)
 
             print "category %d: writing predict result to sql..." % fcat
-            for i, id in enumerate(ids):
-                db.execute("update %s set subcategory=%s where id=%d" % (test_proj_name, y[i], id))
+            for id, label in zip(ids, y):
+                db.execute("update %s set subcategory=%d where id=%d" % (test_proj_name, label, id))
 
         db.commit()
         db.close()

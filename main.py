@@ -33,18 +33,30 @@ import shutil
 def fetch_nonlabeled_data():
     proj_name = "article150801160830"
     str_old_time = "2015-08-01 00:00:00"
-    str_new_time = "2016-08-31 00:00:00"
+    str_new_time = "2016-12-31 00:00:00"
 
-    Crawler(proj_name=proj_name).rebuild_table()
-    Crawler163(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    Crawler36Kr(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    CrawlerGeekPark(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    CrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    CrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    CrawlerHuxiu(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # Crawler(proj_name=proj_name).rebuild_table()
+    # Crawler163(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # Crawler36Kr(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # CrawlerGeekPark(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # CrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # CrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    # CrawlerHuxiu(proj_name=proj_name).crawl(str_old_time, str_new_time)
+
+    LabeledCrawlerIheima(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerLieyun(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerSootoo(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerYiou(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawler7tin(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawlerAilab(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawlerBaidu(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawlerSinaVR(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawlerVarkr(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
 
     seg = Segmenter(proj_name=proj_name)
-    seg.seg()
+    seg.seg(skip_exist=True)
     seg.join_segfile()
 
 
@@ -53,16 +65,16 @@ def fetch_labeled_data():
     str_new_time = "2016-11-31 00:00:00"
     proj_name = "article_cat"
 
-    # LabeledCrawler(proj_name=proj_name).rebuild_table()
-    # LabeledCrawlerIheima(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # LabeledCrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # LabeledCrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # LabeledCrawlerLieyun(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # LabeledCrawlerSootoo(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # LabeledCrawlerYiou(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # LabeledCrawler7tin(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
-    # LabeledCrawlerAilab(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
-    # LabeledCrawlerBaidu(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawler(proj_name=proj_name).rebuild_table()
+    LabeledCrawlerIheima(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerLieyun(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerSootoo(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawlerYiou(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    LabeledCrawler7tin(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawlerAilab(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    LabeledCrawlerBaidu(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
     LabeledCrawlerSinaVR(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
     LabeledCrawlerVarkr(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
 
@@ -126,4 +138,4 @@ def train_label():
     print "ok, successfully complete!"
 
 if __name__ == '__main__':
-    train_label()
+    fetch_nonlabeled_data()

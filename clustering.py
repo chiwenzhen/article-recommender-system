@@ -3,18 +3,26 @@
 import os
 from gensim import corpora
 from gensim.models.ldamodel import LdaModel
+from sklearn.decomposition import TruncatedSVD
+from sklearn.preprocessing import Normalizer
+from sklearn.pipeline import make_pipeline
 from collections import defaultdict
-from myutils import ArticleDB, Dumper, StopWord, ArticleDumper
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import pdist, squareform
 from scipy.cluster.hierarchy import ward, linkage, dendrogram
-from myutils import ArticleDB
+from myutils import ArticleDB, read_subclt, Dumper, StopWord, ArticleDumper, Category
 from treelib import Node, Tree
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, MiniBatchKMeans
 import shutil
 import numpy as np
+from sklearn.feature_selection import SelectKBest, chi2
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.pipeline import Pipeline
+from sklearn.cross_validation import train_test_split
+from sklearn import metrics
+from sklearn.metrics import silhouette_samples, silhouette_score
 
 
 class LDA:
@@ -188,7 +196,178 @@ class HierarchicalClustering:
     def __init__(self):
         pass
 
+
+class TextClusteringSub:
+    def __init__(self, proj_name):
+        self.proj_name = proj_name
+        self.subcat_profile = "subcat"
+        self.tfidf = TfidfVectorizer()
+        self.ch2 = SelectKBest(chi2, k=20)
+
+    def train(self):
+        db = ArticleDB()
+        db.execute("update %s set subcluster=null" % self.proj_name)
+        db.commit()
+        # 聚类（for 每个类别）
+        subclt_offset, cat2subclt = read_subclt("subclt")
+        for fcat in subclt_offset.keys():
+            ids = db.execute("select id from %s where category=%s" % (self.proj_name, fcat))
+            ids = [row[0] for row in ids]
+            if len(ids) < 10:
+                continue
+
+            # 读取文本
+            print "category %d: reading corpus..." % fcat
+            x = []
+            for id in ids:
+                seg_name = "%s/seg/%d" % (self.proj_name, id)
+                with open(seg_name, "r") as seg_file:
+                    lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
+                    text = " ".join(lines)
+                    x.append(text)
+
+            # tfidf计算
+            print "category %d: calc tfidf..." % fcat
+            vectorizer = TfidfVectorizer()
+            x = vectorizer.fit_transform(x)
+
+            # 降维
+            # print "category %d: decomposition..." % fcat
+            # svd = TruncatedSVD(1000)
+            # normalizer = Normalizer(copy=False)
+            # lsa = make_pipeline(svd, normalizer)
+            # x = lsa.fit_transform(x)
+
+            # 选择合适的k
+            # range_n_clusters = [4, 6, 8, 10, 12, 14, 16]
+            # silhouette_avgs = []
+            # for n_clusters in range_n_clusters:
+            #     clusterer = KMeans(n_clusters=n_clusters, random_state=10)
+            #     cluster_labels = clusterer.fit_predict(x)
+            #     silhouette_avg = silhouette_score(x, cluster_labels)
+            #     print("For n_clusters =", n_clusters, "The average silhouette_score is :", silhouette_avg)
+            #     silhouette_avgs.append(silhouette_avg)
+            # max_idx = np.argmax(silhouette_avgs)
+            # cluster_num = range_n_clusters[max_idx]
+
+            # 训练
+            subcats = cat2subclt[fcat]
+            cluster_num = len(subcats)
+            print "category %d: clustering (n_cluster=%d)..." % (fcat, cluster_num)
+            # cluster_num = len(cat2subclt[fcat])
+            clt = KMeans(n_clusters=cluster_num)
+            clt.fit(x)
+
+            # 写回SQL
+            print "category %d: writing cluster result to sql..." % fcat
+            offset = subclt_offset[fcat]
+            for i, id in enumerate(ids):
+                db.execute("update %s set subcluster=%d where id=%d" % (self.proj_name, offset + clt.labels_[i], id))
+
+            # 寻找分类关键词
+            # feature_names = vectorizer.get_feature_names()
+            # y = clt.labels_
+            # ch2 = SelectKBest(chi2, k=20)
+            # x = ch2.fit(x, y)
+            # key_words = [feature_names[i] for i in ch2.get_support(indices=True)]
+            # key_words = " ".join(key_words)
+            # print "关键词："
+            # print key_words
+
+            # 寻找簇的名称
+            print "category %d: reading corpus..." % fcat
+            x = []
+            for id in ids:
+                seg_name = "%s/seg/%d" % (self.proj_name, id)
+                with open(seg_name, "r") as seg_file:
+                    lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
+                    text = " ".join(lines)
+                    x.append(text)
+            text_group = [""] * cluster_num
+            doc_num = len(ids)
+            for i in xrange(doc_num):
+                text_group[clt.labels_[i]] += x[i]
+
+            vectorizer = TfidfVectorizer()
+            matrix = vectorizer.fit_transform(text_group)
+            feature_names = vectorizer.get_feature_names()
+            for i in xrange(cluster_num):
+                row = matrix[i].toarray().flatten()
+                idxs = np.argsort(row)
+                idxs = idxs[::-1]
+                idxs = idxs[:20]
+                keywords = [feature_names[j] for j in idxs]
+                keywords = " ".join(keywords)
+                print "subcluster-", offset+i, subcats[i].name, ":\t", keywords
+
+        db.commit()
+        db.close()
+
+        # 全部结束
+        print "OK, all done!"
+
+
+# 为每个一级分类做LDA，每个一级类生成5个二级主题，结果不怎么好
+class TextClusteringSubLDA:
+    def __init__(self, proj_name):
+        self.proj_name = proj_name
+        self.subcat_profile = "subcat"
+        self.tfidf = TfidfVectorizer()
+        self.ch2 = SelectKBest(chi2, k=1000)
+
+    def train(self):
+        db = ArticleDB()
+        category = Category()
+        db.execute("update %s set subcluster=null" % self.proj_name)
+        db.commit()
+        # 聚类（for 每个类别）
+        subclt_offset, cat2subclt = read_subclt("subclt")
+        for fcat in subclt_offset.keys():
+            ids = db.execute("select id from %s where category=%s" % (self.proj_name, fcat))
+            ids = [row[0] for row in ids]
+            if len(ids) < 10:
+                continue
+
+            # 读取文本
+            print "category %d: reading corpus..." % fcat
+            x = []
+            for id in ids:
+                seg_name = "%s/seg/%d" % (self.proj_name, id)
+                with open(seg_name, "r") as seg_file:
+                    lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
+                    text = " ".join(lines)
+                    text = text.split()
+                    x.append(text)
+
+            # dict
+            print "category %d: dictionary..." % fcat
+            id2word = corpora.Dictionary(x)
+            # bow
+            print "category %d: bag of word..." % fcat
+            corpus_bow = [id2word.doc2bow(doc) for doc in x]
+            # lda
+            print "category %d: lda modeling..." % fcat
+            lda = LdaModel(corpus=corpus_bow, id2word=id2word, num_topics=5, alpha='auto')
+            # show topics
+            print "category %d: 【%s】show topics..." % (fcat, category.n2c[fcat])
+            topics = lda.print_topics(num_topics=-1, num_words=10)
+            for topic in topics:
+                print "topic %d: %s" % (topic[0], topic[1].encode("utf-8"))
+
+            # 写回SQL
+            # print "category %d: writing cluster result to sql..." % fcat
+            # offset = subclt_offset[fcat]
+            # for i, id in enumerate(ids):
+            #     db.execute("update %s set subcluster=%d where id=%d" % (self.proj_name, offset + clt.labels_[i], id))
+        db.commit()
+        db.close()
+
+        # 全部结束
+        print "OK, all done!"
+
 if __name__ == '__main__':
-    lda_model = LDA(proj_name="article150801160830")
-    lda_model.fit()
-    lda_model.tranform()
+    # lda_model = LDA(proj_name="article150801160830")
+    # lda_model.fit()
+    # lda_model.tranform()
+    clt = TextClusteringSub(proj_name="article150801160830")
+    clt.train()

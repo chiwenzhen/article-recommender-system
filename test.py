@@ -14,6 +14,7 @@ from myutils import ArticleDB
 import shutil
 import json
 from collections import namedtuple
+from scipy.sparse import csr_matrix
 # here is ubuntu
 
 def add_n_to_file():
@@ -292,7 +293,18 @@ def time_normalize(str_time, time_format='%Y-%m-%d %H:%M:%S'):
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ftime))
 
 if __name__ == "__main__":
-    SubCat = namedtuple("dfdf", ['id', 'name', 'tags'])
-    c = SubCat("a", "b", "c")
-    print c
+    row = np.array([0, 0, 1, 2, 2, 2])
+    col = np.array([0, 2, 2, 0, 1, 2])
+    data = np.array([2, 1, 3, 8, 4, 7])
+    matrix = csr_matrix((data, (row, col)), shape=(3, 3))
+    """
+    array([[2, 0, 1],
+           [0, 0, 3],
+           [8, 4, 7]])
+    """
+
+    a = np.array([[1, 2], [3, 4]])
+    b= a.flatten()
+    print b
+
 

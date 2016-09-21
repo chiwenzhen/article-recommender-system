@@ -95,7 +95,8 @@ class LabeledCrawler:
                  URL VARCHAR(1000),
                  TIME DATETIME,
                  CATEGORY TINYINT,
-                 SUBCATEGORY SMALLINT)""" % self.proj_name
+                 SUBCATEGORY SMALLINT,
+                 SUBCLUSTER SMALLINT)""" % self.proj_name
         cursor.execute(sql)
 
         # 删除数据
