@@ -366,17 +366,18 @@ class TextClassifierSub:
             test_proj_name = "article150801160830"
             ids = db.execute("select id from %s where category=%d" % (test_proj_name, fcat))
             ids = [row[0] for row in ids]
+            new_x = []
             print "category %d: predicting new corpus..." % fcat
             for id in ids:
                 seg_name = "%s/seg/%d" % (test_proj_name, id)
                 with open(seg_name, "r") as seg_file:
                     lines = [line.strip() for line in seg_file.readlines() if len(line.strip()) > 0]
                     text = " ".join(lines)
-                    x.append(text)
-            y = self.pipeline.predict(x)
+                    new_x.append(text)
+            new_y = self.pipeline.predict(new_x)
 
             print "category %d: writing predict result to sql..." % fcat
-            for id, label in zip(ids, y):
+            for id, label in zip(ids, new_y):
                 db.execute("update %s set subcategory=%d where id=%d" % (test_proj_name, label, id))
 
         db.commit()
@@ -387,11 +388,11 @@ class TextClassifierSub:
 
 if __name__ == "__main__":
 
+    # clf = TextClassifierTfidf(project_name="article_cat")
+    # clf.train()
+
     clf = TextClassifierSub(project_name="article_cat")
     clf.train()
-
-    # clf = TextClassifierSub(project_name="article_cat")
-    # clf.train()
 
     # stopword = StopWord("./stopwords_it.txt")
     # proj_name = "article150801160830"
