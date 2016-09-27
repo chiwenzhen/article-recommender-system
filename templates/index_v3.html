@@ -1,0 +1,73 @@
+{% extends "layout_v3.html" %}
+{% block title %}Hello world!{% endblock %}
+
+{% block header %}
+		<ul class="nav navbar-nav navbar-left" style="font-size: 16px;">
+			{% set show_list = ["vr", "ai", "hardware", "medical", "enterprise", "finance"] %}
+            <li style="height: 60px;"><a href="http://172.21.1.18/v3/recommend" target="_blank">推荐<em class="nums-prompt nums-prompt-topic"></em></a></li>
+			{% for cat1_name in show_list %}
+			{% set cat1_id = category.e2n[cat1_name] %}
+			<li class="nav-news js-show-menu" style="height: 60px;">
+				<div class="header-column header-column-zx menu-box" onmouseover="isOut=false" onmouseout="isOut=true" style="margin-top: 60px;">
+					{% for cat2 in cat2subclt[cat1_id] %}
+					<a href="http://172.21.1.18/v3/?category={{cat1_name}}&subcluster={{cat2.id}}" target="_blank" class="transition">{{cat2.name}}</a>
+					{% endfor %}
+				</div>
+				<a href="http://172.21.1.18/v3/?category={{cat1_name}}">{{category.e2c[cat1_name]}} <span class="caret"></span></a>
+			</li>
+			{% endfor %}
+			
+			<li class="nav-news js-show-menu" style="height: 60px;">
+                <div class="header-column header-column-zx menu-box" onmouseover="isOut=false" onmouseout="isOut=true" style="margin-top: 60px;">
+                    <a href="http://172.21.1.18/v3/?category=game" target="_blank" class="transition">游戏&直播</a>
+					<a href="http://172.21.1.18/v3/?category=education" target="_blank" class="transition">在线教育</a>
+                    <a href="http://172.21.1.18/v3/?category=mobile" target="_blank" class="transition">手机</a>
+					<a href="http://172.21.1.18/v3/?category=car" target="_blank" class="transition">汽车</a>
+					<a href="http://172.21.1.18/v3/?category=ecommerce" target="_blank" class="transition">电商</a>
+					<a href="http://172.21.1.18/v3/?category=o2o" target="_blank" class="transition">O2O</a>
+					<a href="http://172.21.1.18/v3/?category=capital" target="_blank" class="transition">投资</a>
+					<a href="http://172.21.1.18/v3/?category=iot" target="_blank" class="transition">物联网</a>
+					<a href="http://172.21.1.18/v3/?category=evaluation" target="_blank" class="transition">评测</a>
+                </div>
+                <a href="javascript:">更多 <span class="caret"></span></a>
+            </li>
+			
+        </ul>
+{% endblock %}
+
+{% block body %}
+	
+	{% for a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name in article_infos %}
+		<div class="mod-b mod-art " data-aid="161419">
+                <!--栏目链接-->
+					<a href="http://172.21.1.18/v3/?category={{eng_category}}" class="column-link" target="_blank">{{chn_category}}</a>
+                    <div class="mod-thumb">
+						<a class="transition" href="http://172.21.1.18/v3/article/?article_id={{a_id}}" target="_blank">
+							<img class="lazy" data-original="{{ url_for('static', filename='myresources/'+thumb_name) }}" alt="{{a_title}}" src="{{ url_for('static', filename='myresources/'+thumb_name) }}" style="display: inline;">
+						</a>
+					</div>
+					<div class="mob-ctt">
+						<h3><a href="http://172.21.1.18/article/?article_id={{a_id}}" class="transition" target="_blank">{{a_title}}</a></h3>
+
+						<div class="mob-author">
+							<div class="author-face">
+									<a href="#" target="_blank"><img src="{{ url_for('static', filename='myresources/66_1458179724.jpg!40x40') }}"></a>
+							</div>
+							<a href="#" target="_blank">
+								<span class="author-name ">未知作者</span>
+							</a>
+							<a href="#" target="_blank"></a>
+							<i class="i-icon icon-auth2" title=""></i><span class="time">{{a_time}}</span>
+							<i class="icon icon-cmt"></i><em>0</em>
+							<i class="icon icon-fvr"></i><em>0</em>
+						</div>
+                    <div class="mob-sub">{{a_digest}}</div>
+                </div>
+            </div>
+	{%endfor%}
+{% endblock %}
+
+
+{% block getmore %}
+ <div class="get-mod-more js-get-mod-more-list transition" data-catid="{{catid}}" data-subcltid="{{subcltid}}" data-cur_page="1" data-last_dateline="{{last_dateline}}">点击加载更多</div>
+{% endblock %}

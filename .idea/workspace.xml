@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72438ef6-a642-4761-8f76-e83fbe72d6a5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classifier.py" afterPath="$PROJECT_DIR$/classifier.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.py" afterPath="$PROJECT_DIR$/index.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/myutils.py" afterPath="$PROJECT_DIR$/myutils.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.py" afterPath="$PROJECT_DIR$/test.py" />
     </list>
     <ignored path="recommender-system.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -59,8 +53,8 @@
       <file leaf-file-name="index.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="456" column="81" selection-start-line="456" selection-start-column="81" selection-end-line="456" selection-end-column="81" />
+            <state relative-caret-position="243">
+              <caret line="457" column="9" selection-start-line="457" selection-start-column="9" selection-end-line="457" selection-end-column="9" />
               <folding>
                 <element signature="e#15#33#0" expanded="true" />
                 <element signature="e#689#1268#0" expanded="false" />
@@ -805,7 +799,14 @@
       <option name="project" value="LOCAL" />
       <updated>1474941852636</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="利用分类结果的概率分布，实现多主题条件的新闻搜索，比如条件“人工智能+VR”的新闻，那么系统将返回同时和“人工智能”、“VR”相关的新闻">
+      <created>1474969253586</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1474969253586</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -862,7 +863,8 @@
     <MESSAGE value="1.二级聚类算法；2.簇名称标记（TFIDF）；3.簇数目确定：silhouette；4.创建表新增几个列；5.读取聚类信息文件；6.标记数据添加到无标价数据中以增加数据规模" />
     <MESSAGE value="修复二级分类不准的严重bug" />
     <MESSAGE value="代码整理" />
-    <option name="LAST_COMMIT_MESSAGE" value="代码整理" />
+    <MESSAGE value="利用分类结果的概率分布，实现多主题条件的新闻搜索，比如条件“人工智能+VR”的新闻，那么系统将返回同时和“人工智能”、“VR”相关的新闻" />
+    <option name="LAST_COMMIT_MESSAGE" value="利用分类结果的概率分布，实现多主题条件的新闻搜索，比如条件“人工智能+VR”的新闻，那么系统将返回同时和“人工智能”、“VR”相关的新闻" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1326,7 +1328,7 @@
         <state relative-caret-position="2670">
           <caret line="191" column="59" selection-start-line="191" selection-start-column="59" selection-end-line="191" selection-end-column="59" />
           <folding>
-            <element signature="e#16#25#0" expanded="true" />
+            <element signature="e#16#25#0" expanded="false" />
             <element signature="e#6820#7542#0" expanded="false" />
             <element signature="e#7574#11887#0" expanded="false" />
             <element signature="e#11954#14167#0" expanded="false" />
@@ -1507,8 +1509,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="456" column="81" selection-start-line="456" selection-start-column="81" selection-end-line="456" selection-end-column="81" />
+        <state relative-caret-position="243">
+          <caret line="457" column="9" selection-start-line="457" selection-start-column="9" selection-end-line="457" selection-end-column="9" />
           <folding>
             <element signature="e#15#33#0" expanded="true" />
             <element signature="e#689#1268#0" expanded="false" />

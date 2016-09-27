@@ -1,0 +1,59 @@
+{% extends "article_layout.html" %}
+{% block title %}
+	<title>{{article_info[2]}}-科技资讯</title>
+{% endblock %}
+{% block body %}
+	
+	<h1 class="t-h1">{{article_info[2]}}</h1>
+	<div class="article-author">
+						<a href="http://172.21.1.18/?category={{article_info[8]}}" class="column-link" target="_blank">{{article_info[7]}}</a>
+						<span class="author-name">
+								<a href="#" target="_blank">空白</a>
+							</span>
+		<i class="icon icon-line"></i>
+		<span class="article-time">{{article_info[1]}}</span>
+		<span class="article-share">收藏5</span>
+		<span class="article-pl">评论4</span>
+	</div>
+
+	<!--管理员按钮-->
+	<div class="article-manage-bar"></div>
+
+				
+	<div class="article-img-box">
+		<img src="{{ url_for('static', filename='myresources1/193905381388.jpg') }}" alt="5D Mark IV发布，功能化的佳能是否让人感动常在？">
+	</div>
+	
+	<div id="article_content" class="article-content-wrap">
+	{% for line in article_info[4] %}
+		<p>{{line}}</p><p><br></p>
+	{% endfor %}			
+	</div>
+	
+	<div class="Qr-code">
+		<div class="praise-box transition js-like-article center-box " data-type="like">
+			<div class="praise-box-add"><i class="icon icon-article-zan-add"></i><span>+1</span></div>
+			<i class="icon icon-article-zan"></i><span class="num">1</span>
+		</div>
+	</div>
+
+	<div class="tag-box ">
+		<ul class="transition">
+			<a href="https://www.huxiu.com/tags/3437.html" target="_blank"><li class="transition">空白</li></a>
+			<a href="https://www.huxiu.com/tags/4127.html" target="_blank"><li class="transition">空白</li></a>
+		</ul>
+	</div>
+{% endblock %}
+
+{% block relate %}
+	{% for article in topk_articles %}
+		<li>
+			<div class="hot-article-img">
+				<a href="http://172.21.1.18/article/?article_id={{article[0]}}" target="_blank">
+					<img src="{{ url_for('static', filename='myresources1/073704072438.jpg') }}">
+				</a>
+			</div>
+			<a href="http://172.21.1.18/article/?article_id={{article[0]}}" class="transition" target="_blank">{{article[2]}}</a>
+		</li>
+	{% endfor %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% block body %}
+	{% for a_id, a_time, a_title, a_url, a_digest, a_tags, a_cate1, a_cate1_name, a_cate2, a_cate2_name, thumb_name in article_infos %}
+		<div class="mod-b mod-art " data-aid="161419">
+                <!--栏目链接-->
+					<a href="http://172.21.1.18/v2/?cat1={{a_cate1}}" class="column-link" target="_blank">{{a_cate1_name}}</a>
+
+                    <div class="mod-thumb">
+						<a class="transition" href="http://172.21.1.18/article/?article_id={{a_id}}" target="_blank">
+							<img class="lazy" data-original="{{ url_for('static', filename='myresources/'+thumb_name) }}" alt="{{a_title}}" src="{{ url_for('static', filename='myresources/'+thumb_name) }}" style="display: inline;">
+						</a>
+					</div>
+					<div class="mob-ctt">
+						<h3><a href="http://172.21.1.18/article/?article_id={{a_id}}" class="transition" target="_blank">{{a_title}}</a></h3>
+
+						<div class="mob-author">
+							<div class="author-face">
+									<a href="https://www.huxiu.com/member/1434566.html" target="_blank"><img src="{{ url_for('static', filename='myresources/66_1458179724.jpg!40x40') }}"></a>
+							</div>
+							<a href="https://www.huxiu.com/member/1434566.html" target="_blank">
+								<span class="author-name ">未知作者</span>
+							</a>
+							<a href="https://www.huxiu.com/vip" target="_blank"></a>
+							<i class="i-icon icon-auth2" title="虎嗅认证作者"></i><span class="time">{{a_time}}</span>
+							<i class="icon icon-cmt"></i><em>0</em>
+							<i class="icon icon-fvr"></i><em>0</em>
+						</div>
+                    <div class="mob-sub">{{a_digest}}</div>
+                </div>
+            </div>
+	{%endfor%}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "layout_v2.html" %}
+
+{% block header %}
+		<ul class="nav navbar-nav navbar-left" style="font-size: 16px;">
+			{% set first_half = header1_list[:6] %}
+			{% set second_half = header1_list[6:] %}
+			{% for cat1_id, cat1_name in first_half%}		
+			<li class="nav-news js-show-menu" style="height: 60px;">
+				<div class="header-column header-column-zx menu-box" onmouseover="isOut=false" onmouseout="isOut=true" style="margin-top: 60px;">
+					{% for cat2_id, cat2_name in header2_list[cat1_id] %}
+					<a href="http://172.21.1.18/v2/?cat1={{cat1_id}}&cat2={{cat2_id}}" target="_blank" class="transition">{{cat2_name}}</a>
+					{% endfor %}
+				</div>
+				<a href="http://172.21.1.18/v2/?cat1={{cat1_id}}">{{cat1_name}} <span class="caret"></span></a>
+			</li>
+			{% endfor %}
+		
+			<li class="nav-news js-show-menu" style="height: 60px;">
+			
+				<div class="header-column header-column-zx menu-box" onmouseover="isOut=false" onmouseout="isOut=true" style="margin-top: 60px;">
+				{% for cat1_id, cat1_name in second_half %}
+					<a href="http://172.21.1.18/v2/?cat1={{cat1_id}}" target="_blank" class="transition">{{cat1_name}}</a>
+				{% endfor %}
+				</div>
+				<a href="javascript:">更多 <span class="caret"></span></a>
+            </li>
+        </ul>
+{% endblock %}
+
+
+{% block body %}
+	{% for a_id, a_time, a_title, a_url, a_digest, a_tags, a_cate1, a_cat1_name, a_cate2, a_cat2_name, thumb_name in article_infos %}
+	<div class="mod-b mod-art " data-aid="161419">
+			<!--栏目链接-->
+				<a href="http://172.21.1.18/v2/?cat1={{a_cate1}}" class="column-link" target="_blank">{{a_cat1_name}}</a>
+
+				<div class="mod-thumb">
+					<a class="transition" href="http://172.21.1.18/article/?article_id={{a_id}}" target="_blank">
+						<img class="lazy" data-original="{{ url_for('static', filename='myresources/'+thumb_name) }}" alt="{{a_title}}" src="{{ url_for('static', filename='myresources/'+thumb_name) }}" style="display: inline;">
+					</a>
+				</div>
+				<div class="mob-ctt">
+					<h3><a href="http://172.21.1.18/article/?article_id={{a_id}}" class="transition" target="_blank">{{a_title}}</a></h3>
+
+					<div class="mob-author">
+						<div class="author-face">
+								<a href="#" target="_blank"><img src="{{ url_for('static', filename='myresources/66_1458179724.jpg!40x40') }}"></a>
+						</div>
+						<a href="#" target="_blank">
+							<span class="author-name ">未知作者</span>
+						</a>
+						<a href="https://www.huxiu.com/vip" target="_blank"></a>
+						<i class="i-icon icon-auth2" title="虎嗅认证作者"></i><span class="time">{{a_time}}</span>
+						<i class="icon icon-cmt"></i><em>0</em>
+						<i class="icon icon-fvr"></i><em>0</em>
+					</div>
+				<div class="mob-sub">{{a_digest}}</div>
+			</div>
+		</div>
+	{%endfor%}
+{% endblock %}
+
+
+{% block getmore %}
+ <div class="get-mod-more js-get-mod-more-list transition" cat1_id="{{cat1}}" cat2_id="{{cat2}}" data-cur_page="1" data-last_dateline="{{last_dateline}}">点击加载更多</div>
+{% endblock %}
