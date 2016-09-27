@@ -192,11 +192,6 @@ class LDA:
                 print >> seg_file, "%s : %d" % (key, value)
 
 
-class HierarchicalClustering:
-    def __init__(self):
-        pass
-
-
 class TextClusteringSub:
     def __init__(self, proj_name):
         self.proj_name = proj_name

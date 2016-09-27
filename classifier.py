@@ -34,8 +34,8 @@ import dill
 
 
 class TextClassifierTfidf:
-    def __init__(self, project_name):
-        self.project_name = project_name
+    def __init__(self, proj_name):
+        self.proj_name = proj_name
         self.texts = None
         self.labels = None
         self.tfidf = TfidfVectorizer()
@@ -67,10 +67,10 @@ class TextClassifierTfidf:
         db = ArticleDB()
         # 导入数据
         print "reading corpus.txt ..."
-        corpus_name = self.project_name + "/seg_join/corpus.txt"
+        corpus_name = self.proj_name + "/seg_join/corpus_pos.txt"
         with open(corpus_name, "r") as corpus:
             self.texts = corpus.readlines()
-        sql = "select id, category from %s" % self.project_name
+        sql = "select id, category from %s" % self.proj_name
         results = db.execute(sql)
         db.close()
         self.labels = [row[1] for row in results]
@@ -79,7 +79,7 @@ class TextClassifierTfidf:
         print "reading title & tags..."
         doc_num = len(self.labels)
         for i in xrange(doc_num):
-            tt_name = "%s/tt/%d" % (self.project_name, i + 1)
+            tt_name = "%s/tt/%d" % (self.proj_name, i + 1)
             with open(tt_name, "r") as tt_file:
                 title = tt_file.readline()
                 tags = tt_file.readline()
@@ -391,7 +391,7 @@ if __name__ == "__main__":
     # clf = TextClassifierTfidf(project_name="article_cat")
     # clf.train()
 
-    clf = TextClassifierSub(project_name="article_cat")
+    clf = TextClassifierTfidf(proj_name="article_cat")
     clf.train()
 
     # stopword = StopWord("./stopwords_it.txt")
