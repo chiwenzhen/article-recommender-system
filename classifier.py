@@ -40,7 +40,7 @@ class TextClassifierTfidf:
         self.labels = None
         self.tfidf = TfidfVectorizer()
         self.ch2 = SelectKBest(chi2, k=1000)
-        self.clf = SGDClassifier()
+        self.clf = SGDClassifier(loss='log')
 
         self.pipeline = Pipeline([
             ('tfidf', self.tfidf),
@@ -125,6 +125,9 @@ class TextClassifierTfidf:
 
     def predict(self, x):
         return self.pipeline.predict(x)
+
+    def predict_proba(self, x):
+        return self.pipeline.predict_proba(x)
 
     def transform(self, x):
         return self.pipeline_transform.transform(x)

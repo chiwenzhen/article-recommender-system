@@ -64,6 +64,7 @@ class ArticleDB:
         self.cursor = self.db.cursor()
 
     def execute(self, sql):
+        results = None
         try:
             self.cursor.execute(sql)
             results = self.cursor.fetchall()

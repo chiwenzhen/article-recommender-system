@@ -94,7 +94,7 @@ def train_label():
 
     # 分类器训练
     print "1. trainning tfidf clf..."
-    # clf = TextClassifierTfidf(project_name="article_cat")
+    # clf = TextClassifierTfidf(proj_name="article_cat")
     # clf.train()
     # Dumper.save(clf, "tfidf_clf.dat")
     clf = Dumper.load("tfidf_clf.dat")
@@ -114,13 +114,28 @@ def train_label():
 
     # 预测测试语料库category
     print "3. predicting corpus"
-    corpus_categories = clf.predict(corpus)
+    categories = clf.predict(corpus)
+
+    # 预测测试语料库category
+    print "4 predicting corpus (probability)"
+    categories_probs = clf.predict_proba(corpus)
 
     # 往数据库写入category属性
-    print "4. writing corpus prediction to mysql..."
-    for i, a_category in enumerate(corpus_categories):
+    print "5. writing corpus prediction to mysql..."
+    for i, a_category in enumerate(categories):
         a_id = i + 1
         sql = "update %s set category=%d where id=%s" % (test_proj_name, a_category, a_id)
+        db.execute(sql)
+
+    print "6. writing corpus prediction probability to mysql..."
+    for i, a_category_probs in enumerate(categories_probs):
+        a_id = i + 1
+
+        set_statements = []
+        for class_label, a_category_prob in zip(clf.pipeline.named_steps["clf"].classes_, a_category_probs):
+            set_statements.append("p%d=%f" % (class_label, a_category_prob))
+        set_statements = ", ".join(set_statements)
+        sql = "update %s set %s where id=%s" % (test_proj_name, set_statements, a_id)
         db.execute(sql)
     db.commit()
     db.close()
@@ -138,4 +153,4 @@ def train_label():
     print "ok, successfully complete!"
 
 if __name__ == '__main__':
-    fetch_nonlabeled_data()
+    train_label()

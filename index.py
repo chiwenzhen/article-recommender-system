@@ -1,7 +1,7 @@
 # coding=utf-8
 import numpy as np
 import random
-from flask import Flask, render_template, request, jsonify, render_template, url_for, send_from_directory
+from flask import Flask, render_template, request, jsonify, render_template, url_for, send_from_directory, redirect
 from flask import send_file
 import time
 from myutils import Category, CompareUnit, read_subcat, read_subclt
@@ -398,6 +398,106 @@ def article_list_v3():
     }
     return jsonify(jdata)
 
+
+# 类别交集：文章列表首页
+@app.route('/mix/')
+def main_mix():
+    cate_checkbox = request.args.getlist('cat_checkbox')
+    if cate_checkbox is None or len(cate_checkbox) == 0:
+        return redirect(url_for('/'))
+    cate_checkbox = [e.encode("utf-8") for e in cate_checkbox]
+    order_statement = ""
+    view_name = "view" + "".join(cate_checkbox)
+    for cat in cate_checkbox:
+        order_statement += "-p%s * log2(p%s) " % (cat, cat)
+    order_statement = "(%s)" % order_statement
+
+    sql = "create or replace view %s as (select id, time, category, subcategory from %s order by %s desc)" % (view_name, project_name, order_statement)
+    db.execute(sql)
+
+    sql = "select id, category from %s limit 0,10" % view_name
+    results = db.execute(sql)
+
+    article_infos = []
+    for a_id, a_category in results:
+        a_digest = ""
+        attr_name = attr_dir + str(a_id)
+        txt_name = txt_dir + str(a_id)
+        with open(attr_name, "r") as attr_file:
+            lines = attr_file.readlines()
+            a_time = lines[0]
+            a_title = lines[1]
+            a_url = lines[2]
+            a_tags = lines[3]
+        with open(txt_name, "r") as txt_file:
+            txt_file.readline()
+            txt_file.readline()
+            for line in txt_file:
+                if len(line) > 20:
+                    a_digest = line.decode("utf-8")[:30].encode("utf-8") + "......"
+
+        chn_category = category_dict.n2c[a_category]
+        eng_category = category_dict.n2e[a_category]
+        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+        article_infos.append(
+            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
+    last_dateline = article_infos[-1][1]
+    return render_template('index_mix.html', article_infos=article_infos, view_name=view_name, last_dateline=last_dateline, category=Category(), cat2subcat=cat2subcat)
+
+
+# 类别交集：文章列表次页（动态获取）
+@app.route('/article_list_mix/', methods=['GET', 'POST'])
+def article_list_mix():
+    view_name = request.form.get('view_name', "null").encode("utf-8")
+    page = int(request.form.get('page', "null").encode("utf-8"))
+
+    if view_name != "null":
+        start = (page - 1) * 10
+        end = start + 10
+        sql = "select id, category from %s limit %d,%d" % (view_name, start, end)
+    else:
+        return ""
+
+    results = db.execute(sql)
+    article_infos = []
+    for a_id, a_category in results:
+        a_digest = ""
+        attr_name = attr_dir + str(a_id)
+        txt_name = txt_dir + str(a_id)
+        with open(attr_name, "r") as attr_file, open(txt_name, "r") as txt_file:
+            lines = attr_file.readlines()
+            a_time = lines[0]
+            a_title = lines[1]
+            a_url = lines[2]
+            a_tags = lines[3]
+            txt_file.readline()
+            txt_file.readline()
+            for line in txt_file:
+                if len(line) > 20:
+                    a_digest = line.decode("utf-8")[:30].encode("utf-8") + "......"
+                    break
+
+        chn_category = category_dict.n2c[a_category]
+        eng_category = category_dict.n2e[a_category]
+        thumb_name = thumbs[random.randint(0, len(thumbs) - 1)]
+        article_infos.append(
+            [a_id, a_time, a_title, a_url, a_digest, a_tags, a_category, chn_category, eng_category, thumb_name])
+    data = render_template('article_list_mix.html', article_infos=article_infos)
+
+    if len(article_infos) > 0:
+        result = 1
+        last_dateline = article_infos[-1][1]
+    else:
+        result = 0
+        last_dateline = "1970-01-01 08:00:00"
+    jdata = {
+        'result': result,
+        'msg': '已经没有更多信息了',
+        'data': data,
+        'total_page': 975,
+        'last_dateline': last_dateline
+    }
+    return jsonify(jdata)
 
 
 # 文章正文
