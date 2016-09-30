@@ -293,9 +293,10 @@ def time_normalize(str_time, time_format='%Y-%m-%d %H:%M:%S'):
     ftime = time.mktime(time.strptime(str_time, time_format))
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ftime))
 
-if __name__ == "__main__":
-    a = 0.003
-    b = 0.952
-    print -(a * math.log(a,2) + b * math.log(b,2))
 
+def func(**kwargs):
+    print kwargs['c']
+
+if __name__ == "__main__":
+    pass
 
