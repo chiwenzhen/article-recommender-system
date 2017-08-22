@@ -1,5 +1,5 @@
 # article-recommender-system
-A python article recommender system: collect articles, classifies articles, recommends good articles for you
+A python news classification system: collect articles and classifies articles
 
 # Depenpendies
 * [Anaconda](https://www.continuum.io/downloads#_windows) I choose Anaconda2-4.1.1-Windows-x86_64.exe (python 2.7)
