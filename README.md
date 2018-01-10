@@ -12,3 +12,4 @@ A python news classification system: collect articles and classifies articles
 1. crawlers to collect documents from web
 2. perform word segment on these documents
 3. train a text classifier on segmented documents
+4. use flask to set up a website to demonstrate
