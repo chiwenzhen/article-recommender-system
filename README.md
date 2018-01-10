@@ -7,3 +7,8 @@ A python news classification system: collect articles and classifies articles
 * gensim
 * scikit-learn
 * flask
+
+# Main
+1. crawlers to collect documents from web
+2. perform word segment on these documents
+3. train a text classifier on segmented documents
