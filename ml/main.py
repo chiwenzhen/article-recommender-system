@@ -31,7 +31,7 @@ import shutil
 
 
 def fetch_nonlabeled_data():
-    proj_name = "article150801160830"
+    proj_name = "article_cat"
     str_old_time = "2015-08-01 00:00:00"
     str_new_time = "2016-12-31 00:00:00"
 
@@ -77,7 +77,7 @@ def main():
     :return:
     '''
     db = ArticleDB()
-    test_proj_name = "article150801160830"
+    test_proj_name = "article_cat"
     test_seg_dir = test_proj_name + "/seg/"
     test_obj_dir = test_proj_name + "/clf_tfidf/"
     shutil.rmtree(test_obj_dir, ignore_errors=True)
