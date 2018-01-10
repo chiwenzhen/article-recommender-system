@@ -1,15 +1,14 @@
 # coding=utf-8
 import numpy as np
-import random
-from flask import Flask, render_template, request, jsonify, render_template, url_for, send_from_directory, redirect
-from flask import send_file
-import time
-from myutils import Category, CompareUnit, read_subcat, read_subclt
 import sys
-from myutils import ArticleDB
-from myutils import TopkHeap, Dumper
+import random
+import time
 from sklearn.metrics.pairwise import cosine_similarity
+from flask import Flask, request, jsonify, render_template, url_for, send_from_directory, redirect
 from treelib import Tree
+from myutils import Category, CompareUnit, read_subcat, read_subclt
+from myutils import ArticleDB
+from myutils import TopkHeap
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
