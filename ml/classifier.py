@@ -1,36 +1,21 @@
 # coding=utf-8
-import MySQLdb
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer, TfidfTransformer
-from sklearn.decomposition import LatentDirichletAllocation
-from sklearn.linear_model import SGDClassifier
-from sklearn.pipeline import Pipeline
-from sklearn.cross_validation import train_test_split
-from sklearn.linear_model.logistic import LogisticRegression
-from sklearn.naive_bayes import BernoulliNB, MultinomialNB
-from sklearn import metrics
 import numpy as np
-from gensim import utils
-from gensim.models.doc2vec import LabeledSentence, TaggedDocument, TaggedLineDocument
-from gensim.models import Doc2Vec
-import numpy
-from random import shuffle
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from myutils import ArticleDB, Dumper, StopWord, Category, FreqCharUtil, read_subcat
-from sklearn.cluster import KMeans
 import os
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.pipeline import Pipeline
+from sklearn.cross_validation import train_test_split
+from sklearn import metrics
+from sklearn.svm import SVC
 from sklearn.linear_model import SGDClassifier
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from collections import defaultdict, namedtuple
 from sklearn.feature_selection import SelectKBest, chi2
-import dill
+from gensim import utils
+from gensim.models.doc2vec import TaggedDocument
+from gensim.models import Doc2Vec
+from random import shuffle
+from myutils import ArticleDB, Dumper, Category, FreqCharUtil, read_subcat
 
 
 class TextClassifierTfidf:

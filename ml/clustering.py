@@ -1,28 +1,16 @@
 # coding:utf-8
 
 import os
-from gensim import corpora
-from gensim.models.ldamodel import LdaModel
-from sklearn.decomposition import TruncatedSVD
-from sklearn.preprocessing import Normalizer
-from sklearn.pipeline import make_pipeline
-from collections import defaultdict
-from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.spatial.distance import pdist, squareform
-from scipy.cluster.hierarchy import ward, linkage, dendrogram
-from myutils import ArticleDB, read_subclt, Dumper, StopWord, ArticleDumper, Category
-from treelib import Node, Tree
-from sklearn.cluster import KMeans, MiniBatchKMeans
 import shutil
 import numpy as np
+from gensim import corpora
+from gensim.models.ldamodel import LdaModel
+from collections import defaultdict
+from sklearn.cluster import KMeans
 from sklearn.feature_selection import SelectKBest, chi2
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.pipeline import Pipeline
-from sklearn.cross_validation import train_test_split
-from sklearn import metrics
-from sklearn.metrics import silhouette_samples, silhouette_score
+from sklearn.feature_extraction.text import TfidfVectorizer
+from treelib import Tree
+from myutils import ArticleDB, read_subclt, Dumper, StopWord, Category
 
 
 class LDA:

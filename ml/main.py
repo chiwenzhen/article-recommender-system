@@ -1,27 +1,27 @@
 # coding=utf-8
 import time
 import os
-from crawler_36kr import Crawler36Kr
-from crawler_163 import Crawler163
-from crawler_geek import CrawlerGeekPark
-from crawler_huxiu import CrawlerHuxiu
-from crawler import Crawler
-from crawler_leiphone import CrawlerLeiphone
-from crawler_kanchai import CrawlerKanchai
+from unlabeled_crawler.crawler_36kr import Crawler36Kr
+from unlabeled_crawler.crawler_163 import Crawler163
+from unlabeled_crawler.crawler_geek import CrawlerGeekPark
+from unlabeled_crawler.crawler_huxiu import CrawlerHuxiu
+from unlabeled_crawler.crawler import Crawler
+from unlabeled_crawler.crawler_leiphone import CrawlerLeiphone
+from unlabeled_crawler.crawler_kanchai import CrawlerKanchai
 from segmenter import Segmenter
 from clustering import LDA
-from labeled_crawler import LabeledCrawler
-from labeled_crawler_iheima import LabeledCrawlerIheima
-from labeled_crawler_kanchai import LabeledCrawlerKanchai
-from labeled_crawler_leiphone import LabeledCrawlerLeiphone
-from labeled_crawler_lieyun import LabeledCrawlerLieyun
-from labeled_crawler_sootoo import LabeledCrawlerSootoo
-from labeled_crawler_yiou import LabeledCrawlerYiou
-from labeled_crawler_7tin import LabeledCrawler7tin
-from labeled_crawler_ailab import LabeledCrawlerAilab
-from labeled_crawler_baidu import LabeledCrawlerBaidu
-from labeled_crawler_sinavr import LabeledCrawlerSinaVR
-from labeled_crawler_varkr import LabeledCrawlerVarkr
+from labeled_crawler.labeled_crawler import LabeledCrawler
+from labeled_crawler.labeled_crawler_iheima import LabeledCrawlerIheima
+from labeled_crawler.labeled_crawler_kanchai import LabeledCrawlerKanchai
+from labeled_crawler.labeled_crawler_leiphone import LabeledCrawlerLeiphone
+from labeled_crawler.labeled_crawler_lieyun import LabeledCrawlerLieyun
+from labeled_crawler.labeled_crawler_sootoo import LabeledCrawlerSootoo
+from labeled_crawler.labeled_crawler_yiou import LabeledCrawlerYiou
+from labeled_crawler.labeled_crawler_7tin import LabeledCrawler7tin
+from labeled_crawler.labeled_crawler_ailab import LabeledCrawlerAilab
+from labeled_crawler.labeled_crawler_baidu import LabeledCrawlerBaidu
+from labeled_crawler.labeled_crawler_sinavr import LabeledCrawlerSinaVR
+from labeled_crawler.labeled_crawler_varkr import LabeledCrawlerVarkr
 from classifier import TextClassifierTfidf
 import MySQLdb
 from myutils import Article
@@ -35,25 +35,13 @@ def fetch_nonlabeled_data():
     str_old_time = "2015-08-01 00:00:00"
     str_new_time = "2016-12-31 00:00:00"
 
-    # Crawler(proj_name=proj_name).rebuild_table()
-    # Crawler163(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # Crawler36Kr(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # CrawlerGeekPark(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # CrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # CrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    # CrawlerHuxiu(proj_name=proj_name).crawl(str_old_time, str_new_time)
-
-    LabeledCrawlerIheima(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerLieyun(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerSootoo(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawlerYiou(proj_name=proj_name).crawl(str_old_time, str_new_time)
-    LabeledCrawler7tin(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
-    LabeledCrawlerAilab(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
-    LabeledCrawlerBaidu(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
-    LabeledCrawlerSinaVR(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
-    LabeledCrawlerVarkr(proj_name=proj_name).crawl("2000-08-01 00:00:00", str_new_time)
+    Crawler(proj_name=proj_name).rebuild_table()
+    Crawler163(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    Crawler36Kr(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    CrawlerGeekPark(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    CrawlerLeiphone(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    CrawlerKanchai(proj_name=proj_name).crawl(str_old_time, str_new_time)
+    CrawlerHuxiu(proj_name=proj_name).crawl(str_old_time, str_new_time)
 
     seg = Segmenter(proj_name=proj_name)
     seg.seg(skip_exist=True)
@@ -83,7 +71,11 @@ def fetch_labeled_data():
     seg.join_segfile()
 
 
-def train_label():
+def main():
+    '''
+    训练和测试文本分类模型
+    :return:
+    '''
     db = ArticleDB()
     test_proj_name = "article150801160830"
     test_seg_dir = test_proj_name + "/seg/"
@@ -94,10 +86,10 @@ def train_label():
 
     # 分类器训练
     print "1. trainning tfidf clf..."
-    # clf = TextClassifierTfidf(proj_name="article_cat")
-    # clf.train()
+    clf = TextClassifierTfidf(proj_name="article_cat")
+    clf.train()
     # Dumper.save(clf, "tfidf_clf.dat")
-    clf = Dumper.load("tfidf_clf.dat")
+    # clf = Dumper.load("tfidf_clf.dat")
 
     # 获取测试语料库文档数量
     results = db.execute("select count(id) from %s" % test_proj_name)
@@ -153,4 +145,4 @@ def train_label():
     print "ok, successfully complete!"
 
 if __name__ == '__main__':
-    train_label()
+    main()
